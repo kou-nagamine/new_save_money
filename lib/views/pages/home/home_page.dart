@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iconoir_flutter/regular/box.dart';
+import 'components/money_history.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //pages
@@ -108,20 +109,28 @@ class HomePageState extends State <HomePage> {
                       Icon(Icons.insights, size: 30),
                     ],
                   ),
-                  SizedBox(height: 30),
-                  Text('6055'),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CalculatorPage(),
-                        ),
-                      ); 
-                    },
-                    child: Text('Charge')
+                  const SizedBox(height: 20),
+                  Expanded(
+                    child: MoneyHistoryList(
+                      historyData: [
+                        {
+                          'categoryName': '食費',
+                          'categoryIcon': 'food',
+                          'price': 1000,
+                        },
+                        {
+                          'categoryName': '飲み物',
+                          'categoryIcon': 'drink',
+                          'price': 500,
+                        },
+                        {
+                          'categoryName': 'スイーツ',
+                          'categoryIcon': 'sweet',
+                          'price': 300,
+                        },
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 30),
               ],
             ),
           ),
