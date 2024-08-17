@@ -34,11 +34,57 @@ class HomePageState extends State <HomePage> {
             constraints: const BoxConstraints.expand(),
           ),
           Positioned(
+            top: MediaQuery.of(context).size.height * 0.08,
+            right: 30,
+            child: IconButton(
+              icon: const Icon(Icons.settings_outlined, size: 35, color: Colors.white70,),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CalculatorPage(),
+                  ),
+                );
+              },
+            ),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.11,
+            left: 20,
+            child:Column(
+              children: [
+                Text('￥6,055', style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white),),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '先週比：',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '￥521(9.4%)',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF00FF1E), 
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ) 
+          ),
+          Positioned(
             bottom: 0,
             child: Container(
               width: MediaQuery.of(context).size.width * 1.0,
               height: MediaQuery.of(context).size.height * 0.73,
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(40),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(60),
@@ -52,10 +98,18 @@ class HomePageState extends State <HomePage> {
                 ],
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('6055'),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('履歴',style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      ), 
+                      Icon(Icons.insights, size: 30),
+                    ],
+                  ),
                   SizedBox(height: 30),
+                  Text('6055'),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
