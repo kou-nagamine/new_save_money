@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import "./components/record_card.dart";
 import "./components/custom-header.dart";
-import "./components/item.dart";
+import "components/switch-item.dart";
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
 
