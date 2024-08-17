@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "./components/record_card.dart";
+import "./components/custom-header.dart";
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
 
@@ -14,7 +15,9 @@ class _SettingPageState extends State<SettingPage> {
       backgroundColor: Colors.white,
       body: Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          CustomHeader(title: 'あなたについて'),
           RecordCard(),
         ],
       ),
