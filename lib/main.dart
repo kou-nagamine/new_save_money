@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconoir_flutter/regular/tower_warning.dart';
 
 //pages
 import 'views/pages/home/home_page.dart';
@@ -19,10 +20,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: ThemeData.light(useMaterial3: true),
+      //darkTheme: ThemeData.dark(useMaterial3: true,),
       home:HomePage(),
     );
   }
