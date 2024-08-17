@@ -6,6 +6,7 @@ import 'components/money_history.dart';
 
 //pages
 import '../calculator/calculator_page.dart';
+import 'package:new_save_money/views/pages/setting/setting_page.dart';
 
 //riverpods
 // import '../calculator/providers/add_price.dart';
@@ -43,7 +44,7 @@ class HomePageState extends State <HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CalculatorPage(),
+                    builder: (context) => SettingPage(),
                   ),
                 );
               },
