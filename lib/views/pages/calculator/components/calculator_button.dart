@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //riverpods
 import '../providers/add_price.dart';
 import '../providers/charge_riverpod.dart';
+import '../providers/all_price.dart';
 //import '../../../riverpods/add_day_riverpod.dart';
 
 //pages
@@ -57,6 +58,8 @@ class CalculatorButton extends ConsumerWidget {
                   context,
                   MaterialPageRoute(builder: (context) => HomePage()),
               );
+              final allnotifier = ref.read(allPriceNotifierProvider.notifier);
+              allnotifier.updateAllPrice(int.parse(chageState));
             }
           },
           //電卓ボタンのレイアウト
