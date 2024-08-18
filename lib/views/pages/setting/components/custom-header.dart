@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+//commons
+import '/views/pages/commons/navigation_bar/navigation_bar.dart';
+
 class CustomHeader extends StatelessWidget {
   final String title;
 
@@ -18,7 +21,12 @@ class CustomHeader extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.black, size: 32 ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CommonNavigationBar(),
+                  ),
+                );
               },
             ),
           ),

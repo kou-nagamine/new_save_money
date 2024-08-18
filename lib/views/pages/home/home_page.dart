@@ -8,6 +8,9 @@ import 'components/money_history.dart';
 import '../calculator/calculator_page.dart';
 import 'package:new_save_money/views/pages/setting/setting_page.dart';
 
+//commons
+import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
+
 //riverpods
 // import '../calculator/providers/add_price.dart';
 
@@ -44,7 +47,7 @@ class HomePageState extends State <HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingPage(),
+                    builder: (context) => CommonNavigationBar(initialIndex: 2),
                   ),
                 );
               },
