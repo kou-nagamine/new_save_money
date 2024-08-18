@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import "./components/record_card.dart";
 import "./components/custom-header.dart";
 import "components/switch-item.dart";
-//import 'package:iconoir_flutter/iconoir_flutter.dart';
+import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -40,70 +40,69 @@ class _SettingPageState extends State<SettingPage> {
               ),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.notifications_active,
+                Row(
+                  children: [
+                    iconoir.BellNotification(),
+                    Padding(child: Text(
+                        '通知をONにする',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ) , padding: EdgeInsets.only(left: 20)
+                    ),
+                  ],
                 ),
-                Text(
-                  '通知をON',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                SwitchItem(),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    iconoir.SmartphoneDevice(),
+                    Padding(child: Text(
+                      '入出金をデフォルトにする',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ) , padding: EdgeInsets.only(left: 20)),
+                  ],
                 ),
                 SwitchItem(),
               ],
             ),
             Row(
               children: [
-                Icon(
-                  Icons.stay_primary_portrait,
-                ),
-                Text(
-                  '入出金をデフォルトにする',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SwitchItem(),
+                iconoir.InfoCircle(),
+                Padding(
+                  child: Text('このアプリについて',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),
+                ) , padding: EdgeInsets.only(left: 20)),
               ],
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.info,
-                ),
-                Text(
-                  'このアプリについて',
+                iconoir.SendDiagonal(),
+                Padding(
+                  child: Text('フィードバックをおくる',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Icon(
-                  Icons.send,
-                ),
-                Text(
-                  'フィードバックをおくる',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-          
-          
-          
-          
+                ) , 
+                padding: EdgeInsets.only(left: 20)),
+                ],
+              ),
+            ],
+          ),
+         ),  
         ],
       ),
       ),
