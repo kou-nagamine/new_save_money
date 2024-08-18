@@ -9,7 +9,7 @@ import '../providers/charge_riverpod.dart';
 //import '../../../riverpods/add_day_riverpod.dart';
 
 //pages
-import '../../home/home_page.dart';
+import '../../commons/navigation_bar/navigation_bar.dart';
 
 class CalculatorButton extends ConsumerWidget {
   const CalculatorButton({super.key, required this.buttonText});
@@ -55,7 +55,7 @@ class CalculatorButton extends ConsumerWidget {
               chargeNotifier.cancelCharge();
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => CommonNavigationBar()),
               );
             }
           },
