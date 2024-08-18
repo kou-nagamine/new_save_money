@@ -1,10 +1,17 @@
+//packages
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import 'package:iconoir_flutter/iconoir_flutter.dart';
-import '/views/pages/setting/setting_page.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+//dart
+import 'dart:ui';
+
+//pages
+import '/views/pages/setting/setting_page.dart';
+import '/views/pages/home/home_page.dart';
+import '/views/pages/calculator/calculator_page.dart';
+
+class CommonNavigationBar extends StatelessWidget {
+  const CommonNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +34,8 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   final _screens = [
-    SettingPage(),
-    SettingPage(), // 各自で作成したページに変更してください
+    HomePage(),
+    CalculatorPage(), // 各自で作成したページに変更してください
     SettingPage(),
   ];
 
