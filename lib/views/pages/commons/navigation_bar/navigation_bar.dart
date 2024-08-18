@@ -11,7 +11,9 @@ import '/views/pages/home/home_page.dart';
 import '/views/pages/calculator/calculator_page.dart';
 
 class CommonNavigationBar extends StatelessWidget {
-  const CommonNavigationBar({super.key});
+  final int initialIndex;
+
+  const CommonNavigationBar({super.key, this.initialIndex = 0});//初期値を設定  0:home 1:calculator 2:setting　0以外を設定する場合は、各自で設定してください
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +21,29 @@ class CommonNavigationBar extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xFF0085FF),
       ),
-      home: const MyStatefulWidget(),
+      home: MyStatefulWidget(initialIndex: initialIndex),
     );
   }
 }
 
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({super.key});
+  final int initialIndex;
+
+  const MyStatefulWidget({super.key, required this.initialIndex});
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
+  late int selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.initialIndex;
+  }
+
   final _screens = [
     HomePage(),
     CalculatorPage(), // 各自で作成したページに変更してください
@@ -41,7 +52,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      selectedIndex = index;
     });
   }
   @override
@@ -51,7 +62,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: _screens[_selectedIndex],
+            child: _screens[selectedIndex],
           ),
           Positioned(
             left: 0,
@@ -69,7 +80,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     elevation: 0,
                     showSelectedLabels: true,
                     showUnselectedLabels: true,
-                    currentIndex: _selectedIndex,
+                    currentIndex: selectedIndex,
                     onTap: _onItemTapped,
                     items: const <BottomNavigationBarItem>[
                       BottomNavigationBarItem(

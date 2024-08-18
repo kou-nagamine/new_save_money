@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData.light(useMaterial3: true),
       //darkTheme: ThemeData.dark(useMaterial3: true,),
-      home:CommonNavigationBar(),
+      home:CommonNavigationBar(initialIndex: 0),
     );
   }
 }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-//pages
-import '../../home/home_page.dart';
+//commons
+import '../../commons/navigation_bar/navigation_bar.dart';
 
 //riverpods
 import '../providers/charge_riverpod.dart';
@@ -35,7 +35,7 @@ class ChargeCard extends ConsumerWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => CommonNavigationBar()),
                   );
                 },
                 icon: Icon(

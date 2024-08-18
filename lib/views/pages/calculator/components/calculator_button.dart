@@ -8,7 +8,7 @@ import '../providers/add_price.dart';
 import '../providers/charge_riverpod.dart';
 //import '../../../riverpods/add_day_riverpod.dart';
 
-//pages
+//commons
 import '../../commons/navigation_bar/navigation_bar.dart';
 
 class CalculatorButton extends ConsumerWidget {
