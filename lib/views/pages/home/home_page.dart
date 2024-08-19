@@ -16,11 +16,13 @@ import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar
 
 //riverpods
 import '../calculator/providers/all_price.dart';
+import "./providers/user_log.dart";
 
 class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context , WidgetRef ref) {
     final allPrice = ref.watch(allPriceNotifierProvider);
+    final historyData = ref.watch(userLogNotifierProvider);
     return Scaffold(
       body: Stack(
         children: [
@@ -131,6 +133,7 @@ class HomePage extends ConsumerWidget {
                             context,
                             MaterialPageRoute(builder: (context) => GraphPage()),
                           );
+                          print(allPrice);
                         }
                       ),
                     ],
@@ -138,23 +141,7 @@ class HomePage extends ConsumerWidget {
                   const SizedBox(height: 20),
                   Expanded(
                     child: MoneyHistoryList(
-                      historyData: [
-                        {
-                          'categoryName': '食費',
-                          'categoryIcon': 'food',
-                          'price': 1000,
-                        },
-                        {
-                          'categoryName': '飲み物',
-                          'categoryIcon': 'drink',
-                          'price': 500,
-                        },
-                        {
-                          'categoryName': 'スイーツ',
-                          'categoryIcon': 'sweet',
-                          'price': 300,
-                        },
-                      ],
+                      historyData: historyData,
                     ),
                   ),
                 ],
