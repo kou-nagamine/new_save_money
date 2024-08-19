@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconoir_flutter/regular/tower_warning.dart';
 
-//pages
-import 'views/pages/home/home_page.dart';
+//commons
+import 'views/pages/commons/navigation_bar/navigation_bar.dart';
 
 void main() {
   runApp(
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData.light(useMaterial3: true),
       //darkTheme: ThemeData.dark(useMaterial3: true,),
-      home:HomePage(),
+      home:CommonNavigationBar(initialIndex: 0),
     );
   }
 }

@@ -11,6 +11,9 @@ import 'components/money_history.dart';
 //import '../calculator/calculator_page.dart';
 import 'package:new_save_money/views/pages/setting/setting_page.dart';
 
+//commons
+import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
+
 //riverpods
 import '../calculator/providers/all_price.dart';
 
@@ -45,7 +48,7 @@ class HomePage extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingPage(),
+                    builder: (context) => CommonNavigationBar(initialIndex: 2),
                   ),
                 );
               },
