@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
+
 //riverpods
 import '../providers/add_price.dart';
 import '../providers/charge_riverpod.dart';
 import '../providers/all_price.dart';
+import '/views/pages/home/providers/user_log.dart';
 //import '../../../riverpods/add_day_riverpod.dart';
 
 //commons
@@ -60,6 +62,12 @@ class CalculatorButton extends ConsumerWidget {
               );
               final allnotifier = ref.read(allPriceNotifierProvider.notifier);
               allnotifier.updateAllPrice(int.parse(chageState));
+              ref.read(userLogNotifierProvider.notifier).updateState({
+                'categoryName': '食事',
+                'categoryIcon': 'iconoir:food',
+                'price': int.parse(chageState),
+              });
+              print("chageState: $chageState");
             }
           },
           //電卓ボタンのレイアウト
