@@ -1,26 +1,23 @@
+//package
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:iconoir_flutter/regular/box.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+//import 'package:iconoir_flutter/regular/box.dart';
+
+//components
 import 'components/money_history.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //pages
-import '../calculator/calculator_page.dart';
+//import '../calculator/calculator_page.dart';
 import 'package:new_save_money/views/pages/setting/setting_page.dart';
 
 //riverpods
-// import '../calculator/providers/add_price.dart';
+import '../calculator/providers/all_price.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+class HomePage extends ConsumerWidget {
   @override
-  State <HomePage> createState() => HomePageState();
-}
-
-class HomePageState extends State <HomePage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context , WidgetRef ref) {
+    final allPrice = ref.watch(allPriceNotifierProvider);
     return Scaffold(
       body: Stack(
         children: [
@@ -30,8 +27,8 @@ class HomePageState extends State <HomePage> {
                 colors: [Color(0xFF0085FF), Color(0xFF0A2B4A)],
                 begin: Alignment.topLeft,
                 end: Alignment(0.9, -0.6),
-                stops: [0.3, 1.0]
-              )
+                stops: [0.3, 1.0],
+              ),
             ),
             constraints: const BoxConstraints.expand(),
           ),
@@ -39,7 +36,11 @@ class HomePageState extends State <HomePage> {
             top: MediaQuery.of(context).size.height * 0.08,
             right: 30,
             child: IconButton(
-              icon: const Icon(Icons.settings_outlined, size: 35, color: Colors.white70,),
+              icon: const Icon(
+                Icons.settings_outlined,
+                size: 35,
+                color: Colors.white70,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -53,9 +54,17 @@ class HomePageState extends State <HomePage> {
           Positioned(
             top: MediaQuery.of(context).size.height * 0.11,
             left: 20,
-            child:Column(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('￥6,055', style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white),),
+                Text(
+                  '￥${allPrice}',
+                  style: TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
                 RichText(
                   text: TextSpan(
                     children: [
@@ -72,14 +81,14 @@ class HomePageState extends State <HomePage> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF00FF1E), 
+                          color: Color(0xFF00FF1E),
                         ),
                       ),
                     ],
                   ),
                 ),
               ],
-            ) 
+            ),
           ),
           Positioned(
             bottom: 0,
@@ -92,10 +101,10 @@ class HomePageState extends State <HomePage> {
                 borderRadius: BorderRadius.circular(60),
                 boxShadow: [
                   BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 15,
-                  spreadRadius: 0,
-                  offset: const Offset(0, -5)
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 15,
+                    spreadRadius: 0,
+                    offset: const Offset(0, -5),
                   ),
                 ],
               ),
@@ -105,8 +114,13 @@ class HomePageState extends State <HomePage> {
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('履歴',style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                      ), 
+                      Text(
+                        '履歴',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Icon(Icons.insights, size: 30),
                     ],
                   ),
@@ -135,7 +149,7 @@ class HomePageState extends State <HomePage> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
