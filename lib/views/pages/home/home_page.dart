@@ -9,7 +9,7 @@ import 'components/money_history.dart';
 
 //pages
 //import '../calculator/calculator_page.dart';
-import 'package:new_save_money/views/pages/setting/setting_page.dart';
+import '../graph/graph_page.dart';
 
 //commons
 import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
@@ -114,7 +114,7 @@ class HomePage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
@@ -124,7 +124,15 @@ class HomePage extends ConsumerWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Icon(Icons.insights, size: 30),
+                      IconButton(
+                        icon: Icon(Icons.insights, size: 30),  // アイコンを設定
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => GraphPage()),
+                          );
+                        }
+                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
