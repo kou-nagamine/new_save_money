@@ -41,6 +41,7 @@ class _CalculatorState extends State<Calculator> {
         padding: EdgeInsets.only(top: size.height * 0.07, bottom: size.height * 0.02, left: size.width * 0.03, right: size.width * 0.03),
         child: Column(
           children: <Widget>[
+            //ここに食べ物ののドロップナビゲーションを追加、高さが超えるときは上のpaddingとかいじっても良いですー
             Table(
               //border: TableBorder.all(),
               //列数を4列に指定

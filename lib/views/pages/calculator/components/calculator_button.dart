@@ -52,7 +52,7 @@ class CalculatorButton extends ConsumerWidget {
             } else if (buttonText == '→'){
               //第一引数で曜日を管理（月:0,火:1,水:2...）
               //addDayNotifier.addUpdateDay(1,int.parse(chageState));
-              addWeeklyNotifier.weeklyAddUpdate(int.parse(chageState));
+              //addWeeklyNotifier.weeklyAddUpdate(int.parse(chageState));
               chargeNotifier.cancelCharge();
               Navigator.push(
                   context,
