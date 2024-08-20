@@ -13,44 +13,53 @@ class _GraphPageState extends State<GraphPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('グラフ')
+        title: Text(
+          'グラフ',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold
+          ),
+        )
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '2024/5/10 ~ 2024/8/15',
-                style: TextStyle(
-                  fontSize: 20
-                ),
-              ),
-              Text(
-                '¥6,055',
-                style: TextStyle(
-                  fontSize: 35
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    '先週比:',
-                    style: TextStyle(
-                      fontSize: 20
-                    ),
+          SizedBox(height: 10),
+          Padding(
+            padding: EdgeInsets.only(left:30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '2024/5/10 ~ 2024/8/15',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold
                   ),
-                  Text(
-                    '¥521(+9.4%)',
-                    style: TextStyle(
-                      fontSize: 20
+                ),
+                SizedBox(height: 3),
+                Text(
+                  '¥6,055',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      '先週比 : ¥521(+9.4%)',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ]
+                  ],
+                ),
+              ]
+            ),
           ),
+          SizedBox(height: 10),
           AspectRatio(
             aspectRatio: 2.0,
             child: Padding(
@@ -70,12 +79,12 @@ class _GraphPageState extends State<GraphPage> {
                       bottom: BorderSide(color: Colors.grey),
                     )
                   ),
-                  titlesData: FlTitlesData(
+                  titlesData: const FlTitlesData(
                     show: true,
-                    rightTitles: const AxisTitles(
+                    rightTitles: AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
-                    topTitles: const AxisTitles(
+                    topTitles: AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
                     bottomTitles: AxisTitles(
@@ -111,7 +120,7 @@ class _GraphPageState extends State<GraphPage> {
                         FlSpot(6,5),
                       ],
                       //color: Colors.red,
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors:[
                           Colors.red,
                           Colors.orange,
@@ -123,7 +132,7 @@ class _GraphPageState extends State<GraphPage> {
                       barWidth: 5,
                       isCurved: true,
                       curveSmoothness: 0.35,
-                      dotData: FlDotData(
+                      dotData: const FlDotData(
                         show: true,
                       ),
                     ),
@@ -216,8 +225,7 @@ Widget leftTitleWidgets(double value, TitleMeta meta) {
       default:
         return Container();
     }
-
-    return Text(text, style: style, textAlign: TextAlign.left);
-  }
+  return Text(text, style: style, textAlign: TextAlign.left);
+}
 
 

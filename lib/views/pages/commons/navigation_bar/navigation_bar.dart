@@ -9,6 +9,7 @@ import 'dart:ui';
 import '/views/pages/setting/setting_page.dart';
 import '/views/pages/home/home_page.dart';
 import '/views/pages/calculator/calculator_page.dart';
+import '/views/pages/topic/topic_page.dart';
 
 class CommonNavigationBar extends StatelessWidget {
   final int initialIndex;
@@ -48,7 +49,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final _screens = [
     HomePage(),
     CalculatorPage(),
-    SettingPage(),
+    TopicPage(),
   ];
 
   void _onItemTapped(int index) {
