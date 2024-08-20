@@ -68,40 +68,48 @@ class _CalculatorState extends State<Calculator> {
             SizedBox(
               height: size.height * 0.07,
               child: Center(
-                child: ToggleButtons(
-                  isSelected: List.generate(_icons.length, (index) => index == selectedIndex),
-                  onPressed: (int newIndex) {
-                    setState(() {
-                      selectedIndex = newIndex;
-                    });
-                  },
-                  renderBorder: false, // ボタンの境界線を非表示にする
-                  fillColor: Colors.grey[400], // 選択されたボタンの背景色
-                  children: List.generate(_icons.length, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 10.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            _icons[index],
-                            color: _colors[index],
-                            size: 18.0,
-                          ),
-                          Text(
-                            _labels[index],
-                            style: const TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0), // Adjust this value as needed
+                    child: ToggleButtons(
+                      isSelected: List.generate(_icons.length, (index) => index == selectedIndex),
+                      onPressed: (int newIndex) {
+                        setState(() {
+                          selectedIndex = newIndex;
+                        });
+                      },
+                      selectedBorderColor: _colors[selectedIndex],
+                      borderRadius: BorderRadius.circular(20.0), // Adjust this value as needed
+                      children: List.generate(_icons.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 10.0),
+                          child: SizedBox(
+                            width: 65,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  _icons[index],
+                                  color: _colors[index],
+                                  size: 15.0,
+                                ),
+                                const SizedBox(width: 8.0),
+                                Text(
+                                  _labels[index],
+                                  style: const TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    );
-                  }),
+                        );
+                      }),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            
             Table(
               //border: TableBorder.all(),
               //列数を4列に指定
