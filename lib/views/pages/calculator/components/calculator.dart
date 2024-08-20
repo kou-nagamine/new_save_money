@@ -1,4 +1,3 @@
-//pakages
 import 'package:flutter/material.dart';
 
 //components
@@ -12,6 +11,29 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
+  int selectedIndex = 1; // 初期インデックスを0に設定
+
+  final List<IconData> _icons = [
+    Icons.lunch_dining, // 食事
+    Icons.local_drink, // 飲み物
+    Icons.icecream, // 菓子類
+    Icons.star, // その他
+  ];
+
+  final List<String> _labels = [
+    '食事',
+    '飲み物',
+    '菓子類',
+    'その他',
+  ];
+
+  final List<Color> _colors = [
+    Colors.orange,
+    Colors.blue,
+    Colors.lightGreen,
+    Colors.green,
+  ];
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -27,6 +49,7 @@ class _CalculatorState extends State<Calculator> {
     final List<Widget> specialLines = [
       const CalculatorButton(buttonText:'0'),const BigCalculatorButton(buttonText: '00',),const CalculatorButton(buttonText:'→')
     ];
+
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -38,10 +61,47 @@ class _CalculatorState extends State<Calculator> {
       width: size.width,
       height: size.height * 0.55,
       child: Padding(
-        padding: EdgeInsets.only(top: size.height * 0.07, bottom: size.height * 0.02, left: size.width * 0.03, right: size.width * 0.03),
+        padding: EdgeInsets.only( bottom: size.height * 0.02, left: size.width * 0.03, right: size.width * 0.03),
         child: Column(
           children: <Widget>[
             //ここに食べ物ののドロップナビゲーションを追加、高さが超えるときは上のpaddingとかいじっても良いですー
+            SizedBox(
+              height: size.height * 0.07,
+              child: Center(
+                child: ToggleButtons(
+                  isSelected: List.generate(_icons.length, (index) => index == selectedIndex),
+                  onPressed: (int newIndex) {
+                    setState(() {
+                      selectedIndex = newIndex;
+                    });
+                  },
+                  renderBorder: false, // ボタンの境界線を非表示にする
+                  fillColor: Colors.grey[400], // 選択されたボタンの背景色
+                  children: List.generate(_icons.length, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 10.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            _icons[index],
+                            color: _colors[index],
+                            size: 18.0,
+                          ),
+                          Text(
+                            _labels[index],
+                            style: const TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ),
             Table(
               //border: TableBorder.all(),
               //列数を4列に指定
