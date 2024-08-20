@@ -14,8 +14,8 @@ class UserLogNotifier extends _$UserLogNotifier {
   void updateState(Map<String, dynamic> newData) {
     // 現在のデータをコピーして新しいデータを追加
     final oldState = state;
-    final newState = [...oldState, newData];
+    final newState = [newData, ...oldState];
     state = newState; // 状態を更新
-    print("aaanewState: $newState");
+    print("newState: $newState");
   }
 }
