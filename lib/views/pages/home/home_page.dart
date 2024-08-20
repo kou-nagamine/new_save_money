@@ -10,6 +10,7 @@ import 'components/money_history.dart';
 //pages
 //import '../calculator/calculator_page.dart';
 import '../graph/graph_page.dart';
+import '../setting/setting_page.dart';
 
 //commons
 import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
@@ -49,9 +50,7 @@ class HomePage extends ConsumerWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => CommonNavigationBar(initialIndex: 2),
-                  ),
+                  MaterialPageRoute(builder: (context) => SettingPage()),
                 );
               },
             ),

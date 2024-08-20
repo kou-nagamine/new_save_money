@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.light(useMaterial3: true),
-      //darkTheme: ThemeData.dark(useMaterial3: true,),
+      darkTheme: ThemeData.dark(useMaterial3: true,),
       home:CommonNavigationBar(initialIndex: 0),
     );
   }

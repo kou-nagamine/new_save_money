@@ -12,6 +12,7 @@ class RecordCard extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: Container(
+          margin: EdgeInsets.only(top:20),
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.white,
