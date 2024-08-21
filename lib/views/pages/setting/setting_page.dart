@@ -15,96 +15,106 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final containerHeight = screenHeight / 3;
+    //final screenHeight = MediaQuery.of(context).size.height;
+    //final containerHeight = screenHeight / 3;
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('あなたについて',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),),
+      ),
       body: Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomHeader(title: 'あなたについて'),
-          RecordCard(),
-          Container(
-        height: containerHeight,
-        padding: EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              '設定',
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Row(
+            RecordCard(),
+            Container(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          // children: [
+          //   CustomHeader(title: 'あなたについて'),
+          //   RecordCard(),
+          //   Container(
+          // height: containerHeight,
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    iconoir.BellNotification(),
-                    Padding(child: Text(
-                        '通知をONにする',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ) , padding: EdgeInsets.only(left: 20)
-                    ),
-                  ],
-                ),
-                SwitchItem(),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    iconoir.SmartphoneDevice(),
-                    Padding(child: Text(
-                      '入出金をデフォルトにする',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ) , padding: EdgeInsets.only(left: 20)),
-                  ],
-                ),
-                SwitchItem(),
-              ],
-            ),
-            Row(
-              children: [
-                iconoir.InfoCircle(),
-                Padding(
-                  child: Text('このアプリについて',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),
-                ) , padding: EdgeInsets.only(left: 20)),
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                iconoir.SendDiagonal(),
-                Padding(
-                  child: Text('フィードバックをおくる',
+                Text(
+                  '設定',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
-                ) , 
-                padding: EdgeInsets.only(left: 20)),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        iconoir.BellNotification(),
+                        Padding(child: Text(
+                            '通知をONにする',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ) , padding: EdgeInsets.only(left: 20),
+                        ),
+                      ],
+                    ),
+                    SwitchItem(),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        iconoir.SmartphoneDevice(),
+                        Padding(child: Text(
+                          '入出金をデフォルトにする',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ) , 
+                        padding: EdgeInsets.only(left: 20)),
+                      ],
+                    ),
+                    SwitchItem(),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  children: [
+                    iconoir.InfoCircle(),
+                    Padding(
+                      child: Text('このアプリについて',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,),
+                    ) , 
+                    padding: EdgeInsets.only(left: 20)),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    iconoir.SendDiagonal(),
+                    Padding(
+                      child: Text('フィードバックをおくる',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ) , 
+                    padding: EdgeInsets.only(left: 20)),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
-         ),  
-        ],
-      ),
+            ),  
+          ],
+        ),
       ),
     );
   }
