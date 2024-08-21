@@ -41,6 +41,7 @@ dependencies:
   simple_progress_indicators: 
   fl_chart: ^0.68.0
   iconoir_flutter: ^7.7.0
+  modal_bottom_sheet: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -23,6 +23,7 @@ class _SettingPageState extends State<SettingPage> {
       ),
       body: Container(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RecordCard(),
             Container(
@@ -64,7 +65,6 @@ class _SettingPageState extends State<SettingPage> {
                     SwitchItem(),
                   ],
                 ),
-                Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,7 +85,6 @@ class _SettingPageState extends State<SettingPage> {
                     SwitchItem(),
                   ],
                 ),
-                Spacer(),
                 Row(
                   children: [
                     iconoir.InfoCircle(),
@@ -95,7 +94,6 @@ class _SettingPageState extends State<SettingPage> {
                     padding: EdgeInsets.only(left: 20)),
                   ],
                 ),
-                Spacer(),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
