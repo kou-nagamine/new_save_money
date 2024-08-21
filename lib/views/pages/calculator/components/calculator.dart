@@ -67,49 +67,62 @@ class _CalculatorState extends State<Calculator> {
             //ここに食べ物ののドロップナビゲーションを追加、高さが超えるときは上のpaddingとかいじっても良いですー
             SizedBox(
               height: size.height * 0.07,
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0), // Adjust this value as needed
-                    child: ToggleButtons(
-                      isSelected: List.generate(_icons.length, (index) => index == selectedIndex),
-                      onPressed: (int newIndex) {
-                        setState(() {
-                          selectedIndex = newIndex;
-                        });
-                      },
-                      selectedBorderColor: _colors[selectedIndex],
-                      borderRadius: BorderRadius.circular(20.0), // Adjust this value as needed
-                      children: List.generate(_icons.length, (index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 10.0),
-                          child: SizedBox(
-                            width: 65,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  _icons[index],
-                                  color: _colors[index],
-                                  size: 15.0,
-                                ),
-                                const SizedBox(width: 8.0),
-                                Text(
-                                  _labels[index],
-                                  style: const TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _icons.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
+                      child:
+                        SizedBox(
+                          width : size.width * 0.2, 
+                          height: size.height * 0.04, 
+                          child:Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: selectedIndex == index
+                                  ? _colors[index].withOpacity(0.1)
+                                  : null,
+                              borderRadius: BorderRadius.circular(50.0),
+                              border: Border.all(
+                                color: _colors[index]
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                              child:Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    _icons[index],
+                                    color: _colors[index]
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 4.0),
+                                  Text(
+                                    _labels[index],
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        );
-                      }),
-                    ),
-                  ),
-                ),
+                        ),
+                      ),
+                    );
+                  },
+                )
               ),
-            
             Table(
               //border: TableBorder.all(),
               //列数を4列に指定
