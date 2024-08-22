@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 
 //commons
 import '../../commons/navigation_bar/navigation_bar.dart';
@@ -17,7 +18,8 @@ class ChargeCard extends ConsumerWidget {
     
     final charge = ref.watch(chargeRiverpodNotifierProvider); //chargestateを監視 
     final Size size = MediaQuery.of(context).size; //画面のサイズを取得
-
+    // final a = ref.watch(userLogNotifierProvider);
+    
     return Container(
       height: size.height * 0.23,
       child: Card(
