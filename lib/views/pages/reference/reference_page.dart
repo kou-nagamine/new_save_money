@@ -28,7 +28,7 @@ class _ReferencePageState extends State<ReferencePage> {
               top:0,
               child: ItemsCard()),
             Positioned(
-              top: 100,
+              top: 50,
               left: 10,
               child: IconButton(
                 onPressed: () {

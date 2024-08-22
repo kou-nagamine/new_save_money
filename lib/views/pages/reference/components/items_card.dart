@@ -18,7 +18,7 @@ class ItemsCard extends StatelessWidget {
         children: [
           Icon(
             Icons.local_drink,
-            size: 150,
+            size: 200,
             color: Colors.blue[400],
           ),
           SizedBox(height: 20),
@@ -26,6 +26,7 @@ class ItemsCard extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  SizedBox(width: 40),
                   Expanded(
                     child: Text(
                       '飲み物',
