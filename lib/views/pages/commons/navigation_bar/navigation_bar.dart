@@ -1,6 +1,7 @@
 //packages
 import 'package:flutter/material.dart';
 import 'package:iconoir_flutter/iconoir_flutter.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 //dart
 import 'dart:ui';
@@ -9,7 +10,9 @@ import 'dart:ui';
 import '/views/pages/setting/setting_page.dart';
 import '/views/pages/home/home_page.dart';
 import '/views/pages/calculator/calculator_page.dart';
-import '/views/pages/topic/topic_page.dart';
+//import '/views/pages/topic/topic_page.dart';
+
+
 
 class CommonNavigationBar extends StatelessWidget {
   final int initialIndex;
@@ -48,23 +51,31 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   final _screens = [
     HomePage(),
-    CalculatorPage(),
-    TopicPage(),
+    null,
+    SettingPage(),
   ];
 
-  void _onItemTapped(int index) {
+// BottomNavigationBar cululatorのタップ時の処理
+void _onItemTapped(int index) {
+  if (index == 1) {
+    showCupertinoModalBottomSheet( // モーダルシートで表示
+      context: context,
+      expand: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CalculatorPage(),
+    );
+  } else {
     setState(() {
       selectedIndex = index;
-      // 記録ページ（index == 1）の場合はBottomNavigationBarを非表示にする
-      isBottomNavVisible = index != 1;
     });
   }
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: _screens[selectedIndex],
+      body: selectedIndex == 1 ? Container() : _screens[selectedIndex],
       bottomNavigationBar: isBottomNavVisible
           ? ClipRect(
               child: BackdropFilter(
@@ -82,32 +93,32 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     onTap: _onItemTapped,
                     items: const <BottomNavigationBarItem>[
                       BottomNavigationBarItem(
-                        icon: Wallet(width: 40),
-                        activeIcon: Wallet(width: 40, color: Colors.blue),
+                        icon: Wallet(width: 30),
+                        activeIcon: Wallet(width: 30, color: Colors.blue),
                         label: 'おかね',
                         tooltip: "This is a Home Page",
                       ),
                       BottomNavigationBarItem(
-                        icon: PlusCircle(width: 40),
-                        activeIcon: PlusCircle(width: 40, color: Colors.blue),
+                        icon: PlusCircle(width: 30),
+                        activeIcon: PlusCircle(width: 30, color: Colors.blue),
                         label: '記録',
                         tooltip: "This is a History Page",
                       ),
                       BottomNavigationBarItem(
-                        icon: FavouriteBook(width: 40),
-                        activeIcon: FavouriteBook(width: 40, color: Colors.blue),
+                        icon: FavouriteBook(width: 30),
+                        activeIcon: FavouriteBook(width: 30, color: Colors.blue),
                         label: 'トピック',
                         tooltip: "This is a Catalog Page",
                       ),
                     ],
                     type: BottomNavigationBarType.fixed,
                     iconSize: 18,
-                    selectedFontSize: 14,
-                    selectedIconTheme: IconThemeData(size: 40, color: Colors.blue),
+                    selectedFontSize: 10,
+                    selectedIconTheme: IconThemeData(size: 30, color: Colors.blue),
                     selectedLabelStyle: TextStyle(color: Colors.blue),
                     selectedItemColor: Colors.blue,
-                    unselectedFontSize: 14,
-                    unselectedIconTheme: IconThemeData(size: 40, color: Colors.black.withOpacity(0.7)),
+                    unselectedFontSize: 10,
+                    unselectedIconTheme: IconThemeData(size: 30, color: Colors.black.withOpacity(0.7)),
                     unselectedItemColor: Colors.black,
                   ),
                 ),

@@ -103,8 +103,8 @@ class HomePage extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(60),
-                  topRight: Radius.circular(60),
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
                 ),
                 boxShadow: [
                   BoxShadow(
