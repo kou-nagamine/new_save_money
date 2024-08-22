@@ -50,8 +50,8 @@ class _ReferencePageState extends State<ReferencePage> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(// 画面上部のみ角丸にする
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
+                    topLeft: Radius.circular(60),
+                    topRight: Radius.circular(60),
                   ),
                   boxShadow: [
                     BoxShadow(
