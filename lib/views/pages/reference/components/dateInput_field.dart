@@ -21,7 +21,7 @@ class _DateInputFieldState extends State<DateInputField> {
     _selectedDate = widget.initialDate ?? DateTime(2024, 1, 1);// <- ここ
     _controller.text = "${_selectedDate!.month.toString().padLeft(2, '0')}/${_selectedDate!.day.toString().padLeft(2, '0')}/${_selectedDate!.year}";
   }
-
+  // 日付選択
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -29,11 +29,12 @@ class _DateInputFieldState extends State<DateInputField> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
+    // 日付が選択された場合、日付を更新
     if (pickedDate != null && pickedDate != _selectedDate) {
       setState(() {
-        _selectedDate = pickedDate;
-        _controller.text = "${_selectedDate!.month.toString().padLeft(2, '0')}/${_selectedDate!.day.toString().padLeft(2, '0')}/${_selectedDate!.year}";
-        widget.onDateChanged(_selectedDate); // Notify the parent
+        _selectedDate = pickedDate;// 選択された日付をセット
+        _controller.text = "${_selectedDate!.month.toString().padLeft(2, '0')}/${_selectedDate!.day.toString().padLeft(2, '0')}/${_selectedDate!.year}";// 日付をテキストフィールドに表示
+        widget.onDateChanged(_selectedDate); // 親ウィジェットに日付を通知
       });
     }
   }
