@@ -25,9 +25,9 @@ class _DateInputFieldState extends State<DateInputField> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: _selectedDate!,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      initialDate: _selectedDate!, // 初期表示の日付
+      firstDate: DateTime(2000), // 選択可能な最小の日付
+      lastDate: DateTime(2101), // 選択可能な最大の日付
     );
     // 日付が選択された場合、日付を更新
     if (pickedDate != null && pickedDate != _selectedDate) {
@@ -51,7 +51,7 @@ class _DateInputFieldState extends State<DateInputField> {
             color: Colors.black,
           ),
           suffixIcon: IconButton(
-            icon: Icon(Icons.calendar_today),
+            icon: Icon(Icons.calendar_today),// カレンダーアイコン
             onPressed: () => _selectDate(context),
           ),
           border: OutlineInputBorder(
@@ -59,7 +59,7 @@ class _DateInputFieldState extends State<DateInputField> {
             borderSide: BorderSide(color: Colors.black),
           ),
         ),
-        readOnly: true,
+        readOnly: true,// テキストフィールドを編集不可にする
         onTap: () => _selectDate(context),
       ),
     );
