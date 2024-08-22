@@ -7,10 +7,10 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'dart:ui';
 
 //pages
-import '/views/pages/setting/setting_page.dart';
+//import '/views/pages/setting/setting_page.dart';
 import '/views/pages/home/home_page.dart';
 import '/views/pages/calculator/calculator_page.dart';
-//import '/views/pages/topic/topic_page.dart';
+import '/views/pages/topic/topic_page.dart';
 
 
 
@@ -47,7 +47,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final _screens = [
     HomePage(),
     null,
-    SettingPage(),
+    TopicPage(),
   ];
 
 // BottomNavigationBar cululatorのタップ時の処理
