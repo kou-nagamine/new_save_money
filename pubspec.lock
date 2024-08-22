@@ -241,14 +241,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.6"
-  draggable_home:
-    dependency: "direct main"
-    description:
-      name: draggable_home
-      sha256: c89a1faa702712b2db4ef5c6615b6a7819aa0aa0b03c0ba79c7e17d042880b2a
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.5"
   equatable:
     dependency: transitive
     description:

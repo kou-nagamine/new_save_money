@@ -18,7 +18,12 @@ class CommonNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyStatefulWidget(initialIndex: initialIndex);
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: const Color(0xFF0085FF),
+      ),
+      home: MyStatefulWidget(initialIndex: initialIndex),
+    );
   }
 }
 

@@ -2,8 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'all_price.g.dart';
 
-
-@Riverpod(keepAlive: true)
+@riverpod
 class AllPriceNotifier extends _$AllPriceNotifier{
   @override
   int build() {
@@ -11,8 +10,6 @@ class AllPriceNotifier extends _$AllPriceNotifier{
   }
 
   void updateAllPrice(int price) {
-    if(price != 0){
-      state += price;
-    } 
+    state += price;
   }
 }

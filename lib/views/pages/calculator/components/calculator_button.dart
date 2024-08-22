@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
+
 //riverpods
 import '../providers/add_price.dart';
 import '../providers/charge_riverpod.dart';
@@ -35,6 +37,10 @@ class CalculatorButton extends ConsumerWidget {
           onPressed: (){
             //電卓の機能を全て取得
             final chargeNotifier = ref.read(chargeRiverpodNotifierProvider.notifier);
+            //曜日別グラフの値に変更加える機能を全て取得
+            //final addDayNotifier = ref.watch(addDayRiverpodNotifierProvider.notifier); 
+            //weeklyグラフの値に変更を加える
+            final addWeeklyNotifier = ref.watch(addPriceRiverpodNotifierProvider.notifier);
 
             //buttonTextの値ごとの処理を記載
             if (RegExp(r'^\d$').hasMatch(buttonText)) {
@@ -45,19 +51,18 @@ class CalculatorButton extends ConsumerWidget {
               chargeNotifier.cancelCharge();
             } else if (buttonText == '税'){
               chargeNotifier.tax_include();
-            } else if (buttonText == '→' && int.parse(chageState) != 0){
+            } else if (buttonText == '→'){
+              //第一引数で曜日を管理（月:0,火:1,水:2...）
+              //addDayNotifier.addUpdateDay(1,int.parse(chageState));
+              //addWeeklyNotifier.weeklyAddUpdate(int.parse(chageState));
               chargeNotifier.cancelCharge();
               Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CommonNavigationBar()),
               );
-              // 全体の値に追加
-              final allNotifier = ref.read(allPriceNotifierProvider.notifier);
-              allNotifier.updateAllPrice(int.parse(chageState));
-
-              // 履歴に値を追加
-              final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
-              userLogNotifier.updateState({
+              final allnotifier = ref.read(allPriceNotifierProvider.notifier);
+              allnotifier.updateAllPrice(int.parse(chageState));
+              ref.read(userLogNotifierProvider.notifier).updateState({
                 'categoryName': '食事',
                 'categoryIcon': 'iconoir:food',
                 'price': int.parse(chageState),
