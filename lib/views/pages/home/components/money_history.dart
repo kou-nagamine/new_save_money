@@ -1,9 +1,7 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/user_log.dart';
 
-class MoneyHistoryList extends ConsumerWidget {
+class MoneyHistoryList extends StatelessWidget {
   final List<Map<String, dynamic>> historyData;
   MoneyHistoryList({required this.historyData});
 
@@ -22,9 +20,7 @@ class MoneyHistoryList extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(userLogNotifierProvider);
-
+  Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: historyData.length,
       itemBuilder: (context, index) {
