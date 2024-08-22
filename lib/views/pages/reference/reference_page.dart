@@ -49,7 +49,10 @@ class _ReferencePageState extends State<ReferencePage> {
                 padding: EdgeInsets.all(40),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(60),
+                  borderRadius: BorderRadius.only(// 画面上部のみ角丸にする
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.3),
@@ -73,7 +76,7 @@ class _ReferencePageState extends State<ReferencePage> {
                       initialDate: _selectedDate,
                       onDateChanged: (date) {
                         setState(() {
-                          _selectedDate = date;
+                          _selectedDate = date; // デフォルトを2024年1月1日に設定。個々の値はデータが格納された日付にする予定
                         });
                       },
                     ),
@@ -81,7 +84,7 @@ class _ReferencePageState extends State<ReferencePage> {
                       initialMemo: _memo,
                       onMemoChanged: (value) {
                         setState(() {
-                          _memo = value.isEmpty ? '水筒を持参した分' : value;
+                          _memo = value.isEmpty ? '水筒を持参した分' : value; // メモが空の場合はデフォルトの値を設定
                         });
                       },
                     ),
