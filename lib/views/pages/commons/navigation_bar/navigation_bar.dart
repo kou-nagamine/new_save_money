@@ -55,27 +55,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     SettingPage(),
   ];
 
-
-  void _onItemTapped(int index) {
+// BottomNavigationBar cululatorのタップ時の処理
+void _onItemTapped(int index) {
+  if (index == 1) {
+    showCupertinoModalBottomSheet( // モーダルシートで表示
+      context: context,
+      expand: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CalculatorPage(),
+    );
+  } else {
     setState(() {
-      if(index == 1) {
-        _showModalBottomSheet();
-      } else{
-        selectedIndex = index;
-        // 記録ページ（index == 1）の場合はBottomNavigationBarを非表示にする
-       isBottomNavVisible = index != 1;
-      }
+      selectedIndex = index;
     });
   }
-
-  void _showModalBottomSheet() {
-    showCupertinoModalBottomSheet(
-     expand: true,
-     context: context,
-     backgroundColor: Colors.transparent,
-     builder: (context) => CalculatorPage(),
-    );
-  }
+}
 
   @override
   Widget build(BuildContext context) {
