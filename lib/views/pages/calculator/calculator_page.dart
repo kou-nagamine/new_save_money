@@ -1,21 +1,20 @@
 //packages
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 
 //components
 import 'components/calculator.dart';
 import 'components/charge_card.dart';
 
-class CalculatorPage extends StatefulWidget {
+
+
+class CalculatorPage extends ConsumerWidget {
   const CalculatorPage({super.key});
-
   @override
-  _CalculatorPageState createState() => _CalculatorPageState();
-}
-
-class _CalculatorPageState extends State<CalculatorPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
+    
     return Scaffold(
       body: Stack(
         children: <Widget>[

@@ -1,12 +1,16 @@
+import 'dart:developer';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_log.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class UserLogNotifier extends _$UserLogNotifier {
   // 初期状態として空のリストを返す
   @override
   List<Map<String, dynamic>> build() {
+    //このプロバイダーがDisposeされた時に出力される
+    ref.onDispose((){log('Dispose');});
     return [];
   }
 
