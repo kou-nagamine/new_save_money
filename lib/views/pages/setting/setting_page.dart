@@ -1,8 +1,8 @@
 //packages
 import 'package:flutter/material.dart';
 import "./components/record_card.dart";
-import "./components/custom-header.dart";
-import "components/switch-item.dart";
+import "components/custom_header.dart";
+import "components/switch_item.dart";
 import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 
 class SettingPage extends StatefulWidget {
