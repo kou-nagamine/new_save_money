@@ -1,6 +1,7 @@
 //packages
 import 'package:flutter/material.dart';
 import 'package:iconoir_flutter/iconoir_flutter.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 //dart
 import 'dart:ui';
@@ -9,7 +10,9 @@ import 'dart:ui';
 import '/views/pages/setting/setting_page.dart';
 import '/views/pages/home/home_page.dart';
 import '/views/pages/calculator/calculator_page.dart';
-import '/views/pages/topic/topic_page.dart';
+//import '/views/pages/topic/topic_page.dart';
+
+
 
 class CommonNavigationBar extends StatelessWidget {
   final int initialIndex;
@@ -48,23 +51,31 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   final _screens = [
     HomePage(),
-    CalculatorPage(),
-    TopicPage(),
+    null,
+    SettingPage(),
   ];
 
-  void _onItemTapped(int index) {
+// BottomNavigationBar cululatorのタップ時の処理
+void _onItemTapped(int index) {
+  if (index == 1) {
+    showCupertinoModalBottomSheet( // モーダルシートで表示
+      context: context,
+      expand: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CalculatorPage(),
+    );
+  } else {
     setState(() {
       selectedIndex = index;
-      // 記録ページ（index == 1）の場合はBottomNavigationBarを非表示にする
-      isBottomNavVisible = index != 1;
     });
   }
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: _screens[selectedIndex],
+      body: selectedIndex == 1 ? Container() : _screens[selectedIndex],
       bottomNavigationBar: isBottomNavVisible
           ? ClipRect(
               child: BackdropFilter(
