@@ -23,13 +23,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color(0xFF0085FF),
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.light(),
         useMaterial3: true
       ),
-      darkTheme: ThemeData(
-        primaryColor: Color.fromARGB(255, 11, 12, 12),
-        useMaterial3: true
-      ),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark,
+      //   colorScheme: ColorScheme.dark(),
+      //   useMaterial3: true
+      // ),
       home:CommonNavigationBar(initialIndex: 0),
     );
   }

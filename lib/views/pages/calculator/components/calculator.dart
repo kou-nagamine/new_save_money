@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 
 //components
 import 'calculator_button.dart';
@@ -52,11 +53,7 @@ class _CalculatorState extends State<Calculator> {
 
     return Container(
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(60.0),
-          topRight: Radius.circular(60.0),
-        ),
-        color: Color.fromARGB(255, 234, 228, 228),
+        color: Color(0xffF1F1F1),
       ),
       width: size.width,
       height: size.height * 0.55,

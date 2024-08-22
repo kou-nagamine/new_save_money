@@ -9,6 +9,9 @@ import '../providers/all_price.dart';
 import '/views/pages/home/providers/user_log.dart';
 //import '../../../riverpods/add_day_riverpod.dart';
 
+//pages
+import './calculator.dart';
+
 //commons
 import '../../commons/navigation_bar/navigation_bar.dart';
 
@@ -58,7 +61,7 @@ class CalculatorButton extends ConsumerWidget {
               // 履歴に値を追加
               final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
               userLogNotifier.updateState({
-                'categoryName': '食事',
+                'categoryName': _labels[index],
                 'categoryIcon': 'iconoir:food',
                 'price': int.parse(chageState),
               });
@@ -67,6 +70,7 @@ class CalculatorButton extends ConsumerWidget {
           },
           //電卓ボタンのレイアウト
           style: ElevatedButton.styleFrom(
+            elevation: 0,
             padding: EdgeInsets.zero,
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
@@ -109,6 +113,7 @@ class BigCalculatorButton extends ConsumerWidget {
             chargeNotifier.addNumber('$buttonText');
           },
           style: ElevatedButton.styleFrom(
+            elevation: 0,
             alignment: Alignment.center,
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
