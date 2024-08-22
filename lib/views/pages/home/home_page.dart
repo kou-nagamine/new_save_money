@@ -24,6 +24,7 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context , WidgetRef ref) {
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);
+    print('$historyData');
     return Scaffold(
       body: Stack(
         children: [

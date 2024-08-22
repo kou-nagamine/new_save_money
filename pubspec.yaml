@@ -45,6 +45,7 @@ dependencies:
   carousel_slider:
   smooth_page_indicator:
   buttons_tabbar: ^1.3.13
+  draggable_home:
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +80,7 @@ flutter:
     - assets/images/jtb.png
     - assets/images/kinki_tourist.png
     - assets/images/rakuten_travel.png
+    - assets/images/meisi.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -21,11 +21,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(useMaterial3: true),
-      darkTheme: ThemeData.dark(useMaterial3: true,),
-      home: CommonNavigationBar(),
+      theme: ThemeData(
+        primaryColor: const Color(0xFF0085FF),
+        useMaterial3: true
+      ),
+      darkTheme: ThemeData(
+        primaryColor: Color.fromARGB(255, 11, 12, 12),
+        useMaterial3: true
+      ),
+      home:CommonNavigationBar(initialIndex: 0),
     );
   }
 }
