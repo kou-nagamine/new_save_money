@@ -7,7 +7,7 @@ class MoneyHistoryList extends ConsumerWidget {
   final List<Map<String, dynamic>> historyData;
   MoneyHistoryList({required this.historyData});
 
-// アイコン名を文字列からIconDataに変換するメソッド
+  // アイコン名を文字列からIconDataに変換するメソッド
   IconData _getIconForCategory(String categoryIcon) {
     switch (categoryIcon) {
       case 'food':
@@ -23,14 +23,19 @@ class MoneyHistoryList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(userLogNotifierProvider);
+    ref.watch(userLogNotifierProvider);// Riverpodのプロバイダを監視し、状態の変更を反映
 
     return ListView.builder(
-      itemCount: historyData.length,
+      itemCount: historyData.length,// 履歴データの数だけリストアイテムを作成
       itemBuilder: (context, index) {
-        final item = historyData[index];
-        final String categoryName = item['categoryName'];
-        final String categoryIcon = item['categoryIcon'];
+        final item = historyData[index]; // 各アイテムのデータを取得
+        
+        // `categoryName` から各要素を取り出す
+        final Set<dynamic> categoryNameSet = item['categoryName'];
+        IconData categoryIcon = categoryNameSet.firstWhere((element) => element is IconData);// アイコンデータを取得
+        String categoryName = categoryNameSet.firstWhere((element) => element is String);// カテゴリ名を取得
+        Color color = categoryNameSet.firstWhere((element) => element is Color); // 色データを取得
+        
         final int price = item['price'];
 
         return Padding(
@@ -39,8 +44,8 @@ class MoneyHistoryList extends ConsumerWidget {
             title: Text(
               categoryName,
               style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
             leading: Container(
@@ -50,20 +55,21 @@ class MoneyHistoryList extends ConsumerWidget {
                 color: Colors.grey[200],
                 shape: BoxShape.circle,
               ),
-            child: Icon(
-                _getIconForCategory(categoryIcon),
+              child: Icon(
+                categoryIcon,
                 size: 40,
-                color: Colors.black,
+                color: color,
               ),
             ),
-            trailing: Text("￥$price",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF2CB13C)
+            trailing: Text(
+              "￥$price",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF2CB13C),
               ),
-           ),  
-          )
+            ),
+          ),
         );
       },
     );

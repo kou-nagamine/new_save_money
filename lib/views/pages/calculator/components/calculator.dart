@@ -33,6 +33,14 @@ class _CalculatorState extends State<Calculator> {
     Colors.lightGreen,
     Colors.green,
   ];
+  //デフォルトカテゴリデータ
+  List<dynamic> categoryData = [
+    {
+      '飲み物',
+      Icons.local_drink,
+      Colors.blue,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +55,14 @@ class _CalculatorState extends State<Calculator> {
     
     //00（通常の２倍のサイズのbuttom）が含まれる行
     final List<Widget> specialLines = [
-      const CalculatorButton(buttonText:'0'),const BigCalculatorButton(buttonText: '00',),const CalculatorButton(buttonText:'→')
+      const CalculatorButton(buttonText:'0'),BigCalculatorButton(buttonText: '00',),CalculatorButton(buttonText:'→', categoryData: categoryData),
     ];
 
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(60.0),
-          topRight: Radius.circular(60.0),
+          topLeft: Radius.circular(40.0),
+          topRight: Radius.circular(40.0),
         ),
         color: Color.fromARGB(255, 234, 228, 228),
       ),
@@ -76,6 +84,13 @@ class _CalculatorState extends State<Calculator> {
                     onTap: () {
                       setState(() {
                         selectedIndex = index;
+                        categoryData = [
+                          {
+                            _labels[index],
+                            _icons[index],
+                            _colors[index],
+                          },
+                        ];
                       });
                     },
                     child: Padding(
