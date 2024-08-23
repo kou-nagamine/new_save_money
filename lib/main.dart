@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '/views/pages/topic/components/topic_content.dart';
+
 //commons
 import 'views/pages/commons/navigation_bar/navigation_bar.dart';
 
@@ -32,7 +34,8 @@ class MyApp extends StatelessWidget {
       //   colorScheme: ColorScheme.dark(),
       //   useMaterial3: true
       // ),
-      home:CommonNavigationBar(initialIndex: 0),
+      home:TopicContent(),
+      //home:CommonNavigationBar(initialIndex: 0),
     );
   }
 }
