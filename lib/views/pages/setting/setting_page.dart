@@ -76,7 +76,7 @@ void _launchURL(String url) async {
                       Row(
                         children: [
                           iconoir.BellNotification(
-                            width: 20,
+                            width: 30,
                             color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
                               : Colors.black,
@@ -104,7 +104,7 @@ void _launchURL(String url) async {
                       Row(
                         children: [
                           iconoir.SmartphoneDevice(
-                            width: 20,
+                            width: 30,
                             color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
                               : Colors.black,
@@ -142,13 +142,16 @@ void _launchURL(String url) async {
                     child: Row(
                       children: [
                         iconoir.InfoCircle(
-                          width: 20,
+                          width: 30,
                           color: Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black,
                         ),
                         Padding(
-                          child: Text('このアプリについて',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,),
+                          child: Text('このアプリについて',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,),
                         ) , 
                         padding: EdgeInsets.only(left: 20)),
                       ],
@@ -163,7 +166,7 @@ void _launchURL(String url) async {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         iconoir.SendDiagonal(
-                          width: 20,
+                          width: 30,
                           color: Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black,

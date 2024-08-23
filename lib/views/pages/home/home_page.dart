@@ -147,7 +147,7 @@ class HomePage extends ConsumerWidget {
                     child: historyData.isEmpty
                     ? const Padding(
                       padding:  EdgeInsets.only(top: 40),
-                      child: Text('履歴がありません'))
+                      child: Text('我慢した金額を入力しよう！'))
                     : MoneyHistoryList(historyData: historyData),
                   ),
                 ],
