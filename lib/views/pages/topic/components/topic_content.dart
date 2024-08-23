@@ -16,8 +16,8 @@ class TopicContent extends StatelessWidget{
           child: Text('ああああああああああああああああああああああああああああああああああああ'),
         ),
       ],
-      fullyStretchable: true, // Allows the header to fully stretch
-      expandedBody: Center(  // Optional content to show when the header is fully expanded
+      fullyStretchable: true, 
+      expandedBody: Center(  
         child: Icon(Icons.settings, size: 30),
       ),
       backgroundColor: Colors.white,
