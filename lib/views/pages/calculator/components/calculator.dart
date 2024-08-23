@@ -117,9 +117,11 @@ class _CalculatorState extends State<Calculator> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    _icons[index],
-                                    color: _colors[index]
+                                  Expanded(
+                                    child: Icon(
+                                      _icons[index],
+                                      color: _colors[index]
+                                    ),
                                   ),
                                   const SizedBox(width: 4.0),
                                   Text(
@@ -128,7 +130,7 @@ class _CalculatorState extends State<Calculator> {
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  ),
+                                  )
                                 ],
                               ),
                             ),
