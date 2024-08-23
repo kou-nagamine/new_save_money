@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 
 //components
 import 'calculator_button.dart';
 
-class Calculator extends StatefulWidget {
+//riverpods
+import '../providers/charge_riverpod.dart';
+
+class Calculator extends ConsumerStatefulWidget {
   const Calculator({super.key});
 
   @override
   _CalculatorState createState() => _CalculatorState();
 }
 
-class _CalculatorState extends State<Calculator> {
+class _CalculatorState extends ConsumerState<Calculator> {
   int selectedIndex = 1; // 初期インデックスを0に設定
 
   final List<IconData> _icons = [
@@ -34,7 +38,8 @@ class _CalculatorState extends State<Calculator> {
     Colors.lightGreen,
     Colors.green,
   ];
-  //デフォルトカテゴリデータ
+  
+  // デフォルトカテゴリデータ
   List<dynamic> categoryData = [
     {
       '飲み物',
@@ -47,16 +52,32 @@ class _CalculatorState extends State<Calculator> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    //通常の行
+    // 変更された状態を取得
+    final chageState = ref.watch(chargeRiverpodNotifierProvider);
+    final int parsedChageState = int.parse(chageState);
+
+    // 通常の行
     final List<List<Widget>> normalLines = [
-      [const CalculatorButton(buttonText:'1'),const CalculatorButton(buttonText:'2'),const CalculatorButton(buttonText:'3'),const CalculatorButton(buttonText:'del')],
-      [const CalculatorButton(buttonText:'4'),const CalculatorButton(buttonText:'5'),const CalculatorButton(buttonText:'6'),const CalculatorButton(buttonText:'C')],
-      [const CalculatorButton(buttonText:'7'),const CalculatorButton(buttonText:'8'),const CalculatorButton(buttonText:'9'),const CalculatorButton(buttonText:'税')],
+      [const CalculatorButton(buttonText: '1'), const CalculatorButton(buttonText: '2'), const CalculatorButton(buttonText: '3'), const CalculatorButton(buttonText: 'del')],
+      [const CalculatorButton(buttonText: '4'), const CalculatorButton(buttonText: '5'), const CalculatorButton(buttonText: '6'), const CalculatorButton(buttonText: 'C')],
+      [const CalculatorButton(buttonText: '7'), const CalculatorButton(buttonText: '8'), const CalculatorButton(buttonText: '9'), const CalculatorButton(buttonText: '税')],
     ];
-    
-    //00（通常の２倍のサイズのbuttom）が含まれる行
+
+    // 00（通常の2倍のサイズのbutton）が含まれる行
     final List<Widget> specialLines = [
-      const CalculatorButton(buttonText:'0'),BigCalculatorButton(buttonText: '00',),CalculatorButton(buttonText:'→', categoryData: categoryData),
+      CalculatorButton(
+        buttonText: '0',
+        isEnabled: parsedChageState >= 1 ,
+      ),
+      BigCalculatorButton(
+        buttonText: '00',
+        isEnabled: parsedChageState >= 1,
+      ),
+      CalculatorButton(
+        buttonText: '→',
+        categoryData: categoryData,
+        isEnabled: parsedChageState >= 1,
+      ),
     ];
 
     return Container(
@@ -70,10 +91,11 @@ class _CalculatorState extends State<Calculator> {
       width: size.width,
       height: size.height * 0.55,
       child: Padding(
-        padding: EdgeInsets.only( bottom: size.height * 0.02, left: size.width * 0.03, right: size.width * 0.03),
+        padding: EdgeInsets.only(
+            bottom: size.height * 0.02, left: size.width * 0.03, right: size.width * 0.03),
         child: Column(
           children: <Widget>[
-            //ここに食べ物ののドロップナビゲーションを追加、高さが超えるときは上のpaddingとかいじっても良いですー
+            // ここに食べ物ののドロップナビゲーションを追加
             SizedBox(
               height: size.height * 0.07,
               child: ListView.builder(
@@ -96,52 +118,44 @@ class _CalculatorState extends State<Calculator> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
-                      child:
-                        SizedBox(
-                          width : size.width * 0.2, 
-                          height: size.height * 0.04, 
-                          child:Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: selectedIndex == index
-                                  ? _colors[index].withOpacity(0.1)
-                                  : null,
-                              borderRadius: BorderRadius.circular(50.0),
-                              border: Border.all(
-                                color: _colors[index]
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                              child:Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    _icons[index],
-                                    color: _colors[index]
+                      child: SizedBox(
+                        width: size.width * 0.2,
+                        height: size.height * 0.04,
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: selectedIndex == index
+                                ? _colors[index].withOpacity(0.1)
+                                : null,
+                            borderRadius: BorderRadius.circular(50.0),
+                            border: Border.all(color: _colors[index]),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(_icons[index], color: _colors[index]),
+                                const SizedBox(width: 4.0),
+                                Text(
+                                  _labels[index],
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  const SizedBox(width: 4.0),
-                                  Text(
-                                    _labels[index],
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    );
-                  },
-                )
+                    ),
+                  );
+                },
               ),
+            ),
             Table(
-              //border: TableBorder.all(),
-              //列数を4列に指定
               columnWidths: const <int, TableColumnWidth>{
                 0: IntrinsicColumnWidth(),
                 1: IntrinsicColumnWidth(),
@@ -149,29 +163,23 @@ class _CalculatorState extends State<Calculator> {
                 3: IntrinsicColumnWidth(),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              //各行を配置
               children: <TableRow>[
                 ...normalLines.map((row) => TableRow(children: row)),
-              ]
+              ],
             ),
             Table(
-              //border: TableBorder.all(),
-              //列数を3列に指定
               columnWidths: const <int, TableColumnWidth>{
                 0: IntrinsicColumnWidth(),
                 1: IntrinsicColumnWidth(),
                 2: IntrinsicColumnWidth(),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              //一行を追加
-              children:  <TableRow>[
-                TableRow(
-                  children: specialLines.map((button) => button).toList(),
-                ),
+              children: <TableRow>[
+                TableRow(children: specialLines.map((button) => button).toList()),
               ],
             ),
           ],
-        )  
+        ),
       ),
     );
   }
