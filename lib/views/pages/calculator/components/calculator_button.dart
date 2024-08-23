@@ -16,8 +16,9 @@ import './calculator.dart';
 import '../../commons/navigation_bar/navigation_bar.dart';
 
 class CalculatorButton extends ConsumerWidget {
-  const CalculatorButton({super.key, required this.buttonText});
+  const CalculatorButton({super.key, required this.buttonText, this.categoryData});
   final String buttonText;
+  final List<dynamic>? categoryData;
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,8 +62,9 @@ class CalculatorButton extends ConsumerWidget {
               // 履歴に値を追加
               final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
               userLogNotifier.updateState({
-                'categoryName': _labels[index],
-                'categoryIcon': 'iconoir:food',
+                'categoryName': categoryData != null && categoryData!.isNotEmpty ? categoryData![0] : '飲み物',
+                'categoryIcon': categoryData != null && categoryData!.length > 1 ? categoryData![1] : Icons.local_drink,
+                'color': categoryData != null && categoryData!.length > 2 ? categoryData![2] : Colors.black,
                 'price': int.parse(chageState),
               });
               print("chageState: $chageState");
