@@ -102,7 +102,9 @@ class HomePage extends ConsumerWidget {
               height: MediaQuery.of(context).size.height * 0.73,
               padding: EdgeInsets.all(40),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black
+                            : Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(40),
                   topRight: Radius.circular(40),

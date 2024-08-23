@@ -51,7 +51,11 @@ class _SettingPageState extends State<SettingPage> {
                   children: [
                     Row(
                       children: [
-                        iconoir.BellNotification(),
+                        iconoir.BellNotification(
+                          color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                        ),
                         Padding(child: Text(
                             '通知をONにする',
                             style: TextStyle(
@@ -71,7 +75,11 @@ class _SettingPageState extends State<SettingPage> {
                   children: [
                     Row(
                       children: [
-                        iconoir.SmartphoneDevice(),
+                        iconoir.SmartphoneDevice(
+                          color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                        ),
                         Padding(child: Text(
                           '入出金をデフォルトにする',
                           style: TextStyle(
@@ -87,7 +95,11 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 Row(
                   children: [
-                    iconoir.InfoCircle(),
+                    iconoir.InfoCircle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                    ),
                     Padding(
                       child: Text('このアプリについて',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,),
                     ) , 
@@ -97,7 +109,11 @@ class _SettingPageState extends State<SettingPage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    iconoir.SendDiagonal(),
+                    iconoir.SendDiagonal(
+                      color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                    ),
                     Padding(
                       child: Text('フィードバックをおくる',
                       style: TextStyle(

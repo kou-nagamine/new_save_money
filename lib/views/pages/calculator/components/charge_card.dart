@@ -23,54 +23,50 @@ class ChargeCard extends ConsumerWidget {
     return Container(
       height: size.height * 0.23,
       child: Card(
-        color: const Color.fromARGB(255, 8, 101, 177),
+        color: const Color(0xff0085FF),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
           children: [
             //矢印のアイコン
-            Container(
-              transform: Matrix4.rotationZ(270 * pi / 180),
-              transformAlignment: Alignment.center,
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CommonNavigationBar()),
-                  );
-                },
-                icon: Icon(
-                  Icons.arrow_upward,
-                  color:Colors.white,
-                  size: size.width * 0.12,
-                )
-              ),
-            ),
+            // Container(
+            //   transform: Matrix4.rotationZ(270 * pi / 180),
+            //   transformAlignment: Alignment.center,
+            //   child: IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => CommonNavigationBar()),
+            //       );
+            //     },
+            //     icon: Icon(
+            //       Icons.arrow_upward,
+            //       color:Colors.white,
+            //       size: size.width * 0.12,
+            //     )
+            //   ),
+            // ),
             Expanded(
-              child: Stack(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, // 縦方向に中央揃え
+                crossAxisAlignment: CrossAxisAlignment.center, // 横方向に中央揃え
                 children: [
                   //我慢した金額の表示
-                  Align(
-                    alignment: const Alignment(-0.4,-0.6),
-                    child:Text(
+                  Text(
                     '我慢した金額は ？',
                       style:TextStyle(
                         fontSize: size.width * 0.045,
                         color: Colors.white
                       ),
                     ),
-                  ),
-                  //金額の表示(chargeProviderの表示)
-                  Align(
-                    alignment: const Alignment(-0.3,0.2),
-                    child:Text(
-                      charge,
-                      style: TextStyle(
-                        fontSize: size.width * 0.17,
-                        color: Colors.white
-                      )
-                    ),
+                    //金額の表示(chargeProviderの表示)
+                  Text(
+                    charge,
+                    style: TextStyle(
+                      fontSize: size.width * 0.17,
+                      color: Colors.white
+                    )
                   ),
                 ],
               ),

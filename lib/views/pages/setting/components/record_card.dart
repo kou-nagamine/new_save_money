@@ -15,7 +15,9 @@ class RecordCard extends StatelessWidget {
           margin: EdgeInsets.only(top:20),
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.dark
+                            ? Color(0xFF131313)
+                            : Colors.white,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(

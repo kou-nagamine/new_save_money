@@ -9,6 +9,9 @@ import '../providers/all_price.dart';
 import '/views/pages/home/providers/user_log.dart';
 //import '../../../riverpods/add_day_riverpod.dart';
 
+//pages
+import './calculator.dart';
+
 //commons
 import '../../commons/navigation_bar/navigation_bar.dart';
 
@@ -69,6 +72,7 @@ class CalculatorButton extends ConsumerWidget {
           },
           //電卓ボタンのレイアウト
           style: ElevatedButton.styleFrom(
+            elevation: 0,
             padding: EdgeInsets.zero,
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
@@ -111,6 +115,7 @@ class BigCalculatorButton extends ConsumerWidget {
             chargeNotifier.addNumber('$buttonText');
           },
           style: ElevatedButton.styleFrom(
+            elevation: 0,
             alignment: Alignment.center,
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
