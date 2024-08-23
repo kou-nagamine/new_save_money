@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
       //   colorScheme: ColorScheme.dark(),
       //   useMaterial3: true
       // ),
-      home:TopicContent(),
-      //home:CommonNavigationBar(initialIndex: 0),
+      //home:TopicContent(),
+      home:CommonNavigationBar(initialIndex: 0),
     );
   }
 }
