@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:new_save_money/views/pages/reference/reference_page.dart';
+
 class NomalCard extends StatelessWidget {
   const NomalCard({super.key});
 
@@ -11,7 +13,10 @@ class NomalCard extends StatelessWidget {
         color: Colors.transparent,  // Materialの背景色を透明に設定
         child: InkWell(
           onTap: () {
-            // タップされた時の処理
+             Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ReferencePage()),
+              );
           },
           child: SizedBox(
             width: 100,  // 幅を変更
