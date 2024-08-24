@@ -82,10 +82,10 @@ class _CalculatorState extends ConsumerState<Calculator> {
 
     return Container(
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(40.0),
-          topRight: Radius.circular(40.0),
-        ),
+        // borderRadius: BorderRadius.only(
+        //   topLeft: Radius.circular(40.0),
+        //   topRight: Radius.circular(40.0),
+        // ),
         color: Color.fromARGB(255, 234, 228, 228),
       ),
       width: size.width,
@@ -96,64 +96,66 @@ class _CalculatorState extends ConsumerState<Calculator> {
         child: Column(
           children: <Widget>[
             // ここに食べ物ののドロップナビゲーションを追加
-            SizedBox(
-              height: size.height * 0.07,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _icons.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                        categoryData = [
-                          {
-                            _labels[index],
-                            _icons[index],
-                            _colors[index],
-                          },
-                        ];
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
-                      child: SizedBox(
-                        width: size.width * 0.2,
-                        height: size.height * 0.04,
-                        child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: selectedIndex == index
-                                ? _colors[index].withOpacity(0.1)
-                                : null,
-                            borderRadius: BorderRadius.circular(50.0),
-                            border: Border.all(color: _colors[index]),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(_icons[index], color: _colors[index]),
-                                const SizedBox(width: 4.0),
-                                Text(
-                                  _labels[index],
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
+            Flexible(
+              child: SizedBox(
+                height: size.height * 0.07,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _icons.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = index;
+                          categoryData = [
+                            {
+                              _labels[index],
+                              _icons[index],
+                              _colors[index],
+                            },
+                          ];
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+                        child: SizedBox(
+                          width: size.width * 0.25,
+                          height: size.height * 0.04,
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: selectedIndex == index
+                                  ? _colors[index].withOpacity(0.1)
+                                  : null,
+                              borderRadius: BorderRadius.circular(50.0),
+                              border: Border.all(color: _colors[index]),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(_icons[index], color: _colors[index]),
+                                  const SizedBox(width: 4.0),
+                                  Text(
+                                    _labels[index],
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
+              )
             ),
             Table(
               columnWidths: const <int, TableColumnWidth>{
