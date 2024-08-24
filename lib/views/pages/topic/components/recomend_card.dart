@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:new_save_money/views/pages/topic/topic_page.dart';
+
+import '../components/topic_content.dart';
 
 class RecomendCard extends StatelessWidget {
   const RecomendCard({super.key});
@@ -13,8 +16,11 @@ class RecomendCard extends StatelessWidget {
           color: Colors.transparent,  // Materialの背景色を透明に設定
           child: InkWell(
             onTap: () {
-              // タップされた時の処理
-            },
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TopicContent()),
+              );
+          },
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
