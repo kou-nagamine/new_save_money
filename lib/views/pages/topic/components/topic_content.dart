@@ -11,7 +11,7 @@ class TopicContent extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       body: DraggableHome(
-        title: Text("引き換え", style: TextStyle(fontWeight: FontWeight.bold)),  
+        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),  
         headerWidget: headerWidget(context),  // Custom header
         headerExpandedHeight: 0.45,
         body: [
