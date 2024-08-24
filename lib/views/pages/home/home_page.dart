@@ -100,7 +100,7 @@ class HomePage extends ConsumerWidget {
             child: Container(
               width: MediaQuery.of(context).size.width * 1.0,
               height: MediaQuery.of(context).size.height * 0.73,
-              padding: EdgeInsets.all(40),
+              padding: EdgeInsets.all(30),
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
                             ? Colors.black
@@ -119,7 +119,7 @@ class HomePage extends ConsumerWidget {
                 ],
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,11 +143,12 @@ class HomePage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
                   Expanded(
-                    child: MoneyHistoryList(
-                      historyData: historyData,
-                    ),
+                    child: historyData.isEmpty
+                    ? const Padding(
+                      padding:  EdgeInsets.only(top: 40),
+                      child: Text('我慢した金額を入力しよう！'))
+                    : MoneyHistoryList(historyData: historyData),
                   ),
                 ],
               ),

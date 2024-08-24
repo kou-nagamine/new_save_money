@@ -46,6 +46,8 @@ dependencies:
   smooth_page_indicator:
   buttons_tabbar: ^1.3.13
   draggable_home:
+  flutter_markdown:
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
