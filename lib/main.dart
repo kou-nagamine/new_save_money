@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '/views/pages/topic/components/topic_content.dart';
 
@@ -28,7 +29,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
         colorScheme: ColorScheme.light(),
-        useMaterial3: true
+        useMaterial3: true,
+        textTheme: GoogleFonts.notoSansJpTextTheme(
+          Theme.of(context).textTheme,
+        ),
       ),
       // darkTheme: ThemeData(
       //   brightness: Brightness.dark,

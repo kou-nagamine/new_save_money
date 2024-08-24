@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 
-import 'package:new_save_money/views/pages/reference/components/dateInput_field.dart';
 
 class CustomForm extends StatefulWidget {
   const CustomForm({Key? key}) : super(key: key);
@@ -10,145 +10,96 @@ class CustomForm extends StatefulWidget {
 }
 
 class _CustomFormState extends State<CustomForm> {
-  DateTime? _selectedDate;
+  DateTime _selectedDate = DateTime.now();  // デフォルトで現在の日付
+  final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode1 = FocusNode();
+  final FocusNode _focusNode2 = FocusNode();
+  final FocusNode _focusNode3 = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // FocusNode1のリスナーを追加
+    _focusNode1.addListener(() {
+      if (_focusNode1.hasFocus) {
+        Scrollable.ensureVisible(
+          context,
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+
+    // FocusNode2のリスナーを追加
+    _focusNode2.addListener(() {
+      if (_focusNode2.hasFocus) {
+        Scrollable.ensureVisible(
+          context,
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+
+    // FocusNode3のリスナーを追加
+    _focusNode3.addListener(() {
+      if (_focusNode3.hasFocus) {
+        Scrollable.ensureVisible(
+          context,
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // ウィジェットが破棄される際にフォーカスノードも破棄
+    _focusNode1.dispose();
+    _focusNode2.dispose();
+    _focusNode3.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
-      child:  Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('タイトル',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Color(0xff5B5B5B),
-                  ),
-                ),
-                Expanded(
-                  child: TextField(
-                    textAlign: TextAlign.end, // テキストを右揃えにする
-                    decoration: InputDecoration(
-                      hintText: 'サークルの会食', 
-                      border: InputBorder.none, // 下線を消す
+    return SingleChildScrollView(
+       controller: _scrollController, // スクロールコントローラーを設定
+      child:  Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child:  Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('タイトル',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Color(0xff5B5B5B),
                     ),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                    textInputAction: TextInputAction.done, // キーボードに「完了」ボタンを表示
-                    onSubmitted: (_) {
-                      // キーボードの「完了」を押した時の処理
-                      FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
-                    },
                   ),
-                ),
-              ],
-            ),
-          ),
-           Container(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('金額',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Color(0xff5B5B5B),
-                  ),
-                ),
-                Expanded(
-                  child: TextField(
-                    textAlign: TextAlign.end, // テキストを右揃えにする
-                    decoration: InputDecoration(
-                      border: InputBorder.none, // 下線を消す
-                    ),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xffE82929)
-                    ),
-                    textInputAction: TextInputAction.done, // キーボードに「完了」ボタンを表示
-                    onSubmitted: (_) {
-                      // キーボードの「完了」を押した時の処理
-                      FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('日付',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Color(0xff5B5B5B),
-                  ),
-                ),
-                // Expanded(
-                // ),
-              ],
-            ),
-          ),
-          Container(
-            height: 150,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('メモ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Color(0xff5B5B5B),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0), // ボックスの内側にパディングを追加
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0), // 角を丸くする
-                      border: Border.all(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black, // 枠線の色
-                        width: 2.0, // 枠線の太さ
-                      ),
-                    ),
+                  Expanded(
                     child: TextField(
-                      maxLines: null, // テキストフィールド内で複数行に対応
-                      textAlignVertical: TextAlignVertical.top, // テキストをボックス内の上部に揃える
+                      focusNode: _focusNode1, // フォーカスノードを設定
+                      textAlign: TextAlign.end, // テキストを右揃えにする
                       decoration: InputDecoration(
-                        hintText: '', 
-                        border: InputBorder.none, // デフォルトの下線を消す
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white.withOpacity(0.3)
+                              : Colors.black.withOpacity(0.3)
+                        ),
+                        hintText: 'サークルの会食', 
+                        border: InputBorder.none, // 下線を消す
                       ),
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).brightness == Brightness.dark
                             ? Colors.white
@@ -161,46 +112,160 @@ class _CustomFormState extends State<CustomForm> {
                       },
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(vertical: 8.0),
-          //   child:  TextField(
-          //     controller: _memoController,
-          //     decoration: InputDecoration(
-          //       labelText: 'メモ',
-          //       hintText: 'サークルメンバーとの会食',
-          //     ),
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(vertical: 20),
-          //   child: Container(
-          //     margin: EdgeInsets.only(top: 0),
-          //     width: double.infinity,
-          //     child: ElevatedButton(
-          //       onPressed: () {
-          //         print('日付: $_selectedDate');
-          //         print('メモ: ${_controller.text}');
-          //       },
-          //       child: Text(
-          //         '完了',
-          //         style: TextStyle(
-          //             color: Colors.white,
-          //             fontWeight: FontWeight.bold,
-          //             fontSize: 20),
-          //       ),
-          //       style: ElevatedButton.styleFrom(
-          //         elevation: 0,
-          //         padding: EdgeInsets.only(top: 15, bottom: 15),
-          //         backgroundColor: Colors.blue,
-          //       ),
-          //     ),
-          //   ),
-          // )
-        ],
+            Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('金額',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Color(0xff5B5B5B),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      focusNode: _focusNode2, // フォーカスノードを設定
+                      textAlign: TextAlign.end, // テキストを右揃えにする
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white.withOpacity(0.3)
+                              : Colors.black.withOpacity(0.3)
+                        ),
+                        hintText: '700',
+                        border: InputBorder.none, // 下線を消す
+                      ),
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xffE82929)
+                      ),
+                      textInputAction: TextInputAction.done, // キーボードに「完了」ボタンを表示
+                      onSubmitted: (_) {
+                        // キーボードの「完了」を押した時の処理
+                        FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('日付',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Color(0xff5B5B5B),
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          DatePicker.showDatePicker(
+                            context,
+                            showTitleActions: true,
+                            minTime: DateTime.now().subtract(Duration(days: 30)),  // 今日から30日前
+                            maxTime: DateTime.now(), 
+                            onChanged: (date) {
+                              print('change $date');
+                            },
+                            onConfirm: (date) {
+                              print('confirm $date');
+                              setState(() {
+                                _selectedDate = date;  // 日付を更新
+                              });
+                            },
+                            currentTime: _selectedDate,
+                            locale: LocaleType.jp,  // 日本語に設定
+                          );
+                        },
+                        child: Text(
+                          '${_selectedDate.year}年${_selectedDate.month}月${_selectedDate.day}日',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
+                            ),
+                        ),
+                      ),
+                    )
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // 左揃えに設定
+                children: [
+                  Text('メモ',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Color(0xff5B5B5B),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0), // ボックスの内側にパディングを追加
+                      // decoration: BoxDecoration(
+                      //   borderRadius: BorderRadius.circular(8.0), // 角を丸くする
+                      //   border: Border.all(
+                      //     color: Theme.of(context).brightness == Brightness.dark
+                      //         ? Colors.white
+                      //         : Colors.black, // 枠線の色
+                      //     width: 2.0, // 枠線の太さ
+                      //   ),
+                      // ),
+                      child: TextField(
+                        focusNode: _focusNode3, // フォーカスノードを設定
+                        maxLines: null, // テキストフィールド内で複数行に対応
+                        textAlignVertical: TextAlignVertical.top, // テキストをボックス内の上部に揃える
+                        decoration: InputDecoration(
+                          hintText: '', 
+                          border: InputBorder.none, // デフォルトの下線を消す
+                        ),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                        textInputAction: TextInputAction.done, // キーボードに「完了」ボタンを表示
+                        onSubmitted: (_) {
+                          // キーボードの「完了」を押した時の処理
+                          FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )
       )
     );
   }

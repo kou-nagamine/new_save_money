@@ -9,37 +9,39 @@ class TopicContent extends StatelessWidget{
 
 @override
   Widget build(BuildContext context) {
-    return DraggableHome(
-      title: Text("引き換え", style: TextStyle(fontWeight: FontWeight.bold)),  
-      headerWidget: headerWidget(context),  // Custom header
-      headerExpandedHeight: 0.4,
-      body: [
-        CustomForm(),
-      ],
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Container(
-          margin: EdgeInsets.only(bottom: 30),
-          width: double.infinity,
-          child:  FloatingActionButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
+    return Scaffold(
+      body: DraggableHome(
+        title: Text("引き換え", style: TextStyle(fontWeight: FontWeight.bold)),  
+        headerWidget: headerWidget(context),  // Custom header
+        headerExpandedHeight: 0.45,
+        body: [
+          CustomForm(),
+        ],
+        floatingActionButton: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Container(
+            margin: EdgeInsets.only(bottom: 30),
+            width: double.infinity,
+            child:  FloatingActionButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              onPressed: () {
+                print('押された時に金額を差し引く');
+              },
+              child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              backgroundColor: Color(0xff005BEA),
+              elevation: 0,
             ),
-            onPressed: () {
-              print('押された時に金額を差し引く');
-            },
-            child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            backgroundColor: Color(0xff005BEA),
-            elevation: 0,
           ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      fullyStretchable: false, 
-      backgroundColor: Colors.white,
-      appBarColor: Theme.of(context).brightness == Brightness.dark
-        ? Colors.black
-        : Colors.white, 
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        fullyStretchable: false, 
+        backgroundColor: Colors.white,
+        appBarColor: Theme.of(context).brightness == Brightness.dark
+          ? Colors.black
+          : Colors.white, 
+      )
     );
   }
 
