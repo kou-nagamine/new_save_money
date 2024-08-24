@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '/views/pages/topic/components/topic_content.dart';
 
@@ -36,6 +37,16 @@ class MyApp extends StatelessWidget {
       // ),
       //home:TopicContent(),
       home:CommonNavigationBar(initialIndex: 0),
+
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'), // 英語
+        const Locale('ja', 'JP'), // 日本語
+      ],
     );
   }
 }

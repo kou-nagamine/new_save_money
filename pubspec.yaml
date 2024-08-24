@@ -48,6 +48,9 @@ dependencies:
   draggable_home:
   flutter_markdown:
   url_launcher: ^6.3.0
+  
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
