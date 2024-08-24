@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 
 
@@ -25,6 +26,7 @@ class _CustomFormState extends State<CustomForm> {
       if (_focusNode1.hasFocus) {
         Scrollable.ensureVisible(
           context,
+          duration: Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
       }
@@ -132,6 +134,11 @@ class _CustomFormState extends State<CustomForm> {
                   ),
                   Expanded(
                     child: TextField(
+                      //keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly, // 数字のみ入力可能にする
+                      ],
                       focusNode: _focusNode2, // フォーカスノードを設定
                       textAlign: TextAlign.end, // テキストを右揃えにする
                       decoration: InputDecoration(
@@ -167,7 +174,7 @@ class _CustomFormState extends State<CustomForm> {
                   Text('日付',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     color: Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white
                                 : Color(0xff5B5B5B),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:new_save_money/views/pages/reference/reference_page.dart';
+import '../components/topic_content.dart';
 
 class NomalCard extends StatelessWidget {
   const NomalCard({super.key});
@@ -15,7 +15,7 @@ class NomalCard extends StatelessWidget {
           onTap: () {
              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ReferencePage()),
+                MaterialPageRoute(builder: (context) => TopicContent()),
               );
           },
           child: SizedBox(
