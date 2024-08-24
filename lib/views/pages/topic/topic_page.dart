@@ -1,7 +1,15 @@
+import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:new_save_money/views/pages/topic/components/nomal_card.dart';
-import 'package:new_save_money/views/pages/topic/components/recomend_card.dart';
+import 'components/card_view.dart';
 
+//スライドショーの画像
+final images = [
+      "assets/images/jtb.png",
+      "assets/images/kinki_tourist.png",
+      "assets/images/rakuten_travel.png"
+      ];
+
+//TopicPageの全体
 class TopicPage extends StatelessWidget {
   const TopicPage({super.key});
 
@@ -10,7 +18,7 @@ class TopicPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: DefaultTabController(
-          length: 4,
+          length: 3,
           child: NestedScrollView(
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -19,10 +27,9 @@ class TopicPage extends StatelessWidget {
                 const _TabBar(),
               ];
             },
-            body: TabBarView(
+            body: const TabBarView(
               children: [
                 RecomendCardView(),
-                NomalCardView(),
                 NomalCardView(),
                 NomalCardView(),
               ],
@@ -34,12 +41,7 @@ class TopicPage extends StatelessWidget {
   }
 }
 
-final images = [
-      "assets/images/jtb.png",
-      "assets/images/kinki_tourist.png",
-      "assets/images/rakuten_travel.png"
-      ];
-
+//TopicPageのスライドショー
 class HeaderWidget extends StatelessWidget {
   final List<String> images;
   final double height;
@@ -51,6 +53,7 @@ class HeaderWidget extends StatelessWidget {
     final controller = PageController(viewportFraction: 1.0, keepPage: true);
     final double screenWidth = MediaQuery.of(context).size.width;
 
+    //
     final pages = List.generate(
       images.length,
       (index) => Container(
@@ -86,82 +89,33 @@ class HeaderWidget extends StatelessWidget {
   }
 }
 
-class RecomendCardView extends StatelessWidget {
-  const RecomendCardView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0), // 全体のパディングを設定
-      child: ListView(
-        children: const [
-          RecomendCard(),
-          SizedBox(height: 16), // 各カードの間にスペースを追加
-          RecomendCard(),
-          SizedBox(height: 16),
-          RecomendCard(),
-          SizedBox(height: 16),
-          RecomendCard(),
-        ],
-      ),
-    );
-  }
-}
-
-
-class NomalCardView extends StatelessWidget {
-  const NomalCardView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,  // 2列のグリッドに設定
-        mainAxisSpacing: 16.0,  // 縦方向のスペース
-        crossAxisSpacing: 16.0,  // 横方向のスペース
-        childAspectRatio: 0.75,  // カードの縦横比を調整（必要に応じて変更）
-      ),
-      itemCount: 10,  // 表示するカードの数
-      itemBuilder: (context, index) {
-        return const NomalCard();
-      },
-    );
-  }
-}
-
 class _TabBar extends StatelessWidget {
   const _TabBar();
 
   @override
   Widget build(BuildContext context) {
-    return const SliverPersistentHeader(
+    return SliverPersistentHeader(
       pinned: true,
       delegate: _StickyTabBarDelegate(
-        tabBar: TabBar(
-          tabs: [
+        tabBar: ButtonsTabBar(
+          backgroundColor: Colors.black,
+          unselectedBackgroundColor: Colors.transparent,
+          unselectedLabelStyle: const TextStyle(color: Colors.black),
+          labelStyle:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          height: 55.0,  // ボタンの高さを指定
+          contentPadding: const EdgeInsets.symmetric(horizontal: 25.0),  // コンテンツのパディングを指定
+          buttonMargin: const EdgeInsets.only(top: 10, bottom: 10, left: 35.0, right: 35.0),
+          radius: 15,
+          tabs: const [
             Tab(
-              child: Icon(
-                Icons.grid_on_sharp,
-                color: Colors.black,
-              ),
+              text:"学習"
             ),
             Tab(
-              child: Icon(
-                Icons.add_a_photo,
-                color: Colors.black,
-              ),
+              text:"楽しむ"
             ),
             Tab(
-              child: Icon(
-                Icons.add_card,
-                color: Colors.black,
-              ),
-            ),
-            Tab(
-              child: Icon(
-                Icons.supervisor_account_rounded,
-                color: Colors.black,
-              ),
+              text:"その他"
             ),
           ],
         ),
@@ -173,7 +127,7 @@ class _TabBar extends StatelessWidget {
 class _StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   const _StickyTabBarDelegate({required this.tabBar});
 
-  final TabBar tabBar;
+  final PreferredSizeWidget tabBar;
 
   @override
   double get minExtent => tabBar.preferredSize.height;
