@@ -1,5 +1,7 @@
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
+import 'package:iconoir_flutter/iconoir_flutter.dart'as iconoir;
+import 'custom_form.dart';
 
 
 class TopicContent extends StatelessWidget{
@@ -8,18 +10,32 @@ class TopicContent extends StatelessWidget{
 @override
   Widget build(BuildContext context) {
     return DraggableHome(
-      title: Text("急速充電器"),  
+      title: Text("引き換え", style: TextStyle(fontWeight: FontWeight.bold)),  
       headerWidget: headerWidget(context),  // Custom header
       headerExpandedHeight: 0.4,
       body: [
-        Center(
-          child: Text('ああああああああああああああああああああああああああああああああああああ'),
-        ),
+        CustomForm(),
       ],
-      fullyStretchable: true, 
-      expandedBody: Center(  
-        child: Icon(Icons.settings, size: 30),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Container(
+          margin: EdgeInsets.only(bottom: 30),
+          width: double.infinity,
+          child:  FloatingActionButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            onPressed: () {
+              print('押された時に金額を差し引く');
+            },
+            child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            backgroundColor: Color(0xff005BEA),
+            elevation: 0,
+          ),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      fullyStretchable: false, 
       backgroundColor: Colors.white,
       appBarColor: Theme.of(context).brightness == Brightness.dark
         ? Colors.black
@@ -60,40 +76,23 @@ class TopicContent extends StatelessWidget{
               Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(width: 30),
-                      Expanded(
-                        child: Text(
-                          '飲み物',
-                          style: TextStyle(
-                            fontSize: 35,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                      SizedBox(width: 10),
+                      Icon(
+                            Icons.local_drink,
+                            size: 35,
+                            color: Colors.blue[400],
                           ),
+                          SizedBox(width: 10),
+                      Text(
+                        '外食',
+                        style: TextStyle(
+                          fontSize: 35,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Padding(padding: EdgeInsets.only(right: 40),
-                        child:Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(
-                                Icons.local_drink,
-                                size: 30,
-                                color: Colors.blue[400],
-                              ),
-                              SizedBox(width: 10),
-                            Text(
-                              '¥100',
-                              style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ]
-                        )
-                      )
                     ],
                   ),
                 ],
@@ -101,8 +100,22 @@ class TopicContent extends StatelessWidget{
               SizedBox(height: 30),
             ],
           ),
-        )
-      ]
+        ),
+        Positioned(
+          top: 50,
+          left: 10,
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context); // 前のページに戻る
+            },
+            icon: Icon(
+              Icons.arrow_circle_left_rounded,
+              color: Colors.black,
+              size: 50,
+            ),
+          ),
+        ),
+     ],
     );
   }
 }
