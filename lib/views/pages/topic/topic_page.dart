@@ -1,13 +1,14 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'components/card_view.dart';
-import 'dart:ui'; 
+import 'dart:async';
 
 //スライドショーの画像
 final images = [
       "assets/images/jtb.png",
       "assets/images/kinki_tourist.png",
       "assets/images/rakuten_travel.png",
+      "assets/images/moneyimage.jpeg",
       ];
 
 //TopicPageの全体
@@ -39,9 +40,9 @@ class TopicPage extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 4),  // タイトルとサブタイトルの間のスペース
+                      SizedBox(height: 4),  
                       Text(
-                        "大きな出費を今までの我慢で貯めたお金で割り当てよう！",  // サブタイトルを追加
+                        "大きな出費を今までの我慢で貯めたお金で割り当てよう！",  // サブタイトル
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.black54,
@@ -70,52 +71,83 @@ class TopicPage extends StatelessWidget {
 }
 
 //TopicPageのスライドショー
-class HeaderWidget extends StatelessWidget {
+class HeaderWidget extends StatefulWidget {
   final List<String> images;
   final double height;
 
   HeaderWidget({required this.images, this.height = 200});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = PageController(viewportFraction: 1.0, keepPage: true);
-    final double screenWidth = MediaQuery.of(context).size.width;
+  _HeaderWidgetState createState() => _HeaderWidgetState();
+  }
 
-    //
-    final pages = List.generate(
-      images.length,
-      (index) => Container(
-        width: screenWidth,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade300,
-        ),
-        child: Center(
-          child: Image.asset(
-            images[index],
-            fit: BoxFit.cover,
-            width: screenWidth,
+  class _HeaderWidgetState extends State<HeaderWidget> {
+    late PageController _controller;
+    late Timer _timer;
+    int _currentPage = 0;
+
+    @override
+    void initState() {
+      super.initState();
+      _controller = PageController(viewportFraction: 1.0, keepPage: true);
+
+      // 自動スライドのタイマーを設定
+      _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
+        if (_currentPage < widget.images.length - 1) {
+          _currentPage++;
+        } else {
+          _currentPage = 0;
+        }
+        _controller.animateToPage(
+          _currentPage,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      });
+    }
+
+    @override
+    void dispose() {
+      _controller.dispose();
+      _timer.cancel();
+      super.dispose();
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      final controller = PageController(viewportFraction: 1.0, keepPage: true);
+      final double screenWidth = MediaQuery.of(context).size.width;
+
+      final pages = List.generate(
+        images.length,
+        (index) => Container(
+          width: screenWidth,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
           ),
-        ),
-      ),
-    );
-
-    return SliverList(
-      delegate: SliverChildListDelegate(
-        [
-          Container(
-            height: height,
-            child: PageView.builder(
-              controller: controller,
-              itemBuilder: (_, index) {
-                return pages[index % pages.length];
-              },
+          child: Center(
+            child: Image.asset(
+              images[index],
+              fit: BoxFit.cover,
+              width: screenWidth,
             ),
           ),
-        ],
-      ),
-    );
+        ),
+      );
+      return SliverToBoxAdapter(
+        child: Container(
+          height: widget.height,
+          child: PageView.builder(
+            controller: _controller,
+            itemCount: widget.images.length,
+            itemBuilder: (_, index) {
+              return pages[index];
+            },
+          ),
+        ),
+      );
+    }
   }
-}
 
 class _TabBar extends StatelessWidget {
   const _TabBar();

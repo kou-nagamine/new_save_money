@@ -255,7 +255,7 @@ class _CustomFormState extends State<CustomForm> {
                   SizedBox(height: 10),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0), // ボックスの内側にパディングを追加
+                      padding: EdgeInsets.symmetric(horizontal: 5.0), // ボックスの内側にパディングを追加
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0), // 角を丸くする
                         border: Border.all(
@@ -280,7 +280,7 @@ class _CustomFormState extends State<CustomForm> {
                           border: InputBorder.none, // デフォルトの下線を消す
                         ),
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white

@@ -89,6 +89,7 @@ flutter:
     - assets/images/rakuten_travel.png
     - assets/images/meisi.png
     - assets/images/AI_image.jpeg
+    - assets/images/moneyimage.jpeg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
