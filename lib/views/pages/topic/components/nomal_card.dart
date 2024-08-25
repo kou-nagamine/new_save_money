@@ -18,21 +18,18 @@ class NomalCard extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => TopicContent()),
               );
           },
-          child: SizedBox(
-            width: 100,  // 幅を変更
-            height: 200,
-            child: Card(
+          child: Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
+                borderRadius: BorderRadius.circular(20),
               ),
               clipBehavior: Clip.hardEdge,
               child: Stack(
                 children: [
                   Container(
-                    decoration: const BoxDecoration(
+                    decoration:  BoxDecoration(
                       borderRadius: BorderRadius.zero,
                       image: DecorationImage(
-                        image: AssetImage('assets/images/meisi.png'),
+                        image: AssetImage('assets/images/AI_image.jpeg'),
                         fit: BoxFit.fitHeight,
                       ),
                     ),
@@ -42,17 +39,20 @@ class NomalCard extends StatelessWidget {
                     left: 0,
                     right: 0,
                     child: Container(
-                      padding: const EdgeInsets.all(4),
-                      height: 110,
+                      height: 200,
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(40),
-                          bottomRight: Radius.circular(40)
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            Colors.black.withOpacity(0.9), // 90%の不透明度の黒
+                            Colors.white.withOpacity(0.1), // 白
+                          ],
+                          //stops: [0.2, 1], // 黒が85%の位置で終了し、残りは白
                         ),
-                        color: Colors.grey.withOpacity(0.0),
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                        padding: EdgeInsets.only(bottom: 0, left: 15, right: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -86,7 +86,6 @@ class NomalCard extends StatelessWidget {
                 ],
               ),
             ),
-          ),
         ),
       ),
     );

@@ -9,15 +9,15 @@ class RecomendCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0), // 全体のパディングを設定
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: ListView(
         children: const [
           RecomendCard(),
-          SizedBox(height: 16), // 各カードの間にスペースを追加
+          SizedBox(height: 10), // 各カードの間にスペースを追加
           RecomendCard(),
-          SizedBox(height: 16),
+          SizedBox(height: 10),
           RecomendCard(),
-          SizedBox(height: 16),
+          SizedBox(height: 10),
           RecomendCard(),
         ],
       ),
@@ -34,8 +34,8 @@ class NomalCardView extends StatelessWidget {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,  // 2列のグリッドに設定
-        mainAxisSpacing: 16.0,  // 縦方向のスペース
-        crossAxisSpacing: 16.0,  // 横方向のスペース
+        mainAxisSpacing: 0.0,  // 縦方向のスペース
+        crossAxisSpacing: 0.0,  // 横方向のスペース
         childAspectRatio: 0.75,  // カードの縦横比を調整（必要に応じて変更）
       ),
       itemCount: 10,  // 表示するカードの数
