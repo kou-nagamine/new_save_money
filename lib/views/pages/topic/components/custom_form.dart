@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
-
 
 class CustomForm extends StatefulWidget {
   const CustomForm({Key? key}) : super(key: key);
@@ -16,6 +16,8 @@ class _CustomFormState extends State<CustomForm> {
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
+  final TextEditingController _priceController = TextEditingController(); //
+  String _EnteredPrice = '';  // 入力された金額を保持する変数
 
   @override
   void initState() {
@@ -52,6 +54,11 @@ class _CustomFormState extends State<CustomForm> {
       }
     });
   }
+      void _getEnteredPrice() {
+    setState(() {
+      _EnteredPrice = _priceController.text;  // 入力された金額を取得して変数に保存
+    });
+  }
 
   @override
   void dispose() {
@@ -60,8 +67,9 @@ class _CustomFormState extends State<CustomForm> {
     _focusNode2.dispose();
     _focusNode3.dispose();
     _scrollController.dispose();
+    _priceController.dispose();
     super.dispose();
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +114,7 @@ class _CustomFormState extends State<CustomForm> {
                         color: Theme.of(context).brightness == Brightness.dark
                             ? Colors.white
                             : Colors.black,
+                            fontFamily: 'NotoSansJP',
                       ),
                       textInputAction: TextInputAction.done, // キーボードに「完了」ボタンを表示
                       onSubmitted: (_) {
@@ -134,7 +143,7 @@ class _CustomFormState extends State<CustomForm> {
                   ),
                   Expanded(
                     child: TextField(
-                      //keyboardType: TextInputType.number,
+                      controller:  _priceController,
                       keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly, // 数字のみ入力可能にする
@@ -145,7 +154,8 @@ class _CustomFormState extends State<CustomForm> {
                         hintStyle: TextStyle(
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white.withOpacity(0.3)
-                              : Colors.black.withOpacity(0.3)
+                              : Colors.black.withOpacity(0.3),
+                              fontFamily: 'NotoSansJP',
                         ),
                         hintText: '700',
                         border: InputBorder.none, // 下線を消す
@@ -159,6 +169,7 @@ class _CustomFormState extends State<CustomForm> {
                       onSubmitted: (_) {
                         // キーボードの「完了」を押した時の処理
                         FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
+                         _getEnteredPrice(); // 入力された金額を取得して処理する
                       },
                     ),
                   ),
@@ -180,47 +191,46 @@ class _CustomFormState extends State<CustomForm> {
                                 : Color(0xff5B5B5B),
                     ),
                   ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          DatePicker.showDatePicker(
-                            context,
-                            showTitleActions: true,
-                            minTime: DateTime.now().subtract(Duration(days: 30)),  // 今日から30日前
-                            maxTime: DateTime.now(), 
-                            onChanged: (date) {
-                              print('change $date');
-                            },
-                            onConfirm: (date) {
-                              print('confirm $date');
-                              setState(() {
-                                _selectedDate = date;  // 日付を更新
-                              });
-                            },
-                            currentTime: _selectedDate,
-                            locale: LocaleType.jp,  // 日本語に設定
-                          );
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    onPressed: () {
+                      DatePicker.showDatePicker(
+                        context,
+                        showTitleActions: true,
+                        minTime: DateTime.now().subtract(Duration(days: 30)),  // 今日から30日前
+                        maxTime: DateTime.now(), 
+                        onChanged: (date) {
+                          print('change $date');
                         },
-                        child: Text(
-                          '${_selectedDate.year}年${_selectedDate.month}月${_selectedDate.day}日',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).brightness == Brightness.dark
-                                        ? Colors.white
-                                        : Colors.black,
-                            ),
+                        onConfirm: (date) {
+                          print('confirm $date');
+                          setState(() {
+                            _selectedDate = date;  // 日付を更新
+                          });
+                        },
+                        currentTime: _selectedDate,
+                        locale: LocaleType.jp,  // 日本語に設定
+                      );
+                    },
+                    child: Text(
+                      '${_selectedDate.year}年${_selectedDate.month}月${_selectedDate.day}日',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                    fontFamily: 'NotoSansJP',
                         ),
-                      ),
-                    )
+                    ),
                   ),
                 ],
               ),
             ),
             Container(
-              height: 150,
+              height: 120,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start, // 左揃えに設定
                 children: [
@@ -250,7 +260,13 @@ class _CustomFormState extends State<CustomForm> {
                         maxLines: null, // テキストフィールド内で複数行に対応
                         textAlignVertical: TextAlignVertical.top, // テキストをボックス内の上部に揃える
                         decoration: InputDecoration(
-                          hintText: '', 
+                          hintStyle: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white.withOpacity(0.3)
+                              : Colors.black.withOpacity(0.3),
+                              fontFamily: 'NotoSansJP',
+                        ),
+                          hintText: 'メモをつける',
                           border: InputBorder.none, // デフォルトの下線を消す
                         ),
                         style: TextStyle(
@@ -271,6 +287,49 @@ class _CustomFormState extends State<CustomForm> {
                 ],
               ),
             ),
+            Container(
+              height: 200,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('割り当て後の合計金額',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text('¥6055',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  Icon(Icons.arrow_downward, size: 20, color: Colors.black),
+                  SizedBox(height: 20),
+                  Text('¥引いた計算',
+                  style: TextStyle(
+                    fontSize: 60,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black,
+                    ),
+                  ),
+                  Text('¥$_EnteredPrice',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xffE82929),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         )
       )

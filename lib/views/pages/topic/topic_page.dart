@@ -1,12 +1,13 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'components/card_view.dart';
+import 'dart:ui'; 
 
 //スライドショーの画像
 final images = [
       "assets/images/jtb.png",
       "assets/images/kinki_tourist.png",
-      "assets/images/rakuten_travel.png"
+      "assets/images/rakuten_travel.png",
       ];
 
 //TopicPageの全体
@@ -24,12 +25,39 @@ class TopicPage extends StatelessWidget {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return [
                 HeaderWidget(images: images),
+                 SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "割り当てる",  // タイトルを追加
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 4),  // タイトルとサブタイトルの間のスペース
+                      Text(
+                        "大きな出費を今までの我慢で貯めたお金で割り当てよう！",  // サブタイトルを追加
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
                 const _TabBar(),
               ];
             },
             body: const TabBarView(
               children: [
-                RecomendCardView(),
+                NomalCardView(),
                 NomalCardView(),
                 NomalCardView(),
               ],
@@ -100,12 +128,12 @@ class _TabBar extends StatelessWidget {
         tabBar: ButtonsTabBar(
           backgroundColor: Colors.black,
           unselectedBackgroundColor: Colors.transparent,
-          unselectedLabelStyle: const TextStyle(color: Colors.black),
+          unselectedLabelStyle: const TextStyle(color: Colors.black45, fontWeight: FontWeight.w600),
           labelStyle:
             const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          height: 55.0,  // ボタンの高さを指定
+          height: 70.0,  // ボタンの高さを指定
           contentPadding: const EdgeInsets.symmetric(horizontal: 25.0),  // コンテンツのパディングを指定
-          buttonMargin: const EdgeInsets.only(top: 10, bottom: 10, left: 35.0, right: 35.0),
+          buttonMargin: const EdgeInsets.only(top: 15, bottom: 15, left: 35.0, right: 35.0),
           radius: 15,
           tabs: const [
             Tab(
@@ -146,6 +174,7 @@ class _StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
       child: tabBar,
     );
   }
+
 
   @override
   bool shouldRebuild(_StickyTabBarDelegate oldDelegate) {
