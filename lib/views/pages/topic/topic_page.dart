@@ -26,17 +26,24 @@ class TopicPage extends StatelessWidget {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return [
                 HeaderWidget(images: images),
+                  SliverToBoxAdapter(
+                    child: Divider(
+                      height: 5,
+                      thickness: 5,
+                      color: Colors.black12,
+                    ),
+                  ),
                  SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text(
                         "割り当てる",  // タイトルを追加
                         style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w800,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
                           color: Colors.black,
                         ),
                       ),
@@ -122,9 +129,6 @@ class HeaderWidget extends StatefulWidget {
         images.length,
         (index) => Container(
           width: screenWidth,
-          decoration: BoxDecoration(
-            color: Colors.grey.shade300,
-          ),
           child: Center(
             child: Image.asset(
               images[index],
@@ -162,10 +166,10 @@ class _TabBar extends StatelessWidget {
           unselectedBackgroundColor: Colors.transparent,
           unselectedLabelStyle: const TextStyle(color: Colors.black45, fontWeight: FontWeight.w600),
           labelStyle:
-            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          height: 70.0,  // ボタンの高さを指定
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+          height: 60.0,  // ボタンの高さを指定
           contentPadding: const EdgeInsets.symmetric(horizontal: 25.0),  // コンテンツのパディングを指定
-          buttonMargin: const EdgeInsets.only(top: 15, bottom: 15, left: 35.0, right: 35.0),
+          buttonMargin: const EdgeInsets.only(top: 12, bottom: 12, left: 35.0, right: 35.0),
           radius: 15,
           tabs: const [
             Tab(

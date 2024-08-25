@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:new_save_money/views/pages/home/components/thousand_separator.dart';
+import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
 
 class CustomForm extends StatefulWidget {
   const CustomForm({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class _CustomFormState extends State<CustomForm> {
   final FocusNode _focusNode3 = FocusNode();
   final TextEditingController _priceController = TextEditingController(); //
   String _EnteredPrice = '';  // 入力された金額を保持する変数
-  int _calculatedPrice = 0;  // 計算結果を保持する変数
+  int _calculatedPrice = 6055;  // 計算結果を保持する変数
   double _calculatedPercent = 0.0;  // 計算結果を保持する変数
 
   @override
@@ -111,7 +113,8 @@ class _CustomFormState extends State<CustomForm> {
                         hintStyle: TextStyle(
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white.withOpacity(0.3)
-                              : Colors.black.withOpacity(0.3)
+                              : Colors.black.withOpacity(0.3),
+                              fontWeight: FontWeight.bold,
                         ),
                         hintText: 'サークルの会食', 
                         border: InputBorder.none, // 下線を消す
@@ -140,7 +143,7 @@ class _CustomFormState extends State<CustomForm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('金額',
+                  Text('￥',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -155,6 +158,7 @@ class _CustomFormState extends State<CustomForm> {
                       keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly, // 数字のみ入力可能にする
+                        ThousandsSeparator(), // 3桁ごとにカンマを挿入
                       ],
                       focusNode: _focusNode2, // フォーカスノードを設定
                       textAlign: TextAlign.end, // テキストを右揃えにする
@@ -164,6 +168,7 @@ class _CustomFormState extends State<CustomForm> {
                               ? Colors.white.withOpacity(0.3)
                               : Colors.black.withOpacity(0.3),
                               fontFamily: 'NotoSansJP',
+                              fontWeight: FontWeight.bold,
                         ),
                         hintText: '700',
                         border: InputBorder.none, // 下線を消す
@@ -315,7 +320,7 @@ class _CustomFormState extends State<CustomForm> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Text('¥6055',
+                  Text('¥${NumberFormat("#,###").format(6055)}',
                     style: TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.w800,
@@ -323,14 +328,14 @@ class _CustomFormState extends State<CustomForm> {
                     ),
                   ),
                   Icon(Icons.arrow_downward, size: 20, color: Colors.black),
-                  Text('¥$_calculatedPrice',
+                  Text('¥${NumberFormat("#,###").format(_calculatedPrice)}',
                   style: TextStyle(
                     fontSize: 64,
                     fontWeight: FontWeight.w800,
                     color: Colors.black,
                     ),
                   ),
-                  Text('¥$_EnteredPrice (-$_calculatedPercent%)',
+                  Text('-¥${NumberFormat("#,###").format(int.tryParse(_EnteredPrice) ?? 0)} (-$_calculatedPercent%)',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
