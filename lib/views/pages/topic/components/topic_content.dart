@@ -9,27 +9,38 @@ import '/views/pages/commons/navigation_bar/navigation_bar.dart';
 //providers
 import "/views/pages/home/providers/user_log.dart";
 
-class TopicContent extends ConsumerWidget {
+class TopicContent extends ConsumerStatefulWidget {
   const TopicContent({super.key});
 
-  void _handleFormChanged(String title, int amount, DateTime date, String memo) {
-    print("Title: $title");
-    print("Amount: $amount");
-    print("Date: $date");
-    print("Memo: $memo");
-    // ここで状態を更新したり、データを保存したりできます。
+  @override
+  _TopicContentState createState() => _TopicContentState();
+}
+
+class _TopicContentState extends ConsumerState<TopicContent> {
+  String _title = 'サークル会食';
+  int _amount = 700;
+  DateTime _date = DateTime.now();
+  String _memo = '';
+
+  void _onFormChanged(String title, int amount, DateTime date, String memo) {
+    setState(() {
+      _title = title;
+      _amount = amount;
+      _date = date;
+      _memo = memo;
+    });
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: DraggableHome(
         title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),
-        headerWidget: headerWidget(context),  // Custom header
+        headerWidget: headerWidget(context), // Custom header
         headerExpandedHeight: 0.45,
         body: [
           CustomForm(
-            onFormChanged: _handleFormChanged,
+            onFormChanged: _onFormChanged, 
           ),
         ],
         floatingActionButton: Padding(
@@ -49,17 +60,17 @@ class TopicContent extends ConsumerWidget {
                 final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
                 userLogNotifier.updateState({
                   // カテゴリ名を設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
-                  'categoryName': 'サークルの会食',
+                  'categoryName': _title,
                   // カテゴリアイコンを設定。categoryDataがnullでなく、かつ2つ以上の要素がある場合はcategoryDataの2番目の要素を使用。それ以外はデフォルトでIcons.local_drinkを使用
                   'categoryIcon': Icons.local_activity,
                   // カテゴリカラーを設定。categoryDataがnullでなく、かつ3つ以上の要素がある場合はcategoryDataの3番目の要素を使用。それ以外はデフォルトでColors.blackを使用
                   'color': Color(0xffE82929),
                   // 価格を設定。チャージ状態を整数に変換して設定
-                  'price': 700,
+                  'price': _amount,
                   // 日付を設定。現在の日時を設定
-                  "date" : DateTime.now(),
+                  "date" : _date,
                   // メモを設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
-                  "memo" :   '',
+                  "memo" :  _memo,
                   // 目的を設定。デフォルトで'入金'を使用
                   "purpose" : "出金",
                 });
