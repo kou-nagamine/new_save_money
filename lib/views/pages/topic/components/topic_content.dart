@@ -1,21 +1,47 @@
+//package
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
-import 'package:iconoir_flutter/iconoir_flutter.dart'as iconoir;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+//components
 import 'custom_form.dart';
+//pages
+import '/views/pages/commons/navigation_bar/navigation_bar.dart';
+//providers
+import "/views/pages/home/providers/user_log.dart";
 
-
-class TopicContent extends StatelessWidget{
+class TopicContent extends ConsumerStatefulWidget {
   const TopicContent({super.key});
 
-@override
+  @override
+  _TopicContentState createState() => _TopicContentState();
+}
+
+class _TopicContentState extends ConsumerState<TopicContent> {
+  String _title = 'サークル会食';
+  int _amount = 700;
+  DateTime _date = DateTime.now();
+  String _memo = '';
+
+  void _onFormChanged(String title, int amount, DateTime date, String memo) {
+    setState(() {
+      _title = title;
+      _amount = amount;
+      _date = date;
+      _memo = memo;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: DraggableHome(
-        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),  
-        headerWidget: headerWidget(context),  // Custom header
+        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),
+        headerWidget: headerWidget(context), // Custom header
         headerExpandedHeight: 0.45,
         body: [
-          CustomForm(),
+          CustomForm(
+            onFormChanged: _onFormChanged, 
+          ),
         ],
         floatingActionButton: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -27,7 +53,27 @@ class TopicContent extends StatelessWidget{
                 borderRadius: BorderRadius.circular(50),
               ),
               onPressed: () {
-                print('押された時に金額を差し引く');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CommonNavigationBar()),
+                );
+                final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
+                userLogNotifier.updateState({
+                  // カテゴリ名を設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
+                  'categoryName': _title,
+                  // カテゴリアイコンを設定。categoryDataがnullでなく、かつ2つ以上の要素がある場合はcategoryDataの2番目の要素を使用。それ以外はデフォルトでIcons.local_drinkを使用
+                  'categoryIcon': Icons.local_activity,
+                  // カテゴリカラーを設定。categoryDataがnullでなく、かつ3つ以上の要素がある場合はcategoryDataの3番目の要素を使用。それ以外はデフォルトでColors.blackを使用
+                  'color': Color(0xffE82929),
+                  // 価格を設定。チャージ状態を整数に変換して設定
+                  'price': _amount,
+                  // 日付を設定。現在の日時を設定
+                  "date" : _date,
+                  // メモを設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
+                  "memo" :  _memo,
+                  // 目的を設定。デフォルトで'入金'を使用
+                  "purpose" : "出金",
+                });
               },
               child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               backgroundColor: Color(0xff005BEA),

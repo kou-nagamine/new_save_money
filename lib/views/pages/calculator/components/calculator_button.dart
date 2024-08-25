@@ -18,12 +18,16 @@ class CalculatorButton extends ConsumerWidget {
   const CalculatorButton({
     super.key,
     required this.buttonText,
-    this.categoryData,
+    this.label = "飲み物",
+    this.icon = Icons.local_drink,
+    this.color = Colors.blue,
     this.isEnabled = true, //　金額が0の場合ボタンを押せないようにするので、そこで使用する変数です。 デフォルトはtrue
   });
 
   final String buttonText;
-  final List<dynamic>? categoryData; // カテゴリーデータ（オプション）
+  final String label;
+  final IconData icon;
+  final Color color;
   final bool isEnabled; // ボタンの有効/無効状態
 
   @override
@@ -63,16 +67,18 @@ class CalculatorButton extends ConsumerWidget {
 
               final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
               userLogNotifier.updateState({
-                // カテゴリ名を設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
-                'categoryName': categoryData != null && categoryData!.isNotEmpty ? categoryData![0] : '飲み物',
-                // カテゴリアイコンを設定。categoryDataがnullでなく、かつ2つ以上の要素がある場合はcategoryDataの2番目の要素を使用。それ以外はデフォルトでIcons.local_drinkを使用
-                'categoryIcon': categoryData != null && categoryData!.length > 1 ? categoryData![1] : Icons.local_drink,
-                // カテゴリカラーを設定。categoryDataがnullでなく、かつ3つ以上の要素がある場合はcategoryDataの3番目の要素を使用。それ以外はデフォルトでColors.blackを使用
-                'color': categoryData != null && categoryData!.length > 2 ? categoryData![2] : Colors.black,
-                // 価格を設定。チャージ状態を整数に変換して設定
+                'categoryName': label,
+                'categoryIcon': icon,
+                'color': color,
+                // 価格を設定
                 'price': int.parse(chageState),
+                // 日付を設定
+                "date" : DateTime.now(),
+                // メモを設定
+                "memo" : label,
+                // 目的を設定
+                "purpose" : "入金",
               });
-              print("chageState: $chageState"); 
             }
           } : null, // isEnabledがfalseの場合はボタンを無効化
           style: ElevatedButton.styleFrom(
