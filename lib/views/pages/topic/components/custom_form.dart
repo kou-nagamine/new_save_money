@@ -18,6 +18,8 @@ class _CustomFormState extends State<CustomForm> {
   final FocusNode _focusNode3 = FocusNode();
   final TextEditingController _priceController = TextEditingController(); //
   String _EnteredPrice = '';  // 入力された金額を保持する変数
+  int _calculatedPrice = 0;  // 計算結果を保持する変数
+  double _calculatedPercent = 0.0;  // 計算結果を保持する変数
 
   @override
   void initState() {
@@ -54,11 +56,16 @@ class _CustomFormState extends State<CustomForm> {
       }
     });
   }
-      void _getEnteredPrice() {
+  void _getEnteredPrice() {
     setState(() {
       _EnteredPrice = _priceController.text;  // 入力された金額を取得して変数に保存
+      int enteredPriceInt = int.tryParse(_EnteredPrice) ?? 0;  // 文字列を整数に変換、失敗したら0
+      _calculatedPrice = 6055 - enteredPriceInt;  // 6055から引いた金額を計算
+      double calculatedPercent = (enteredPriceInt.toDouble() / 6055 * 100);  // 割合を計算
+        _calculatedPercent = double.parse(calculatedPercent.toStringAsFixed(1));  // 少数第1位に丸める
     });
   }
+
 
   @override
   void dispose() {
@@ -230,7 +237,7 @@ class _CustomFormState extends State<CustomForm> {
               ),
             ),
             Container(
-              height: 120,
+              height: 110,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start, // 左揃えに設定
                 children: [
@@ -288,7 +295,7 @@ class _CustomFormState extends State<CustomForm> {
               ),
             ),
             Container(
-              height: 200,
+              height: 300,
               alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -312,15 +319,14 @@ class _CustomFormState extends State<CustomForm> {
                     ),
                   ),
                   Icon(Icons.arrow_downward, size: 20, color: Colors.black),
-                  SizedBox(height: 20),
-                  Text('¥引いた計算',
+                  Text('¥$_calculatedPrice',
                   style: TextStyle(
-                    fontSize: 60,
+                    fontSize: 64,
                     fontWeight: FontWeight.w800,
                     color: Colors.black,
                     ),
                   ),
-                  Text('¥$_EnteredPrice',
+                  Text('¥$_EnteredPrice (-$_calculatedPercent%)',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
