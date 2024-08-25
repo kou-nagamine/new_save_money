@@ -40,7 +40,7 @@ class NomalCardView extends StatelessWidget {
       ),
       itemCount: 10,  // 表示するカードの数
       itemBuilder: (context, index) {
-        return const NomalCard();
+        return  NomalCard(index: index);
       },
     );
   }

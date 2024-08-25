@@ -16,10 +16,10 @@ class RecomendCard extends StatelessWidget {
           color: Colors.transparent,  // Materialの背景色を透明に設定
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TopicContent()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => TopicContent()),
+              // );
           },
             child: Card(
               shape: RoundedRectangleBorder(

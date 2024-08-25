@@ -87,6 +87,7 @@ class _CustomFormState extends State<CustomForm> {
         child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 20),
             Container(
               height: 50,
               child: Row(
