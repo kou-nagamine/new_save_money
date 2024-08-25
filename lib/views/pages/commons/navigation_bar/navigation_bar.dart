@@ -80,7 +80,7 @@ void _onItemTapped(int index) {
                     color: Colors.white.withOpacity(0.1),
                   ),
                   child: BottomNavigationBar(
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: Colors.white,
                     elevation: 0,
                     showSelectedLabels: true,
                     showUnselectedLabels: true,

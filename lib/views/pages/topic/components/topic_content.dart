@@ -31,7 +31,7 @@ class TopicContent extends StatelessWidget{
               },
               child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               backgroundColor: Color(0xff005BEA),
-              elevation: 0,
+              elevation: 10,
             ),
           ),
         ),

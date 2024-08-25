@@ -251,7 +251,7 @@ class _CustomFormState extends State<CustomForm> {
                                 : Color(0xff5B5B5B),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 10),
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8.0), // ボックスの内側にパディングを追加
