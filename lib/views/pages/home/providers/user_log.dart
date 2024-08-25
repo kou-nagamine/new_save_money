@@ -23,18 +23,18 @@ class UserLogNotifier extends _$UserLogNotifier {
     print("newState: $newState");
   }
 
-// データを削除する関数
-void deleteLog(int index) {
-  if (index >= 0 && index < state.length) {
-    // インデックスがリストの範囲内であることを確認する
-    final newState = List<Map<String, dynamic>>.from(state);
-    newState.removeAt(index); // 指定したインデックスの項目を削除
-    state = newState; // 更新された状態を反映
-  } else {
-    // 範囲外のインデックスに対する処理（エラーハンドリング）
-    print('Invalid index: $index');
+  // データを削除する関数
+  void deleteLog(int index) {
+    if (index >= 0 && index < state.length) {
+      // インデックスがリストの範囲内であることを確認する
+      final newState = List<Map<String, dynamic>>.from(state);
+      newState.removeAt(index); // 指定したインデックスの項目を削除
+      state = newState; // 更新された状態を反映
+    } else {
+      // 範囲外のインデックスに対する処理（エラーハンドリング）
+      print('Invalid index: $index');
+    }
   }
-}
 
   // データを元に戻す関数
   void undoDelete(int index, Map<String, dynamic> item) {

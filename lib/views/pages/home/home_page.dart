@@ -23,7 +23,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context , WidgetRef ref) {
     final allPrice = ref.watch(allPriceNotifierProvider);
-    final historyData = ref.watch(userLogNotifierProvider);
+    final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
     print('$historyData');
     return Scaffold(
       body: Stack(

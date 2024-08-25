@@ -9,6 +9,12 @@ final images = [
       "assets/images/rakuten_travel.png"
       ];
 
+final labels = [
+  "学習",
+  "楽しむ",
+  "その他",
+];    
+
 //TopicPageの全体
 class TopicPage extends StatelessWidget {
   const TopicPage({super.key});
@@ -18,7 +24,7 @@ class TopicPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: DefaultTabController(
-          length: 3,
+          length: labels.length,
           child: NestedScrollView(
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -41,7 +47,7 @@ class TopicPage extends StatelessWidget {
   }
 }
 
-//TopicPageのスライドショー
+//TopicPageのスライドページ
 class HeaderWidget extends StatelessWidget {
   final List<String> images;
   final double height;
@@ -53,7 +59,6 @@ class HeaderWidget extends StatelessWidget {
     final controller = PageController(viewportFraction: 1.0, keepPage: true);
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    //
     final pages = List.generate(
       images.length,
       (index) => Container(
@@ -100,7 +105,10 @@ class _TabBar extends StatelessWidget {
         tabBar: ButtonsTabBar(
           backgroundColor: Colors.black,
           unselectedBackgroundColor: Colors.transparent,
-          unselectedLabelStyle: const TextStyle(color: Colors.black),
+          unselectedLabelStyle: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold
+          ),
           labelStyle:
             const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           height: 55.0,  // ボタンの高さを指定
