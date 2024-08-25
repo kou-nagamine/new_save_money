@@ -35,23 +35,23 @@ class TopicPage extends StatelessWidget {
                   ),
                  SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 80, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text(
-                        "割り当てる",  // タイトルを追加
+                        "出費を割り当てる",  // タイトルを追加
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 4),  
+                      SizedBox(height: 2),  
                       Text(
-                        "大きな出費を今までの我慢で貯めたお金で割り当てよう！",  // サブタイトル
+                        "大きな出費やちょっとしたご褒美を今まで我慢したお金で割り当てよう!",  // サブタイトル
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           color: Colors.black54,
                           fontWeight: FontWeight.w600,
                         ),
