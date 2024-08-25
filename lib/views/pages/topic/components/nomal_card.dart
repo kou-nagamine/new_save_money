@@ -19,73 +19,74 @@ class NomalCard extends StatelessWidget {
               );
           },
           child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              clipBehavior: Clip.hardEdge,
-              child: Stack(
-                children: [
-                  Container(
-                    decoration:  BoxDecoration(
-                      borderRadius: BorderRadius.zero,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/AI_image.jpeg'),
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            Colors.black.withOpacity(0.9), // 90%の不透明度の黒
-                            Colors.white.withOpacity(0.1), // 白
-                          ],
-                          //stops: [0.2, 1], // 黒が85%の位置で終了し、残りは白
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(bottom: 0, left: 15, right: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'タイトル',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                shadows: [
-                                  Shadow(blurRadius: 8.0),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              'ここに説明文が入ります',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                shadows: [
-                                  Shadow(blurRadius: 8.0),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
+            clipBehavior: Clip.hardEdge,
+            child: Stack(
+              children: [
+                Container(
+                  decoration:  BoxDecoration(
+                    borderRadius: BorderRadius.zero,
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/AI_image.jpeg'),
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.9), // 90%の不透明度の黒
+                          Colors.white.withOpacity(0.1), // 白
+                        ],
+                        //stops: [0.2, 1], // 黒が85%の位置で終了し、残りは白
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'タイトル',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16,
+                              shadows: [
+                                Shadow(blurRadius: 8.0),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            'ここに説明文が入ります',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              shadows: [
+                                Shadow(blurRadius: 8.0),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

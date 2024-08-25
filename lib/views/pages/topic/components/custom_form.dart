@@ -88,7 +88,7 @@ class _CustomFormState extends State<CustomForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 60,
+              height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -134,7 +134,7 @@ class _CustomFormState extends State<CustomForm> {
               ),
             ),
             Container(
-              height: 60,
+              height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -184,7 +184,7 @@ class _CustomFormState extends State<CustomForm> {
               ),
             ),
             Container(
-              height: 60,
+              height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -236,6 +236,7 @@ class _CustomFormState extends State<CustomForm> {
                 ],
               ),
             ),
+            SizedBox(height: 10),
             Container(
               height: 110,
               child: Column(
@@ -250,18 +251,19 @@ class _CustomFormState extends State<CustomForm> {
                                 : Color(0xff5B5B5B),
                     ),
                   ),
+                  SizedBox(height: 8),
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8.0), // ボックスの内側にパディングを追加
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(8.0), // 角を丸くする
-                      //   border: Border.all(
-                      //     color: Theme.of(context).brightness == Brightness.dark
-                      //         ? Colors.white
-                      //         : Colors.black, // 枠線の色
-                      //     width: 2.0, // 枠線の太さ
-                      //   ),
-                      // ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0), // 角を丸くする
+                        border: Border.all(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Color(0xffC5C5C5), // 枠線の色
+                          width: 1.0, // 枠線の太さ
+                        ),
+                      ),
                       child: TextField(
                         focusNode: _focusNode3, // フォーカスノードを設定
                         maxLines: null, // テキストフィールド内で複数行に対応
@@ -277,11 +279,11 @@ class _CustomFormState extends State<CustomForm> {
                           border: InputBorder.none, // デフォルトの下線を消す
                         ),
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
-                              : Colors.black,
+                              : Colors.black87,
                         ),
                         textInputAction: TextInputAction.done, // キーボードに「完了」ボタンを表示
                         onSubmitted: (_) {
@@ -294,6 +296,7 @@ class _CustomFormState extends State<CustomForm> {
                 ],
               ),
             ),
+            SizedBox(height: 20),
             Container(
               height: 300,
               alignment: Alignment.center,
