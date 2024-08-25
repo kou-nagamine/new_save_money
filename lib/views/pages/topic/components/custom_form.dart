@@ -158,7 +158,6 @@ class _CustomFormState extends State<CustomForm> {
                       keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly, // 数字のみ入力可能にする
-                        ThousandsSeparator(), // 3桁ごとにカンマを挿入
                       ],
                       focusNode: _focusNode2, // フォーカスノードを設定
                       textAlign: TextAlign.end, // テキストを右揃えにする
