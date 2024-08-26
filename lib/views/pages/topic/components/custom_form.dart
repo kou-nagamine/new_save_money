@@ -199,7 +199,13 @@ class _CustomFormState extends State<CustomForm> {
                         FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
                          _getEnteredPrice(); // 入力された金額を取得して処理する
                       },
-                    ),
+                      onChanged: (value) {
+                      setState(() {
+                        _amount = int.tryParse(value) ?? 0;
+                      });
+                      _onFormChanged();
+                    },
+                  ),
                   ),
                 ],
               ),
