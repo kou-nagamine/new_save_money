@@ -10,26 +10,29 @@ class MoneyHistoryList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(userLogNotifierProvider);// Riverpodのプロバイダを監視し、状態の変更を反映
+    ref.watch(userLogNotifierProvider); // Riverpodのプロバイダを監視し、状態の変更を反映
 
     return ListView.builder(
       padding: const EdgeInsets.only(top: 10),
-      itemCount: historyData.length,// 履歴データの数だけリストアイテムを作成
+      itemCount: historyData.length, // 履歴データの数だけリストアイテムを作成
       itemBuilder: (context, index) {
         final item = historyData[index]; // 各アイテムのデータを取得
-        
-        // `categoryName` から各要素を取り出す
-        final Set<dynamic> categoryNameSet = item['categoryName'];
-        IconData categoryIcon = categoryNameSet.firstWhere((element) => element is IconData);// アイコンデータを取得
-        String categoryName = categoryNameSet.firstWhere((element) => element is String);// カテゴリ名を取得
-        Color color = categoryNameSet.firstWhere((element) => element is Color); // 色データを取得
-        
+
+        // アイコン、カテゴリ名、色データを取得
+        final String categoryName = item['categoryName'];
+        final IconData categoryIcon = item['categoryIcon'];
+        final Color color = item['color'];
+        final String purpose = item['purpose']; // 用途データを取得
         final int price = item['price'];
+
+        // purpose に応じて色を変更
+        final Color priceColor = purpose == '入金' ? Color(0xFF2CB13C) : Color(0xFFE82929);
+
         return Dismissible(
-          key: Key(item.toString()),  
+          key: Key(item.toString()),
           onDismissed: (direction) {
             final price = item['price']; // 削除する項目の価格を取得
-            ref.read(userLogNotifierProvider.notifier).deleteLog(index);  // データを削除
+            ref.read(userLogNotifierProvider.notifier).deleteLog(index); // データを削除
             ref.read(allPriceNotifierProvider.notifier).subtractPrice(price); // トータル金額から削除
 
             // ScaffoldMessenger.of(context).showSnackBar(
@@ -55,7 +58,7 @@ class MoneyHistoryList extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
             child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0.0), 
+              contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0.0),
               title: Text(
                 categoryName,
                 style: TextStyle(
@@ -77,11 +80,11 @@ class MoneyHistoryList extends ConsumerWidget {
                 ),
               ),
               trailing: Text(
-                "￥$price",
+                "￥${price}",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF2CB13C),
+                  color: priceColor, // ここで色を設定
                 ),
               ),
             ),

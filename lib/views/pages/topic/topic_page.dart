@@ -11,6 +11,12 @@ final images = [
       "assets/images/moneyimage.jpeg",
       ];
 
+final labels = [
+  "学習",
+  "楽しむ",
+  "その他",
+];    
+
 //TopicPageの全体
 class TopicPage extends StatelessWidget {
   const TopicPage({super.key});
@@ -20,7 +26,7 @@ class TopicPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: DefaultTabController(
-          length: 3,
+          length: labels.length,
           child: NestedScrollView(
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -76,7 +82,6 @@ class TopicPage extends StatelessWidget {
     );
   }
 }
-
 //TopicPageのスライドショー
 class HeaderWidget extends StatefulWidget {
   final List<String> images;

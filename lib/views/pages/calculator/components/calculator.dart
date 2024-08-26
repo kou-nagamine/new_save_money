@@ -75,7 +75,9 @@ class _CalculatorState extends ConsumerState<Calculator> {
       ),
       CalculatorButton(
         buttonText: '→',
-        categoryData: categoryData,
+        label: _labels[selectedIndex],
+        color : _colors[selectedIndex],
+        icon : _icons[selectedIndex],
         isEnabled: parsedChageState >= 1,
       ),
     ];
@@ -109,11 +111,9 @@ class _CalculatorState extends ConsumerState<Calculator> {
                         setState(() {
                           selectedIndex = index;
                           categoryData = [
-                            {
-                              _labels[index],
-                              _icons[index],
-                              _colors[index],
-                            },
+                            _labels[index],
+                            _icons[index],
+                            _colors[index],
                           ];
                         });
                       },

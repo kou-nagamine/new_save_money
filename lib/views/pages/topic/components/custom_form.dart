@@ -6,7 +6,9 @@ import 'package:new_save_money/views/pages/home/components/thousand_separator.da
 import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
 
 class CustomForm extends StatefulWidget {
-  const CustomForm({Key? key}) : super(key: key);
+  final Function(String title, int amount, DateTime date, String memo) onFormChanged;
+
+  const CustomForm({Key? key, required this.onFormChanged}) : super(key: key);
 
   @override
   _CustomFormState createState() => _CustomFormState();
@@ -23,11 +25,15 @@ class _CustomFormState extends State<CustomForm> {
   int _calculatedPrice = 6055;  // 計算結果を保持する変数
   double _calculatedPercent = 0.0;  // 計算結果を保持する変数
 
+  String _title = '';
+  int _amount = 0;
+  String _memo = '';
+
   @override
   void initState() {
     super.initState();
 
-    // FocusNode1のリスナーを追加
+    // FocusNodeのリスナーを追加
     _focusNode1.addListener(() {
       if (_focusNode1.hasFocus) {
         Scrollable.ensureVisible(
@@ -38,7 +44,6 @@ class _CustomFormState extends State<CustomForm> {
       }
     });
 
-    // FocusNode2のリスナーを追加
     _focusNode2.addListener(() {
       if (_focusNode2.hasFocus) {
         Scrollable.ensureVisible(
@@ -48,7 +53,6 @@ class _CustomFormState extends State<CustomForm> {
       }
     });
 
-    // FocusNode3のリスナーを追加
     _focusNode3.addListener(() {
       if (_focusNode3.hasFocus) {
         Scrollable.ensureVisible(
@@ -80,13 +84,17 @@ class _CustomFormState extends State<CustomForm> {
     super.dispose();
   } 
 
+  void _onFormChanged() {
+    widget.onFormChanged(_title, _amount, _selectedDate, _memo);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-       controller: _scrollController, // スクロールコントローラーを設定
-      child:  Padding(
+      controller: _scrollController, // スクロールコントローラーを設定
+      child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-        child:  Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),
@@ -97,12 +105,12 @@ class _CustomFormState extends State<CustomForm> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text('タイトル',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Color(0xff5B5B5B),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Color(0xff5B5B5B),
                     ),
                   ),
                   Expanded(
@@ -116,7 +124,7 @@ class _CustomFormState extends State<CustomForm> {
                               : Colors.black.withOpacity(0.3),
                               fontWeight: FontWeight.bold,
                         ),
-                        hintText: 'サークルの会食', 
+                        hintText: 'サークルの会食',
                         border: InputBorder.none, // 下線を消す
                       ),
                       style: TextStyle(
@@ -127,16 +135,23 @@ class _CustomFormState extends State<CustomForm> {
                             : Colors.black,
                             fontFamily: 'NotoSansJP',
                       ),
-                      textInputAction: TextInputAction.done, // キーボードに「完了」ボタンを表示
+                      textInputAction: TextInputAction.done,
                       onSubmitted: (_) {
-                        // キーボードの「完了」を押した時の処理
-                        FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
+                        FocusScope.of(context).unfocus();
+                        _onFormChanged();
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _title = value;
+                        });
+                        _onFormChanged();
                       },
                     ),
                   ),
                 ],
               ),
             ),
+            // 金額入力フィールド
             Container(
               height: 50,
               child: Row(
@@ -155,6 +170,7 @@ class _CustomFormState extends State<CustomForm> {
                   Expanded(
                     child: TextField(
                       controller:  _priceController,
+                      
                       keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly, // 数字のみ入力可能にする
@@ -175,9 +191,9 @@ class _CustomFormState extends State<CustomForm> {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xffE82929)
+                        color: Color(0xffE82929),
                       ),
-                      textInputAction: TextInputAction.done, // キーボードに「完了」ボタンを表示
+                      textInputAction: TextInputAction.done,
                       onSubmitted: (_) {
                         // キーボードの「完了」を押した時の処理
                         FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
@@ -188,6 +204,7 @@ class _CustomFormState extends State<CustomForm> {
                 ],
               ),
             ),
+            // 日付選択フィールド
             Container(
               height: 50,
               child: Row(
@@ -195,12 +212,12 @@ class _CustomFormState extends State<CustomForm> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text('日付',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Color(0xff5B5B5B),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Color(0xff5B5B5B),
                     ),
                   ),
                   TextButton(
@@ -248,12 +265,12 @@ class _CustomFormState extends State<CustomForm> {
                 crossAxisAlignment: CrossAxisAlignment.start, // 左揃えに設定
                 children: [
                   Text('メモ',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Color(0xff5B5B5B),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Color(0xff5B5B5B),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -292,8 +309,14 @@ class _CustomFormState extends State<CustomForm> {
                         ),
                         textInputAction: TextInputAction.done, // キーボードに「完了」ボタンを表示
                         onSubmitted: (_) {
-                          // キーボードの「完了」を押した時の処理
-                          FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
+                          FocusScope.of(context).unfocus();
+                          _onFormChanged();
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _memo = value;
+                          });
+                          _onFormChanged();
                         },
                       ),
                     ),
@@ -345,9 +368,8 @@ class _CustomFormState extends State<CustomForm> {
               ),
             )
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 }
-
