@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 
 //components
 import 'calculator_button.dart';
 
 //riverpods
 import '../providers/charge_riverpod.dart';
+import 'package:new_save_money/views/pages/calculator/providers/temporary_list.dart';
 
 class Calculator extends ConsumerStatefulWidget {
   const Calculator({super.key});
@@ -38,15 +38,6 @@ class _CalculatorState extends ConsumerState<Calculator> {
     Colors.lightGreen,
     Colors.green,
   ];
-  
-  // デフォルトカテゴリデータ
-  List<dynamic> categoryData = [
-    {
-      '飲み物',
-      Icons.local_drink,
-      Colors.blue,
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +66,6 @@ class _CalculatorState extends ConsumerState<Calculator> {
       ),
       CalculatorButton(
         buttonText: '→',
-        label: _labels[selectedIndex],
-        color : _colors[selectedIndex],
-        icon : _icons[selectedIndex],
         isEnabled: parsedChageState >= 1,
       ),
     ];
@@ -110,11 +98,12 @@ class _CalculatorState extends ConsumerState<Calculator> {
                       onTap: () {
                         setState(() {
                           selectedIndex = index;
-                          categoryData = [
+                          final temporaryList = ref.read(temporaryListNotifierProvider.notifier);
+                          temporaryList.updateState([
                             _labels[index],
                             _icons[index],
                             _colors[index],
-                          ];
+                          ]);
                         });
                       },
                       child: Padding(
