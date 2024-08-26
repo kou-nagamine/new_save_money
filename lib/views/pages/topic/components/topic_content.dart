@@ -9,8 +9,9 @@ import '/views/pages/commons/navigation_bar/navigation_bar.dart';
 //providers
 import "/views/pages/home/providers/user_log.dart";
 
-class TopicContent extends ConsumerStatefulWidget {
-  const TopicContent({super.key});
+class TopicContent extends StatelessWidget{
+  const TopicContent({required this.index, super.key});
+  final int index;  // インデックスを受け取る
 
   @override
   _TopicContentState createState() => _TopicContentState();
@@ -35,9 +36,10 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: DraggableHome(
-        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),
-        headerWidget: headerWidget(context), // Custom header
-        headerExpandedHeight: 0.45,
+        curvedBodyRadius:0,
+        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),  
+        headerWidget: headerWidget(context),  // Custom header
+        headerExpandedHeight: 0.5,
         body: [
           CustomForm(
             onFormChanged: _onFormChanged, 
@@ -77,7 +79,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               },
               child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               backgroundColor: Color(0xff005BEA),
-              elevation: 0,
+              elevation: 10,
             ),
           ),
         ),
@@ -92,78 +94,81 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   }
 
   Widget headerWidget(BuildContext context) {
-    return Stack( 
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width * 1.0,
-          height: MediaQuery.of(context).size.height * 0.6,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/kinki_tourist.png'),
-              fit: BoxFit.cover, // 画像を全体にカバー
-            ),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width * 1.0,
-          height: MediaQuery.of(context).size.height * 0.6,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [
-                Colors.black.withOpacity(0.9), // 90%の不透明度の黒
-                Colors.white.withOpacity(0), // 白
-              ],
-              stops: [0.1, 1], // 黒が85%の位置で終了し、残りは白
-            ),
-          ),
-          child: Column(
-            children: [
-              Spacer(),
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 10),
-                      Icon(
-                            Icons.local_drink,
-                            size: 35,
-                            color: Colors.blue[400],
-                          ),
-                          SizedBox(width: 10),
-                      Text(
-                        '外食',
-                        style: TextStyle(
-                          fontSize: 35,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+    return Hero(
+      tag: 'card-hero-$index',  
+      child:  Stack( 
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 1.0,
+            height: MediaQuery.of(context).size.height * 0.6,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/AI_image.jpeg'),
+                fit: BoxFit.cover, // 画像を全体にカバー
               ),
-              SizedBox(height: 30),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 50,
-          left: 10,
-          child: IconButton(
-            onPressed: () {
-              Navigator.pop(context); // 前のページに戻る
-            },
-            icon: Icon(
-              Icons.arrow_circle_left_rounded,
-              color: Colors.black,
-              size: 50,
             ),
           ),
-        ),
-     ],
+          Container(
+            width: MediaQuery.of(context).size.width * 1.0,
+            height: MediaQuery.of(context).size.height * 0.6,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Colors.black.withOpacity(0.9), // 90%の不透明度の黒
+                  Colors.white.withOpacity(0), // 白
+                ],
+                stops: [0.1, 1], // 黒が85%の位置で終了し、残りは白
+              ),
+            ),
+            child: Column(
+              children: [
+                Spacer(),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 10),
+                        Icon(
+                              Icons.local_drink,
+                              size: 35,
+                              color: Colors.blue[400],
+                            ),
+                            SizedBox(width: 10),
+                        Text(
+                          '外食',
+                          style: TextStyle(
+                            fontSize: 35,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 30),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 50,
+            left: 10,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context); // 前のページに戻る
+              },
+              icon: Icon(
+                Icons.arrow_circle_left_rounded,
+                color: Colors.black,
+                size: 50,
+              ),
+            ),
+          ),
+        ],
+      )
     );
   }
 }
