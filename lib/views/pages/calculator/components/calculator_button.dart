@@ -7,6 +7,7 @@ import '../providers/add_price.dart';
 import '../providers/charge_riverpod.dart';
 import '../providers/all_price.dart';
 import '/views/pages/home/providers/user_log.dart';
+import '../providers/temporary_list.dart';
 //import '../../../riverpods/add_day_riverpod.dart';
 
 //pages
@@ -18,22 +19,17 @@ class CalculatorButton extends ConsumerWidget {
   const CalculatorButton({
     super.key,
     required this.buttonText,
-    this.label = "飲み物",
-    this.icon = Icons.local_drink,
-    this.color = Colors.blue,
     this.isEnabled = true, //　金額が0の場合ボタンを押せないようにするので、そこで使用する変数です。 デフォルトはtrue
   });
 
   final String buttonText;
-  final String label;
-  final IconData icon;
-  final Color color;
   final bool isEnabled; // ボタンの有効/無効状態
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     final chageState = ref.watch(chargeRiverpodNotifierProvider); 
+    final temporaryList = ref.watch(temporaryListNotifierProvider);
 
     return Padding(
       padding: const EdgeInsets.all(6.5),
@@ -67,15 +63,15 @@ class CalculatorButton extends ConsumerWidget {
 
               final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
               userLogNotifier.updateState({
-                'categoryName': label,
-                'categoryIcon': icon,
-                'color': color,
+                'categoryName': temporaryList[0] as String,
+                'categoryIcon':temporaryList[1] as IconData,
+                'color': temporaryList[2] as Color,
                 // 価格を設定
                 'price': int.parse(chageState),
                 // 日付を設定
                 "date" : DateTime.now(),
                 // メモを設定
-                "memo" : label,
+                "memo" : temporaryList[0] as String,
                 // 目的を設定
                 "purpose" : "入金",
               });
