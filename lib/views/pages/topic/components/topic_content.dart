@@ -9,7 +9,7 @@ import '/views/pages/commons/navigation_bar/navigation_bar.dart';
 //providers
 import "/views/pages/home/providers/user_log.dart";
 
-class TopicContent extends StatelessWidget{
+class TopicContent extends ConsumerStatefulWidget{
   const TopicContent({required this.index, super.key});
   final int index;  // インデックスを受け取る
 
@@ -95,7 +95,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
 
   Widget headerWidget(BuildContext context) {
     return Hero(
-      tag: 'card-hero-$index',  
+      tag: 'card-hero-${widget.index}',
       child:  Stack( 
         children: [
           Container(

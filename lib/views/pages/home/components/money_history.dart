@@ -56,7 +56,7 @@ class MoneyHistoryList extends ConsumerWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+            padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
             child: ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0.0),
               title: Text(
@@ -67,15 +67,15 @@ class MoneyHistoryList extends ConsumerWidget {
                 ),
               ),
               leading: Container(
-                width: 60,
-                height: 60,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   categoryIcon,
-                  size: 30,
+                  size: 20,
                   color: color,
                 ),
               ),

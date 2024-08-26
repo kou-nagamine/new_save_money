@@ -100,7 +100,7 @@ class HomePage extends ConsumerWidget {
             child: Container(
               width: MediaQuery.of(context).size.width * 1.0,
               height: MediaQuery.of(context).size.height * 0.73,
-              padding: EdgeInsets.all(30),
+              padding: EdgeInsets.fromLTRB(30, 15, 30, 100),
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
                             ? Colors.black
@@ -127,7 +127,7 @@ class HomePage extends ConsumerWidget {
                       Text(
                         '履歴',
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
