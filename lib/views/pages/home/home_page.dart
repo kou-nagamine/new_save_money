@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:iconoir_flutter/regular/box.dart';
+import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
 
 //components
 import 'components/money_history.dart';
@@ -63,7 +64,7 @@ class HomePage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '￥${allPrice}',
+                  '¥ ${NumberFormat("#,###").format(allPrice)}',
                   style: TextStyle(
                     fontSize: 50,
                     fontWeight: FontWeight.bold,

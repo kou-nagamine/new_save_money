@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/user_log.dart';
 import 'package:new_save_money/views/pages/calculator/providers/all_price.dart';
 
+import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
+
 class MoneyHistoryList extends ConsumerWidget {
   final List<Map<String, dynamic>> historyData;
   MoneyHistoryList({required this.historyData});
@@ -63,7 +65,10 @@ class MoneyHistoryList extends ConsumerWidget {
                 categoryName,
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black87,
                 ),
               ),
               leading: Container(
@@ -80,7 +85,7 @@ class MoneyHistoryList extends ConsumerWidget {
                 ),
               ),
               trailing: Text(
-                "￥${price}",
+                "¥${NumberFormat("#,###").format(price)}",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

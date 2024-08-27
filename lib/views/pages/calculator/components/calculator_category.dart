@@ -60,13 +60,13 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
                 child: SizedBox(
-                  width: size.width * 0.25,
+                  width: size.width * 0.28,
                   height: size.height * 0.04,
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: selectedIndex == index
-                          ? _colors[index].withOpacity(0.1)
+                          ? _colors[index]
                           : null,
                       borderRadius: BorderRadius.circular(50.0),
                       border: Border.all(color: _colors[index]),
@@ -77,12 +77,17 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(_icons[index], color: _colors[index]),
+                          Icon(_icons[index], 
+                          color: selectedIndex == index
+                            ? Colors.white
+                            :  _colors[index]),
                           const SizedBox(width: 4.0),
                           Text(
                             _labels[index],
-                            style: const TextStyle(
-                              color: Colors.black,
+                            style: TextStyle(
+                              color: selectedIndex == index
+                                ? Colors.white
+                                :  Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

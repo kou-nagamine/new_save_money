@@ -53,6 +53,7 @@ dependencies:
     sdk: flutter
   google_fonts: ^6.2.1
   flutter_datetime_picker_plus: ^2.2.0
+  figma_squircle: ^0.5.3
 
 dev_dependencies:
   flutter_test:

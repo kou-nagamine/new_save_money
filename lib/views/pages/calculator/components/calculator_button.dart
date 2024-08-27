@@ -1,6 +1,7 @@
 //packages
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:figma_squircle/figma_squircle.dart';
 
 //riverpods
 import '../providers/add_price.dart';
@@ -36,10 +37,6 @@ class CalculatorButton extends ConsumerWidget {
       child: Container(
         height: size.height * 0.095,
         width: size.height * 0.095, 
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(size.width * 0.035), 
-        ),
         child: ElevatedButton(
           onPressed: isEnabled ? () {
             final chargeNotifier = ref.read(chargeRiverpodNotifierProvider.notifier);
@@ -80,9 +77,11 @@ class CalculatorButton extends ConsumerWidget {
           style: ElevatedButton.styleFrom(
             elevation: 0,
             padding: EdgeInsets.zero, // ボタンの内側の余白をなしに設定
-            backgroundColor: isEnabled ? Colors.white : Colors.grey, // isEnabledに基づいて背景色を変更
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15), 
+            backgroundColor: Colors.white, // isEnabledに基づいて背景色を変更
+            shape: SmoothRectangleBorder(
+              borderRadius: SmoothBorderRadius(
+              cornerRadius: 20,
+              cornerSmoothing: 0.6)
             ),
             alignment: Alignment.center, 
           ),
@@ -90,7 +89,7 @@ class CalculatorButton extends ConsumerWidget {
             buttonText,
             textAlign: TextAlign.center, 
             style: TextStyle(
-              fontSize: size.width * 0.1,
+              fontSize: size.width * 0.07,
               fontWeight: FontWeight.bold, 
               color: isEnabled ? Colors.black : Colors.grey, // isEnabledに基づいてテキストの色を変更
             ),
@@ -129,15 +128,17 @@ class BigCalculatorButton extends ConsumerWidget {
           style: ElevatedButton.styleFrom(
             elevation: 0, 
             alignment: Alignment.center,
-            backgroundColor: isEnabled ? Colors.white : Colors.grey[300], // isEnabledに基づいて背景色を変更
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+            backgroundColor:Colors.white, // isEnabledに基づいて背景色を変更
+            shape: SmoothRectangleBorder(
+              borderRadius: SmoothBorderRadius(
+              cornerRadius: 20,
+              cornerSmoothing: 0.6)
             ),
           ),
           child: Text(
             buttonText, 
             style: TextStyle(
-              fontSize: size.width * 0.1, 
+              fontSize: size.width * 0.07, 
               fontWeight: FontWeight.bold, 
               color: isEnabled ? Colors.black : Colors.grey, // isEnabledに基づいてテキストの色を変更
             ),

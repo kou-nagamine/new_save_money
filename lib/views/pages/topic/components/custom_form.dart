@@ -133,7 +133,6 @@ class _CustomFormState extends State<CustomForm> {
                         color: Theme.of(context).brightness == Brightness.dark
                             ? Colors.white
                             : Colors.black,
-                            fontFamily: 'NotoSansJP',
                       ),
                       textInputAction: TextInputAction.done,
                       onSubmitted: (_) {
