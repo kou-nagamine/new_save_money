@@ -7,7 +7,6 @@ import 'calculator_button.dart';
 
 //riverpods
 import '../providers/charge_riverpod.dart';
-import 'package:new_save_money/views/pages/calculator/providers/temporary_list.dart';
 
 class Calculator extends ConsumerStatefulWidget {
   const Calculator({super.key});
@@ -64,7 +63,7 @@ class _CalculatorState extends ConsumerState<Calculator> {
             bottom: size.height * 0.02, left: size.width * 0.03, right: size.width * 0.03),
         child: Column(
           children: <Widget>[
-            CalculatorCateGory(),
+            CalculatorCateGory(), // category
             Table(
               columnWidths: const <int, TableColumnWidth>{
                 0: IntrinsicColumnWidth(),
