@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 
 //riverpods
-import '../providers/add_price.dart';
 import '../providers/charge_riverpod.dart';
 import '../providers/all_price.dart';
 import '/views/pages/home/providers/user_log.dart';
