@@ -7,7 +7,7 @@ part of 'temporary_list.dart';
 // **************************************************************************
 
 String _$temporaryListNotifierHash() =>
-    r'1df9a4cbf4e75791611d98a892985f8dff94445f';
+    r'b18d3d1b436ec372410f8ee68c997db6f4240b88';
 
 /// See also [TemporaryListNotifier].
 @ProviderFor(TemporaryListNotifier)
