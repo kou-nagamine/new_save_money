@@ -5,9 +5,9 @@ import 'dart:async';
 
 //スライドショーの画像
 final images = [
-      "assets/images/jtb.png",
-      "assets/images/kinki_tourist.png",
-      "assets/images/rakuten_travel.png",
+      "assets/images/lounas.png",
+      "assets/images/cashless.jpeg",
+      "assets/images/zenn.png",
       "assets/images/moneyimage.jpeg",
       ];
 
@@ -127,19 +127,16 @@ class HeaderWidget extends StatefulWidget {
 
     @override
     Widget build(BuildContext context) {
-      final controller = PageController(viewportFraction: 1.0, keepPage: true);
       final double screenWidth = MediaQuery.of(context).size.width;
 
       final pages = List.generate(
-        images.length,
-        (index) => Container(
-          width: screenWidth,
-          child: Center(
-            child: Image.asset(
-              images[index],
-              fit: BoxFit.cover,
-              width: screenWidth,
-            ),
+        widget.images.length,
+        (index) => AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Image.asset(
+            widget.images[index],
+            fit: BoxFit.cover,
+            width: screenWidth,
           ),
         ),
       );
