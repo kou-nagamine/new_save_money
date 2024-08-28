@@ -190,7 +190,7 @@ class _GraphPageState extends State<GraphPage> with SingleTickerProviderStateMix
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'カテゴリー別出費',
+                  'カテゴリー別の我慢',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
