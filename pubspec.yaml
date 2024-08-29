@@ -85,9 +85,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/deposit.svg
-    - assets/images/jtb.png
-    - assets/images/kinki_tourist.png
-    - assets/images/rakuten_travel.png
+    - assets/images/lounas.png
+    - assets/images/zenn.png
+    - assets/images/cashless.jpeg
     - assets/images/meisi.png
     - assets/images/AI_image.jpeg
     - assets/images/moneyimage.jpeg

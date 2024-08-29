@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:iconoir_flutter/regular/box.dart';
+import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
 
 //components
@@ -47,7 +48,7 @@ class HomePage extends ConsumerWidget {
               icon: const Icon(
                 Icons.settings_outlined,
                 size: 35,
-                color: Colors.white70,
+                color: Colors.white,
               ),
               onPressed: () {
                 Navigator.push(
@@ -101,7 +102,7 @@ class HomePage extends ConsumerWidget {
             child: Container(
               width: MediaQuery.of(context).size.width * 1.0,
               height: MediaQuery.of(context).size.height * 0.73,
-              padding: EdgeInsets.fromLTRB(30, 15, 30, 100),
+              padding: EdgeInsets.fromLTRB(30, 15, 10, 100),
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
                             ? Colors.black
@@ -125,32 +126,55 @@ class HomePage extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         '履歴',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.insights, size: 30),  // アイコンを設定
+                      TextButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => GraphPage()),
                           );
                           print(allPrice);
-                        }
-                      ),
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'グラフを確認する',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.blue
+                              ),
+                            ),
+                            Container(
+                              height: 28,
+                              alignment: Alignment.center,  
+                              child: Icon(
+                                Icons.chevron_right,
+                                size: 30,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),    
                     ],
                   ),
                   Expanded(
-                    child: historyData.isEmpty
-                    ? const Padding(
-                      padding:  EdgeInsets.only(top: 40),
-                      child: Text('我慢した金額を入力しよう！'))
-                    : MoneyHistoryList(historyData: historyData),
-                  ),
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 20),
+                      child: historyData.isEmpty
+                      ? const Padding(
+                        padding:  EdgeInsets.only(top: 50),
+                        child: Text('我慢した金額を入力しよう！'))
+                      : MoneyHistoryList(historyData: historyData),
+                    ),
+                  )
                 ],
               ),
             ),
