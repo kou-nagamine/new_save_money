@@ -3,6 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+//firebase
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 import '/views/pages/topic/components/topic_content.dart';
 
 //commons
@@ -11,7 +15,11 @@ import 'views/pages/commons/navigation_bar/navigation_bar.dart';
 //MaterialWithModalsPageRoute
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(
     const ProviderScope(
       child: MyApp(),
