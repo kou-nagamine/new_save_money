@@ -3,26 +3,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:new_save_money/views/pages/calculator/providers/temporary_list.dart';
 
 
-
-final List<IconData> _icons = [
-    Icons.lunch_dining, // 食事
-    Icons.local_drink, // 飲み物
-    Icons.icecream, // 菓子類
-    Icons.star, // その他
-  ];
-
-final List<String> _labels = [
-  '食事',
-  '飲み物',
-  '菓子類',
-  'その他',
-];
-
-final List<Color> _colors = [
-  Colors.orange,
-  Colors.blue,
-  Colors.lightGreen,
-  Colors.green,
+final List<Map<String, dynamic>> choicesLists = [
+  {
+    'icon': Icons.lunch_dining,
+    'color': Colors.orange,
+    'label': '食事',
+  },
+  {
+    'icon': Icons.local_drink,
+    'color': Colors.blue,
+    'label': '飲み物',
+  },
+  {
+    'icon': Icons.icecream,
+    'color': Colors.lightGreen,
+    'label': '菓子類',
+  },
+  {
+    'icon': Icons.star,
+    'color': Colors.green,
+    'label': 'その他',
+  },
 ];
 
 class CalculatorCateGory extends ConsumerStatefulWidget {
@@ -42,7 +43,7 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
         height: size.height * 0.07,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: _icons.length,
+          itemCount: choicesLists.length,
           shrinkWrap: true,
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -51,9 +52,9 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
                   selectedIndex = index;
                   final temporaryList = ref.read(temporaryListNotifierProvider.notifier);
                   temporaryList.updateState([
-                    _labels[index],
-                    _icons[index],
-                    _colors[index],
+                    choicesLists[index]['label'],
+                    choicesLists[index]['icon'],
+                    choicesLists[index]['color']
                   ]);
                 });
               },
@@ -66,10 +67,10 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: selectedIndex == index
-                          ? _colors[index]
+                          ? choicesLists[index]['color']
                           : null,
                       borderRadius: BorderRadius.circular(50.0),
-                      border: Border.all(color: _colors[index]),
+                      border: Border.all(color: choicesLists[index]['color']),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 3.0),
@@ -77,13 +78,13 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(_icons[index], 
+                          Icon(choicesLists[index]['icon'],
                           color: selectedIndex == index
                             ? Colors.white
-                            :  _colors[index]),
+                            :  choicesLists[index]['color']),
                           const SizedBox(width: 4.0),
                           Text(
-                            _labels[index],
+                            choicesLists[index]['label'],
                             style: TextStyle(
                               color: selectedIndex == index
                                 ? Colors.white
