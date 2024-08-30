@@ -9,7 +9,8 @@ import '/views/pages/commons/navigation_bar/navigation_bar.dart';
 //providers
 import "/views/pages/home/providers/user_log.dart";
 import '/views/pages/topic/providers/temporary_topic_list.dart';
-import '/views/pages/calculator/providers/all_price.dart';
+//freezed
+import '/views/pages/home/providers/save.dart';
 
 class TopicContent extends ConsumerStatefulWidget{
   const TopicContent({required this.index, super.key});
@@ -45,33 +46,26 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),
-              onPressed: isButtonEnabled
-                  ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CommonNavigationBar()),
-                      );
-                      final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
-                      final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
-                      final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
-                      allPriceNotifier.subtractPrice(temporaryTopicList[1]);
-                      temporaryTopicListNotifier.resetState();
-                      userLogNotifier.updateState({
-                        'categoryName': temporaryTopicList[0],
-                        'categoryIcon': Icons.local_activity,
-                        'color': Color(0xffE82929),
-                        'price': temporaryTopicList[1],
-                        'date': temporaryTopicList[2],
-                        'memo': temporaryTopicList[3],
-                        'purpose': "出金",
-                      });
-                    }
-                  : null, // ボタンが押せないときはnullに設定
-              child: Text('割り当てる',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              backgroundColor:
-                  isButtonEnabled ? Color(0xff005BEA) : Colors.grey, // ボタンの色を設定
+              onPressed: isButtonEnabled ? () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CommonNavigationBar()),
+                );
+                final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
+                final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
+                // Saveクラスのインスタンスを作成
+                final save = Save(
+                  name: temporaryTopicList[0], // カテゴリ名
+                  price: temporaryTopicList[1], // 価格
+                  icon: Icons.local_activity, // カテゴリアイコン
+                  color: Color(0xffE82929), // カテゴリカラー
+                  payment: false, // 必要に応じて true または false に設定
+                );
+                userLogNotifier.updateState(save);
+              },
+              : null,
+              child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              backgroundColor: Color(0xff005BEA) : Colors.grey, ,
               elevation: 10,
             ),
           ),

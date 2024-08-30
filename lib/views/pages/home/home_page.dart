@@ -172,7 +172,7 @@ class HomePage extends ConsumerWidget {
                       ? const Padding(
                         padding:  EdgeInsets.only(top: 50),
                         child: Text('我慢した金額を入力しよう！'))
-                      : MoneyHistoryList(historyData: historyData),
+                      : MoneyHistoryList(),
                     ),
                   )
                 ],

@@ -8,13 +8,13 @@ import '../providers/charge_riverpod.dart';
 import '../providers/all_price.dart';
 import '/views/pages/home/providers/user_log.dart';
 import '../providers/temporary_list.dart';
-//import '../../../riverpods/add_day_riverpod.dart';
-
-//pages
-import './calculator.dart';
 
 //commons
 import '../../commons/navigation_bar/navigation_bar.dart';
+
+//freezed
+import '/views/pages/home/providers/save.dart';
+
 class CalculatorButton extends ConsumerWidget {
   const CalculatorButton({
     super.key,
@@ -54,24 +54,19 @@ class CalculatorButton extends ConsumerWidget {
                 context,
                 MaterialPageRoute(builder: (context) => CommonNavigationBar()),
               );
-              final allNotifier = ref.read(allPriceNotifierProvider.notifier); 
-              final temporaryListNotifier = ref.read(temporaryListNotifierProvider.notifier);
-              allNotifier.updateAllPrice(int.parse(chageState));
-              temporaryListNotifier.resetState();
-              final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
-              userLogNotifier.updateState({
-                'categoryName': temporaryList[0] as String,
-                'categoryIcon':temporaryList[1] as IconData,
-                'color': temporaryList[2] as Color,
-                // 価格を設定
-                'price': int.parse(chageState),
-                // 日付を設定
-                "date" : DateTime.now(),
-                // メモを設定
-                "memo" : temporaryList[0] as String,
-                // 目的を設定
-                "purpose" : "入金",
-              });
+              final allNotifier = ref.read(allPriceNotifierProvider.notifier);  // 全体の値を変更するnotifierを取得
+              allNotifier.updateAllPrice(int.parse(chageState)); // 全体の値にchargeStateを追加
+              final userLogNotifier = ref.read(userLogNotifierProvider.notifier); //
+              // Save クラスのインスタンスを作成
+              final save = Save(
+                name: temporaryList[0] as String, // カテゴリ名
+                icon: temporaryList[1] as IconData, // カテゴリアイコン
+                color: temporaryList[2] as Color, // カテゴリカラー
+                price: int.parse(chageState), // 価格
+                payment: false, // 必要に応じて true または false に設定
+              );
+              // Save インスタンスを updateState に渡す
+              userLogNotifier.updateState(save);
             }
           } : null, // isEnabledがfalseの場合はボタンを無効化
           style: ElevatedButton.styleFrom(
