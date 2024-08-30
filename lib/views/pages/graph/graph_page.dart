@@ -247,27 +247,21 @@ Widget _buildGridItem(IconData icon, Color color ,String count, String price,) {
       borderRadius: BorderRadius.circular(20),
     ),
     padding: const EdgeInsets.all(15),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children:
-        [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    child: Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(icon, size: 30, color: color,),
+          Column(
             children: [
-              Icon(icon, size: 40, color: color,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(count, style: TextStyle(fontSize: 16, color: Colors.black87 ,fontWeight: FontWeight.bold)),
-                  Text(price, style: TextStyle(fontSize: 16, color: Colors.black87 ,fontWeight: FontWeight.bold)),
-                ],
-              ),
-              SizedBox(width: 0),
+              SizedBox(height: 3),
+              Text(count, style: TextStyle(fontSize: 16, color: Colors.black87 ,fontWeight: FontWeight.bold)),
+              Text(price, style: TextStyle(fontSize: 16, color: Colors.black87 ,fontWeight: FontWeight.bold)),
             ],
           ),
-        ]
+          SizedBox(width: 0),
+        ],
+      ),
     ),
   );
 }
