@@ -23,13 +23,21 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
   final TextEditingController _priceController = TextEditingController(); //
+  int calculatedPrice = 0;
   String _EnteredPrice = ''; // 入力された金額を保持する変数
-  int _calculatedPrice = 6055; // 計算結果を保持する変数
   double _calculatedPercent = 0.0; // 計算結果を保持する変数
 
   @override
   void initState() {
     super.initState();
+
+    // Initialize calculatedPrice with allPraice[1]
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final allPraice = ref.read(allPriceNotifierProvider);
+      setState(() {
+        calculatedPrice = allPraice[1];
+      });
+    });
 
     // FocusNodeのリスナーを追加
     _focusNode1.addListener(() {
@@ -65,7 +73,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
     setState(() {
       _EnteredPrice = _priceController.text; // 入力された金額を取得して変数に保存
       int enteredPriceInt = int.tryParse(_EnteredPrice) ?? 0; // 文字列を整数に変換、失敗したら0
-      _calculatedPrice = allPraice - enteredPriceInt; // 6055から引いた金額を計算
+      calculatedPrice = allPraice[1] - enteredPriceInt; // 6055から引いた金額を計算
       double calculatedPercent = (enteredPriceInt.toDouble() / 6055 * 100); // 割合を計算
       _calculatedPercent = double.parse(calculatedPercent.toStringAsFixed(1)); // 少数第1位に丸める
     });
@@ -85,6 +93,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   Widget build(BuildContext context) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
     final allPraice = ref.watch(allPriceNotifierProvider);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus(); // キーボードを閉じる
@@ -191,9 +200,9 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                         textInputAction: TextInputAction.done,
                         onSubmitted: (_) {
                           FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
-                          _getEnteredPrice(allPraice); // 入力された金額を取得して処理する
                         },
                         onChanged: (value) {
+                          _getEnteredPrice(allPraice); // 入力された金額を取得して処理する
                           int price = int.tryParse(value) ?? 0;
                           temporaryTopicList.updatePrice(price);
                         },
@@ -324,7 +333,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    Text('¥${NumberFormat("#,###").format(allPraice)}',
+                    Text('¥${NumberFormat("#,###").format(allPraice[1])}',
                       style: TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.w800,
@@ -332,7 +341,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                       ),
                     ),
                     Icon(Icons.arrow_downward, size: 20, color: Colors.black),
-                    Text('¥${NumberFormat("#,###").format(_calculatedPrice)}',
+                    Text('¥${NumberFormat("#,###").format(calculatedPrice)}',
                     style: TextStyle(
                       fontSize: 64,
                       fontWeight: FontWeight.w800,

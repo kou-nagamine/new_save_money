@@ -9,6 +9,7 @@ import '/views/pages/commons/navigation_bar/navigation_bar.dart';
 //providers
 import "/views/pages/home/providers/user_log.dart";
 import '/views/pages/topic/providers/temporary_topic_list.dart';
+import '/views/pages/calculator/providers/all_price.dart';
 
 class TopicContent extends ConsumerStatefulWidget{
   const TopicContent({required this.index, super.key});
@@ -46,7 +47,9 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   MaterialPageRoute(builder: (context) => CommonNavigationBar()),
                 );
                 final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
+                final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
                 final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
+                allPriceNotifier.subtractPrice(temporaryTopicList[1]);
                 userLogNotifier.updateState({
                   // カテゴリ名を設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
                   'categoryName': temporaryTopicList[0],
