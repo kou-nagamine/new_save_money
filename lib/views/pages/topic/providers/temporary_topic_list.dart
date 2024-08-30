@@ -2,15 +2,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'temporary_topic_list.g.dart';
 
-@Riverpod(keepAlive: true)
+@Riverpod()
 class TemporaryTopicListNotifier extends _$TemporaryTopicListNotifier {
   // 初期状態として空のリストを返す
   @override
   List<dynamic> build() {
-    return ['サークル会食',700,DateTime.now(),''];
+    return [null,null,DateTime.now(),''];
   }
-  void updateState(List<dynamic> newState) {
-    state = newState;
+  void resetState() {
+    state = [null,null,DateTime.now(),''];
   }
   // データを追加する関数
   void updateTitle (String title) {

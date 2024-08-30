@@ -21,14 +21,18 @@ class TopicContent extends ConsumerStatefulWidget{
 }
 
 class _TopicContentState extends ConsumerState<TopicContent> {
-
   @override
   Widget build(BuildContext context) {
+    final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
+
+    // ボタンを押せるかどうかを判定
+    final isButtonEnabled = temporaryTopicList[0] != null && temporaryTopicList[1] != null;
+
     return Scaffold(
       body: DraggableHome(
-        curvedBodyRadius:0,
-        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),  
-        headerWidget: headerWidget(context),  // Custom header
+        curvedBodyRadius: 0,
+        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),
+        headerWidget: headerWidget(context), // Custom header
         headerExpandedHeight: 0.5,
         body: [
           CustomForm(),
@@ -38,11 +42,11 @@ class _TopicContentState extends ConsumerState<TopicContent> {
           child: Container(
             margin: EdgeInsets.only(bottom: 10),
             width: double.infinity,
-            child:  FloatingActionButton(
+            child: FloatingActionButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),
-              onPressed: () {
+              onPressed: isButtonEnabled ? () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CommonNavigationBar()),
@@ -59,26 +63,27 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 );
                 userLogNotifier.updateState(save);
               },
+              : null,
               child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              backgroundColor: Color(0xff005BEA),
+              backgroundColor: Color(0xff005BEA) : Colors.grey, ,
               elevation: 10,
             ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        fullyStretchable: false, 
+        fullyStretchable: false,
         backgroundColor: Colors.white,
         appBarColor: Theme.of(context).brightness == Brightness.dark
-          ? Colors.black
-          : Colors.white, 
-      )
+            ? Colors.black
+            : Colors.white,
+      ),
     );
   }
 
   Widget headerWidget(BuildContext context) {
     return Hero(
       tag: 'card-hero-${widget.index}',
-      child:  Stack( 
+      child: Stack(
         children: [
           Container(
             width: MediaQuery.of(context).size.width * 1.0,
@@ -114,11 +119,11 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                       children: [
                         SizedBox(width: 10),
                         Icon(
-                              Icons.local_drink,
-                              size: 35,
-                              color: Colors.blue[400],
-                            ),
-                            SizedBox(width: 10),
+                          Icons.local_drink,
+                          size: 35,
+                          color: Colors.blue[400],
+                        ),
+                        SizedBox(width: 10),
                         Text(
                           '外食',
                           style: TextStyle(
@@ -150,7 +155,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }

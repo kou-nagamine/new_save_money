@@ -65,7 +65,7 @@ class HomePage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '¥ ${NumberFormat("#,###").format(allPrice)}',
+                  '¥ ${NumberFormat("#,###").format(allPrice[1])}',
                   style: TextStyle(
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
