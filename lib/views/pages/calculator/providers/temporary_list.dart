@@ -10,6 +10,9 @@ class TemporaryListNotifier extends _$TemporaryListNotifier {
   List<dynamic> build() {
     return ['飲み物', Icons.local_drink, Colors.blue];
   }
+  void resetState() {
+    state = ['飲み物', Icons.local_drink, Colors.blue];
+  }
   // データを追加する関数
   void updateState(dynamic newData) {
     // 現在のデータをコピーして新しいデータを追加

@@ -55,8 +55,9 @@ class CalculatorButton extends ConsumerWidget {
                 MaterialPageRoute(builder: (context) => CommonNavigationBar()),
               );
               final allNotifier = ref.read(allPriceNotifierProvider.notifier); 
+              final temporaryListNotifier = ref.read(temporaryListNotifierProvider.notifier);
               allNotifier.updateAllPrice(int.parse(chageState));
-
+              temporaryListNotifier.resetState();
               final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
               userLogNotifier.updateState({
                 'categoryName': temporaryList[0] as String,
