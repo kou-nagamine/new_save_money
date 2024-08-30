@@ -9,6 +9,8 @@ import '/views/pages/commons/navigation_bar/navigation_bar.dart';
 //providers
 import "/views/pages/home/providers/user_log.dart";
 import '/views/pages/topic/providers/temporary_topic_list.dart';
+//freezed
+import '/views/pages/home/providers/save.dart';
 
 class TopicContent extends ConsumerStatefulWidget{
   const TopicContent({required this.index, super.key});
@@ -47,22 +49,15 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 );
                 final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
                 final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
-                userLogNotifier.updateState({
-                  // カテゴリ名を設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
-                  'categoryName': temporaryTopicList[0],
-                  // カテゴリアイコンを設定。categoryDataがnullでなく、かつ2つ以上の要素がある場合はcategoryDataの2番目の要素を使用。それ以外はデフォルトでIcons.local_drinkを使用
-                  'categoryIcon': Icons.local_activity,
-                  // カテゴリカラーを設定。categoryDataがnullでなく、かつ3つ以上の要素がある場合はcategoryDataの3番目の要素を使用。それ以外はデフォルトでColors.blackを使用
-                  'color': Color(0xffE82929),
-                  // 価格を設定。チャージ状態を整数に変換して設定
-                  'price': temporaryTopicList[1],
-                  // 日付を設定。現在の日時を設定
-                  "date" : temporaryTopicList[2],
-                  // メモを設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
-                  "memo" :  temporaryTopicList[3],
-                  // 目的を設定。デフォルトで'入金'を使用
-                  "purpose" : "出金",
-                });
+                // Saveクラスのインスタンスを作成
+                final save = Save(
+                  name: temporaryTopicList[0], // カテゴリ名
+                  price: temporaryTopicList[1], // 価格
+                  icon: Icons.local_activity, // カテゴリアイコン
+                  color: Color(0xffE82929), // カテゴリカラー
+                  payment: false, // 必要に応じて true または false に設定
+                );
+                userLogNotifier.updateState(save);
               },
               child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               backgroundColor: Color(0xff005BEA),
