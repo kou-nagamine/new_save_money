@@ -62,10 +62,10 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   payment: false, // 必要に応じて true または false に設定
                 );
                 userLogNotifier.updateState(save);
-              },
+              }
               : null,
               child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              backgroundColor: Color(0xff005BEA) : Colors.grey, ,
+              backgroundColor: isButtonEnabled ? Color(0xff005BEA) : Colors.grey,
               elevation: 10,
             ),
           ),
