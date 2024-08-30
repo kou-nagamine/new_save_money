@@ -76,6 +76,9 @@ class _CustomFormState extends ConsumerState<CustomForm> {
       calculatedPrice = allPraice[1] - enteredPriceInt; // 6055から引いた金額を計算
       double calculatedPercent = (enteredPriceInt.toDouble() / 6055 * 100); // 割合を計算
       _calculatedPercent = double.parse(calculatedPercent.toStringAsFixed(1)); // 少数第1位に丸める
+      if (calculatedPrice < 0) {
+        calculatedPrice = 0; // 0未満の場合は0にする
+      }
     });
   }
 

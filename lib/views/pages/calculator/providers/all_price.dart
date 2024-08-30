@@ -18,8 +18,10 @@ class AllPriceNotifier extends _$AllPriceNotifier{
   }
 
   void subtractPrice(int price) {
-    if (price != 0) {
+    if (state[1] >= price) {
       state[1] -= price;
+    }else{
+      state[1] = 0;
     }
   }
 }
