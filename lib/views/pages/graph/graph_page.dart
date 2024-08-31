@@ -52,16 +52,18 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
     final allPrice = ref.watch(allPriceNotifierProvider); 
     final userData = ref.watch(userLogNotifierProvider);
     final Map<String, Map<String, dynamic>> categoryData = {};
+    // userData の各要素に対して処理を行う
     for (var save in userData) {
+      // すでに categoryData に同じ name が存在するかを確認
       if (categoryData.containsKey(save.name)) {
-        // Update the existing entry
-        categoryData[save.name]!['totalPrice'] += save.price;
-        categoryData[save.name]!['count'] += 1;
+        // 既存のエントリを更新する
+        categoryData[save.name]!['totalPrice'] += save.price; // price を合計に追加
+        categoryData[save.name]!['count'] += 1; // 出現回数をインクリメント
       } else {
-        // Create a new entry
+        // 新しいエントリを作成する
         categoryData[save.name] = {
-          'totalPrice': save.price,
-          'count': 1,
+          'totalPrice': save.price, // 初期の price を設定
+          'count': 1, // 出現回数を1に設定
         };
       }
     }
