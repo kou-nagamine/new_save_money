@@ -34,7 +34,7 @@ class  DataInsert{
       'description': '社会貢献をしよう',
       'image_url': 'enjoy/Donation.png',
     });
-        // 完了メッセージ
+    // 完了メッセージ
     print('データの挿入が完了しました');
   }
 }
