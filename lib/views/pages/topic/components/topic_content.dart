@@ -25,12 +25,21 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   @override
   Widget build(BuildContext context) {
     final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
-
     // ボタンを押せるかどうかを判定
     final isButtonEnabled = temporaryTopicList[0] != null && temporaryTopicList[1] != null;
+    final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
+    final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
+    final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
 
     return Scaffold(
       body: DraggableHome(
+        leading: IconButton(  // 戻るボタン ここでカスタム出来ます。
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+            temporaryTopicListNotifier.resetState();
+          },
+        ),
         curvedBodyRadius: 0,
         title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),
         headerWidget: headerWidget(context), // Custom header
@@ -52,11 +61,6 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   context,
                   MaterialPageRoute(builder: (context) => CommonNavigationBar()),
                 );
-                final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
-                final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
-                final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
-                final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
-
                 // Saveクラスのインスタンスを作成
                 final save = Save(
                   name: temporaryTopicList[0], // カテゴリ名
