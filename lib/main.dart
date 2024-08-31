@@ -24,7 +24,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform
   );
   // データ挿入処理
-  //await DataInsert().insertData();
+  await DataInsert().insertData();
   runApp(
     const ProviderScope(
       child: MyApp(),
