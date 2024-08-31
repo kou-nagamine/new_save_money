@@ -24,4 +24,17 @@ class AllPriceNotifier extends _$AllPriceNotifier{
       state[1] = 0;
     }
   }
+
+  void deletePrice(bool payment , int price) {
+    if (payment == true) {
+      state[0] -= price;
+      if (state[1] < price) {
+        state[1] = 0;
+      }else{
+        state[1] -= price;
+      }
+    }else{
+      state[1] += price;
+    }
+  }
 }

@@ -27,14 +27,14 @@ class MoneyHistoryList extends ConsumerWidget {
         final int price = item.price;
 
         // 用途に応じて色を変更
-        final Color priceColor = payment ? Color(0xFFE82929) : Color(0xFF2CB13C);
+        final Color priceColor = payment ?  Color(0xFF2CB13C) : Color(0xFFE82929);
 
         return Dismissible(
           key: Key(item.toString()),
           onDismissed: (direction) {
             final price = item.price; // 削除する項目の価格を取得
             ref.read(userLogNotifierProvider.notifier).deleteLog(index); // データを削除
-            ref.read(allPriceNotifierProvider.notifier).subtractPrice(price); // トータル金額から削除
+            ref.read(allPriceNotifierProvider.notifier).deletePrice(payment,price); // トータル金額から削除
           },
           background: Container(
             color: Colors.red,
