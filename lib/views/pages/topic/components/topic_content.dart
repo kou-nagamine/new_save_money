@@ -86,6 +86,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   }
 
   Widget headerWidget(BuildContext context) {
+    final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
     return Hero(
       tag: 'card-hero-${widget.index}',
       child: Stack(
@@ -151,6 +152,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
             child: IconButton(
               onPressed: () {
                 Navigator.pop(context); // 前のページに戻る
+                temporaryTopicListNotifier.resetState();
               },
               icon: Icon(
                 Icons.arrow_circle_left_rounded,
