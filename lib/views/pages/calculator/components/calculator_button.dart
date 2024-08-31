@@ -56,6 +56,7 @@ class CalculatorButton extends ConsumerWidget {
               );
               final allNotifier = ref.read(allPriceNotifierProvider.notifier);  // 全体の値を変更するnotifierを取得
               allNotifier.updateAllPrice(int.parse(chageState)); // 全体の値にchargeStateを追加
+              final temporaryListNotifier = ref.read(temporaryListNotifierProvider.notifier);
               final userLogNotifier = ref.read(userLogNotifierProvider.notifier); //
               // Save クラスのインスタンスを作成
               final save = Save(
@@ -67,6 +68,7 @@ class CalculatorButton extends ConsumerWidget {
               );
               // Save インスタンスを updateState に渡す
               userLogNotifier.updateState(save);
+              temporaryListNotifier.resetState();
             }
           } : null, // isEnabledがfalseの場合はボタンを無効化
           style: ElevatedButton.styleFrom(

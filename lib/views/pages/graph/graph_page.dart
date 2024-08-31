@@ -1,21 +1,26 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
+import 'package:figma_squircle/figma_squircle.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+//components
 import '../graph/graph_data.dart';
 
-import 'package:figma_squircle/figma_squircle.dart';
+//riverpods
+import '../calculator/providers/all_price.dart';
 
-class GraphPage extends StatefulWidget {
+class GraphPage extends ConsumerStatefulWidget {
   const GraphPage({super.key});
 
   @override
-  State<GraphPage> createState() => _GraphPageState();
+  _GraphPageState createState() => _GraphPageState();
 }
 
-class _GraphPageState extends State<GraphPage> with SingleTickerProviderStateMixin {
+class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProviderStateMixin {
   String selectedOption = '貯蓄額'; // 初期値
-  AnimationController? _chartanimationController;
-  Animation<double>? _chartanimation;
+  late AnimationController _chartanimationController;
+  late Animation<double> _chartanimation;
 
   @override
   void initState() {
@@ -26,56 +31,57 @@ class _GraphPageState extends State<GraphPage> with SingleTickerProviderStateMix
     );
     _chartanimation = Tween<double>(begin: 0.1, end: 1.0).animate(
       CurvedAnimation(
-        parent: _chartanimationController!, 
-        curve: Curves.easeInOutCirc,)
-    )
-    ..addListener(() {
-      setState(() {});
-    });
-    _chartanimationController?.forward();
+        parent: _chartanimationController, 
+        curve: Curves.easeInOutCirc,
+      ),
+    )..addListener(() {
+        setState(() {});
+      });
+    _chartanimationController.forward();
   }
 
   @override
   void dispose() {
-    _chartanimationController?.dispose();
+    _chartanimationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final allPrice = ref.watch(allPriceNotifierProvider); 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'グラフ',
           style: TextStyle(
             fontSize: 20,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
           ),
-        )
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,  
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
-            padding: EdgeInsets.only(left:30),
+            padding: const EdgeInsets.only(left: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   '2024/5/10 ~ 2024/8/15',
                   style: TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 3),
+                const SizedBox(height: 3),
                 Text(
                   selectedOption == '推移' 
-                  ? '¥6,055'
-                  : '¥12,500',
-                  style: TextStyle(
+                    ? '¥ ${NumberFormat("#,###").format(allPrice[1])}'
+                    : '¥ ${NumberFormat("#,###").format(allPrice[0])}',
+                  style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
@@ -119,8 +125,8 @@ class _GraphPageState extends State<GraphPage> with SingleTickerProviderStateMix
                   ),
                   child:LineChart(
                     selectedOption == '推移'
-                    ? animatedChart(savedData(), _chartanimation!.value)
-                    : animatedChart(allData(), _chartanimation!.value),
+                    ? animatedChart(savedData(), _chartanimation.value)
+                    : animatedChart(allData(), _chartanimation.value),
                   )
                 ),
               ),
