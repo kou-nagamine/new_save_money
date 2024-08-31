@@ -10,6 +10,8 @@ class Save with _$Save {
     required int price,
     required IconData icon,
     required Color color,
+    required String dataTime,
+    required String memo,
     @Default(true) bool payment,
   }) =_Save;
 }

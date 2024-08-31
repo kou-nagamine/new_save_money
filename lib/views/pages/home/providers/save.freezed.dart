@@ -20,6 +20,8 @@ mixin _$Save {
   int get price => throw _privateConstructorUsedError;
   IconData get icon => throw _privateConstructorUsedError;
   Color get color => throw _privateConstructorUsedError;
+  String get dataTime => throw _privateConstructorUsedError;
+  String get memo => throw _privateConstructorUsedError;
   bool get payment => throw _privateConstructorUsedError;
 
   /// Create a copy of Save
@@ -33,7 +35,14 @@ abstract class $SaveCopyWith<$Res> {
   factory $SaveCopyWith(Save value, $Res Function(Save) then) =
       _$SaveCopyWithImpl<$Res, Save>;
   @useResult
-  $Res call({String name, int price, IconData icon, Color color, bool payment});
+  $Res call(
+      {String name,
+      int price,
+      IconData icon,
+      Color color,
+      String dataTime,
+      String memo,
+      bool payment});
 }
 
 /// @nodoc
@@ -55,6 +64,8 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
     Object? price = null,
     Object? icon = null,
     Object? color = null,
+    Object? dataTime = null,
+    Object? memo = null,
     Object? payment = null,
   }) {
     return _then(_value.copyWith(
@@ -74,6 +85,14 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as Color,
+      dataTime: null == dataTime
+          ? _value.dataTime
+          : dataTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      memo: null == memo
+          ? _value.memo
+          : memo // ignore: cast_nullable_to_non_nullable
+              as String,
       payment: null == payment
           ? _value.payment
           : payment // ignore: cast_nullable_to_non_nullable
@@ -89,7 +108,14 @@ abstract class _$$SaveImplCopyWith<$Res> implements $SaveCopyWith<$Res> {
       __$$SaveImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int price, IconData icon, Color color, bool payment});
+  $Res call(
+      {String name,
+      int price,
+      IconData icon,
+      Color color,
+      String dataTime,
+      String memo,
+      bool payment});
 }
 
 /// @nodoc
@@ -108,6 +134,8 @@ class __$$SaveImplCopyWithImpl<$Res>
     Object? price = null,
     Object? icon = null,
     Object? color = null,
+    Object? dataTime = null,
+    Object? memo = null,
     Object? payment = null,
   }) {
     return _then(_$SaveImpl(
@@ -127,6 +155,14 @@ class __$$SaveImplCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as Color,
+      dataTime: null == dataTime
+          ? _value.dataTime
+          : dataTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      memo: null == memo
+          ? _value.memo
+          : memo // ignore: cast_nullable_to_non_nullable
+              as String,
       payment: null == payment
           ? _value.payment
           : payment // ignore: cast_nullable_to_non_nullable
@@ -143,6 +179,8 @@ class _$SaveImpl implements _Save {
       required this.price,
       required this.icon,
       required this.color,
+      required this.dataTime,
+      required this.memo,
       this.payment = true});
 
   @override
@@ -154,12 +192,16 @@ class _$SaveImpl implements _Save {
   @override
   final Color color;
   @override
+  final String dataTime;
+  @override
+  final String memo;
+  @override
   @JsonKey()
   final bool payment;
 
   @override
   String toString() {
-    return 'Save(name: $name, price: $price, icon: $icon, color: $color, payment: $payment)';
+    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, payment: $payment)';
   }
 
   @override
@@ -171,12 +213,15 @@ class _$SaveImpl implements _Save {
             (identical(other.price, price) || other.price == price) &&
             (identical(other.icon, icon) || other.icon == icon) &&
             (identical(other.color, color) || other.color == color) &&
+            (identical(other.dataTime, dataTime) ||
+                other.dataTime == dataTime) &&
+            (identical(other.memo, memo) || other.memo == memo) &&
             (identical(other.payment, payment) || other.payment == payment));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, price, icon, color, payment);
+  int get hashCode => Object.hash(
+      runtimeType, name, price, icon, color, dataTime, memo, payment);
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.
@@ -193,6 +238,8 @@ abstract class _Save implements Save {
       required final int price,
       required final IconData icon,
       required final Color color,
+      required final String dataTime,
+      required final String memo,
       final bool payment}) = _$SaveImpl;
 
   @override
@@ -203,6 +250,10 @@ abstract class _Save implements Save {
   IconData get icon;
   @override
   Color get color;
+  @override
+  String get dataTime;
+  @override
+  String get memo;
   @override
   bool get payment;
 

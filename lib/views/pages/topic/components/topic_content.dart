@@ -56,13 +56,16 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
                 final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
                 final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
+
                 // Saveクラスのインスタンスを作成
                 final save = Save(
                   name: temporaryTopicList[0], // カテゴリ名
                   price: temporaryTopicList[1], // 価格
                   icon: Icons.local_activity, // カテゴリアイコン
                   color: Color(0xffE82929), // カテゴリカラー
-                  payment: false, // 必要に応じて true または false に設定
+                  payment: false, 
+                  dataTime: "",// 必要に応じて true または false に設定
+                  memo: ""
                 );
                 userLogNotifier.updateState(save);
                 temporaryTopicListNotifier.resetState();

@@ -6,7 +6,7 @@ part of 'all_price.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$allPriceNotifierHash() => r'5644f5d65041ed443324de24f8de232113479bfc';
+String _$allPriceNotifierHash() => r'fe245c50aed5b02e1034ceb9dde874cdc6b1f68e';
 
 /// See also [AllPriceNotifier].
 @ProviderFor(AllPriceNotifier)
