@@ -55,6 +55,7 @@ dependencies:
   flutter_datetime_picker_plus: ^2.2.0
   figma_squircle: ^0.5.3
   firebase_core: ^2.24.2
+  cloud_firestore: ^4.14.0
 
 dev_dependencies:
   flutter_test:

@@ -7,26 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:688402751846:android:c8d86eae9361b468df28a7",
-        "android_client_info": {
-          "package_name": "com.example.new_save_mone"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB3mNvz11_8G4WlFpWza1vyVjobAnMvJsI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:688402751846:android:bf5285887fdb5502df28a7",
+        "mobilesdk_app_id": "1:688402751846:android:4f548dc07db323e6df28a7",
         "android_client_info": {
           "package_name": "com.example.new_save_money"
         }
