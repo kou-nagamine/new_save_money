@@ -7,6 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+//databaseに追加
+import 'firebase_insert.dart';
+
 import '/views/pages/topic/components/topic_content.dart';
 
 //commons
@@ -20,6 +23,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
+  // データ挿入処理
+  //await DataInsert().insertData();
   runApp(
     const ProviderScope(
       child: MyApp(),
