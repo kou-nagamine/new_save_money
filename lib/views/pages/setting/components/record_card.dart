@@ -1,11 +1,20 @@
+//package imports
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-class RecordCard extends StatelessWidget {
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+
+//riverpods
+import '/views/pages/calculator/providers/all_price.dart';
+
+class RecordCard extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final allPrice = ref.watch(allPriceNotifierProvider);
     double screenWidth = MediaQuery.of(context).size.width;
     double cardWidth = screenWidth * 4 / 5; // 画面幅の4/5に設定
-    String allprice = '¥12,490';
+
     return Center(
       child:Container(
       width: cardWidth,
@@ -46,7 +55,7 @@ class RecordCard extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               ),
               Text(
-                allprice,
+                 '¥ ${NumberFormat("#,###").format(allPrice[0])}',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,

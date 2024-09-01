@@ -48,6 +48,7 @@ dependencies:
   draggable_home:
   flutter_markdown:
   url_launcher: ^6.3.0
+  freezed_annotation:
   
   flutter_localizations:
     sdk: flutter
@@ -74,6 +75,7 @@ dev_dependencies:
   build_runner: 
   riverpod_generator:
   riverpod_analyzer_utils:
+  freezed:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

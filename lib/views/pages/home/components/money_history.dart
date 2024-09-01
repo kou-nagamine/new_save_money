@@ -7,47 +7,34 @@ import 'package:new_save_money/views/pages/calculator/providers/all_price.dart';
 import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
 
 class MoneyHistoryList extends ConsumerWidget {
-  final List<Map<String, dynamic>> historyData;
-  MoneyHistoryList({required this.historyData});
+  const MoneyHistoryList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(userLogNotifierProvider); // Riverpodのプロバイダを監視し、状態の変更を反映
+    final userSaveLog = ref.watch(userLogNotifierProvider); // Riverpodのプロバイダを監視し、状態の変更を反映
 
     return ListView.builder(
       padding: const EdgeInsets.only(top: 10),
-      itemCount: historyData.length, // 履歴データの数だけリストアイテムを作成
+      itemCount: userSaveLog.length, // 履歴データの数だけリストアイテムを作成
       itemBuilder: (context, index) {
-        final item = historyData[index]; // 各アイテムのデータを取得
+        final item = userSaveLog[index]; // 各アイテムのデータを取得
 
-        // アイコン、カテゴリ名、色データを取得
-        final String categoryName = item['categoryName'];
-        final IconData categoryIcon = item['categoryIcon'];
-        final Color color = item['color'];
-        final String purpose = item['purpose']; // 用途データを取得
-        final int price = item['price'];
+        // Save 型のプロパティを取得
+        final String categoryName = item.name;
+        final IconData categoryIcon = item.icon;
+        final Color color = item.color;
+        final bool payment = item.payment; // 用途（入金か出金）を取得
+        final int price = item.price;
 
-        // purpose に応じて色を変更
-        final Color priceColor = purpose == '入金' ? Color(0xFF2CB13C) : Color(0xFFE82929);
+        // 用途に応じて色を変更
+        final Color priceColor = payment ?  Color(0xFF2CB13C) : Color(0xFFE82929);
 
         return Dismissible(
           key: Key(item.toString()),
           onDismissed: (direction) {
-            final price = item['price']; // 削除する項目の価格を取得
+            final price = item.price; // 削除する項目の価格を取得
             ref.read(userLogNotifierProvider.notifier).deleteLog(index); // データを削除
-            ref.read(allPriceNotifierProvider.notifier).subtractPrice(price); // トータル金額から削除
-
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //   SnackBar(
-            //     content: Text('$categoryName を削除しました'),
-            //     action: SnackBarAction(
-            //       label: "元に戻す",
-            //       onPressed: () {
-            //         ref.read(userLogNotifierProvider.notifier).undoDelete(index, item);
-            //       },
-            //     ),
-            //   ),
-            // );
+            ref.read(allPriceNotifierProvider.notifier).deletePrice(payment,price); // トータル金額から削除
           },
           background: Container(
             color: Colors.red,

@@ -6,12 +6,12 @@ part of 'all_price.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$allPriceNotifierHash() => r'337014ea295a9efa771b0008cdd54b777c8fbbff';
+String _$allPriceNotifierHash() => r'fe245c50aed5b02e1034ceb9dde874cdc6b1f68e';
 
 /// See also [AllPriceNotifier].
 @ProviderFor(AllPriceNotifier)
 final allPriceNotifierProvider =
-    NotifierProvider<AllPriceNotifier, int>.internal(
+    NotifierProvider<AllPriceNotifier, List<int>>.internal(
   AllPriceNotifier.new,
   name: r'allPriceNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final allPriceNotifierProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$AllPriceNotifier = Notifier<int>;
+typedef _$AllPriceNotifier = Notifier<List<int>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -9,6 +9,9 @@ import '/views/pages/commons/navigation_bar/navigation_bar.dart';
 //providers
 import "/views/pages/home/providers/user_log.dart";
 import '/views/pages/topic/providers/temporary_topic_list.dart';
+import '/views/pages/calculator/providers/all_price.dart';
+//freezed
+import '/views/pages/home/providers/save.dart';
 
 class TopicContent extends ConsumerStatefulWidget{
   const TopicContent({required this.index, super.key});
@@ -19,14 +22,27 @@ class TopicContent extends ConsumerStatefulWidget{
 }
 
 class _TopicContentState extends ConsumerState<TopicContent> {
-
   @override
   Widget build(BuildContext context) {
+    final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
+    // ボタンを押せるかどうかを判定
+    final isButtonEnabled = temporaryTopicList[0] != null && temporaryTopicList[1] != null;
+    final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
+    final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
+    final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
+
     return Scaffold(
       body: DraggableHome(
-        curvedBodyRadius:0,
-        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),  
-        headerWidget: headerWidget(context),  // Custom header
+        leading: IconButton(  // 戻るボタン ここでカスタム出来ます。
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+            temporaryTopicListNotifier.resetState();
+          },
+        ),
+        curvedBodyRadius: 0,
+        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),
+        headerWidget: headerWidget(context), // Custom header
         headerExpandedHeight: 0.5,
         body: [
           CustomForm(),
@@ -36,54 +52,51 @@ class _TopicContentState extends ConsumerState<TopicContent> {
           child: Container(
             margin: EdgeInsets.only(bottom: 10),
             width: double.infinity,
-            child:  FloatingActionButton(
+            child: FloatingActionButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),
-              onPressed: () {
+              onPressed: isButtonEnabled ? () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CommonNavigationBar()),
                 );
-                final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
-                final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
-                userLogNotifier.updateState({
-                  // カテゴリ名を設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
-                  'categoryName': temporaryTopicList[0],
-                  // カテゴリアイコンを設定。categoryDataがnullでなく、かつ2つ以上の要素がある場合はcategoryDataの2番目の要素を使用。それ以外はデフォルトでIcons.local_drinkを使用
-                  'categoryIcon': Icons.local_activity,
-                  // カテゴリカラーを設定。categoryDataがnullでなく、かつ3つ以上の要素がある場合はcategoryDataの3番目の要素を使用。それ以外はデフォルトでColors.blackを使用
-                  'color': Color(0xffE82929),
-                  // 価格を設定。チャージ状態を整数に変換して設定
-                  'price': temporaryTopicList[1],
-                  // 日付を設定。現在の日時を設定
-                  "date" : temporaryTopicList[2],
-                  // メモを設定。categoryDataがnullでなく、かつ空でない場合はcategoryDataの最初の要素を使用。それ以外はデフォルトで'飲み物'を使用
-                  "memo" :  temporaryTopicList[3],
-                  // 目的を設定。デフォルトで'入金'を使用
-                  "purpose" : "出金",
-                });
-              },
+                // Saveクラスのインスタンスを作成
+                final save = Save(
+                  name: temporaryTopicList[0], // カテゴリ名
+                  price: temporaryTopicList[1], // 価格
+                  icon: Icons.local_activity, // カテゴリアイコン
+                  color: Color(0xffE82929), // カテゴリカラー
+                  payment: false, 
+                  dataTime: "",// 必要に応じて true または false に設定
+                  memo: ""
+                );
+                userLogNotifier.updateState(save);
+                temporaryTopicListNotifier.resetState();
+                allPriceNotifier.subtractPrice(temporaryTopicList[1]);
+              }
+              : null,
               child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              backgroundColor: Color(0xff005BEA),
+              backgroundColor: isButtonEnabled ? Color(0xff005BEA) : Colors.grey,
               elevation: 10,
             ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        fullyStretchable: false, 
+        fullyStretchable: false,
         backgroundColor: Colors.white,
         appBarColor: Theme.of(context).brightness == Brightness.dark
-          ? Colors.black
-          : Colors.white, 
-      )
+            ? Colors.black
+            : Colors.white,
+      ),
     );
   }
 
   Widget headerWidget(BuildContext context) {
+    final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
     return Hero(
       tag: 'card-hero-${widget.index}',
-      child:  Stack( 
+      child: Stack(
         children: [
           Container(
             width: MediaQuery.of(context).size.width * 1.0,
@@ -119,11 +132,11 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                       children: [
                         SizedBox(width: 10),
                         Icon(
-                              Icons.local_drink,
-                              size: 35,
-                              color: Colors.blue[400],
-                            ),
-                            SizedBox(width: 10),
+                          Icons.local_drink,
+                          size: 35,
+                          color: Colors.blue[400],
+                        ),
+                        SizedBox(width: 10),
                         Text(
                           '外食',
                           style: TextStyle(
@@ -146,6 +159,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
             child: IconButton(
               onPressed: () {
                 Navigator.pop(context); // 前のページに戻る
+                temporaryTopicListNotifier.resetState();
               },
               icon: Icon(
                 Icons.arrow_circle_left_rounded,
@@ -155,7 +169,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }

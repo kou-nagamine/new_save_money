@@ -1,21 +1,27 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
+import 'package:figma_squircle/figma_squircle.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+//components
 import '../graph/graph_data.dart';
 
-import 'package:figma_squircle/figma_squircle.dart';
+//riverpods
+import '../calculator/providers/all_price.dart';
+import '../home/providers/user_log.dart';
 
-class GraphPage extends StatefulWidget {
+class GraphPage extends ConsumerStatefulWidget {
   const GraphPage({super.key});
 
   @override
-  State<GraphPage> createState() => _GraphPageState();
+  _GraphPageState createState() => _GraphPageState();
 }
 
-class _GraphPageState extends State<GraphPage> with SingleTickerProviderStateMixin {
+class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProviderStateMixin {
   String selectedOption = '貯蓄額'; // 初期値
-  AnimationController? _chartanimationController;
-  Animation<double>? _chartanimation;
+  late AnimationController _chartanimationController;
+  late Animation<double> _chartanimation;
 
   @override
   void initState() {
@@ -26,56 +32,74 @@ class _GraphPageState extends State<GraphPage> with SingleTickerProviderStateMix
     );
     _chartanimation = Tween<double>(begin: 0.1, end: 1.0).animate(
       CurvedAnimation(
-        parent: _chartanimationController!, 
-        curve: Curves.easeInOutCirc,)
-    )
-    ..addListener(() {
-      setState(() {});
-    });
-    _chartanimationController?.forward();
+        parent: _chartanimationController, 
+        curve: Curves.easeInOutCirc,
+      ),
+    )..addListener(() {
+        setState(() {});
+      });
+    _chartanimationController.forward();
   }
 
   @override
   void dispose() {
-    _chartanimationController?.dispose();
+    _chartanimationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final allPrice = ref.watch(allPriceNotifierProvider); 
+    final userData = ref.watch(userLogNotifierProvider);
+    final Map<String, Map<String, dynamic>> categoryData = {};
+    // userData の各要素に対して処理を行う
+    for (var save in userData) {
+      // すでに categoryData に同じ name が存在するかを確認
+      if (categoryData.containsKey(save.name)) {
+        // 既存のエントリを更新する
+        categoryData[save.name]!['totalPrice'] += save.price; // price を合計に追加
+        categoryData[save.name]!['count'] += 1; // 出現回数をインクリメント
+      } else {
+        // 新しいエントリを作成する
+        categoryData[save.name] = {
+          'totalPrice': save.price, // 初期の price を設定
+          'count': 1, // 出現回数を1に設定
+        };
+      }
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'グラフ',
           style: TextStyle(
             fontSize: 20,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
           ),
-        )
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,  
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
-            padding: EdgeInsets.only(left:30),
+            padding: const EdgeInsets.only(left: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   '2024/5/10 ~ 2024/8/15',
                   style: TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 3),
+                const SizedBox(height: 3),
                 Text(
                   selectedOption == '推移' 
-                  ? '¥6,055'
-                  : '¥12,500',
-                  style: TextStyle(
+                    ? '¥ ${NumberFormat("#,###").format(allPrice[1])}'
+                    : '¥ ${NumberFormat("#,###").format(allPrice[0])}',
+                  style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
@@ -119,8 +143,8 @@ class _GraphPageState extends State<GraphPage> with SingleTickerProviderStateMix
                   ),
                   child:LineChart(
                     selectedOption == '推移'
-                    ? animatedChart(savedData(), _chartanimation!.value)
-                    : animatedChart(allData(), _chartanimation!.value),
+                    ? animatedChart(savedData(), _chartanimation.value)
+                    : animatedChart(allData(), _chartanimation.value),
                   )
                 ),
               ),
@@ -204,10 +228,34 @@ class _GraphPageState extends State<GraphPage> with SingleTickerProviderStateMix
                   mainAxisSpacing: 16.0,
                   childAspectRatio: 2.0, 
                   children: [
-                    _buildGridItem(Icons.local_drink, Colors.blue, '23回', '¥3,690' ),
-                    _buildGridItem(Icons.fastfood, Colors.orange, '15回', '¥2,500'),
-                    _buildGridItem(Icons.icecream, Colors.lightGreen,'8回', '¥1,540'),
-                    _buildGridItem(Icons.star, Colors.green,'13回', '¥2,489'),
+                    // 飲み物のデータを表示
+                    _buildGridItem(
+                      Icons.local_drink, 
+                      Colors.blue, 
+                      '${categoryData['飲み物']?['count'] ?? 0}回', 
+                      '¥${categoryData['飲み物']?['totalPrice'] ?? 0}'
+                    ),
+                    // 食事のデータを表示
+                    _buildGridItem(
+                      Icons.fastfood, 
+                      Colors.orange, 
+                      '${categoryData['食事']?['count'] ?? 0}回', 
+                      '¥${categoryData['食事']?['totalPrice'] ?? 0}'
+                    ),
+                    // 菓子類のデータを表示
+                    _buildGridItem(
+                      Icons.icecream, 
+                      Colors.lightGreen, 
+                      '${categoryData['菓子類']?['count'] ?? 0}回', 
+                      '¥${categoryData['菓子類']?['totalPrice'] ?? 0}'
+                    ),
+                    // その他のデータを表示
+                    _buildGridItem(
+                      Icons.star, 
+                      Colors.green, 
+                      '${categoryData['その他']?['count'] ?? 0}回', 
+                      '¥${categoryData['その他']?['totalPrice'] ?? 0}'
+                    ),
                   ],
                 ),
               ]
