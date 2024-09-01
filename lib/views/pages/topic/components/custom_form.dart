@@ -140,7 +140,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           border: InputBorder.none, // 下線を消す
                         ),
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
@@ -196,7 +196,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           border: InputBorder.none, // 下線を消す
                         ),
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Color(0xffE82929),
                         ),
@@ -276,20 +276,23 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'メモ',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Color(0xff5B5B5B),
-                      ),
-                    ),
+                    SizedBox(height: 5),
                     Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0), // ボックスの内側にパディングを追加
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0), // 角を丸くする
+                          border: Border.all(
+                              color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Color(0xffC5C5C5), // 枠線の色
+                          width: 1.0, // 枠線の太さ
+                          ),
+                        ),
                       child: TextField(
                         focusNode: _focusNode3, // フォーカスノードを設定
                         maxLines: null, // 行数を制限しない
+                        textAlignVertical: TextAlignVertical.top, // テキストをボックス内の上部に揃える
                         decoration: InputDecoration(
                           hintStyle: TextStyle(
                             color: Theme.of(context).brightness == Brightness.dark
@@ -297,11 +300,11 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                                 : Colors.black.withOpacity(0.3),
                             fontWeight: FontWeight.bold,
                           ),
-                          hintText: '友達と食べた',
+                          hintText: 'メモをつける',
                           border: InputBorder.none, // 下線を消す
                         ),
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
@@ -313,10 +316,11 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                         },
                         onChanged: (value) {
                           temporaryTopicList.updateMemo(value);
-                        },
-                      ),  
-                    ),
-                  ],
+                          },
+                        ),  
+                      ),
+                    )
+                  ]
                 ),
               ),
               Container(
