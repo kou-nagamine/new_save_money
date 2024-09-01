@@ -9,6 +9,7 @@ import '../graph/graph_data.dart';
 
 //riverpods
 import '../calculator/providers/all_price.dart';
+import '../home/providers/user_log.dart';
 
 class GraphPage extends ConsumerStatefulWidget {
   const GraphPage({super.key});
@@ -49,6 +50,23 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     final allPrice = ref.watch(allPriceNotifierProvider); 
+    final userData = ref.watch(userLogNotifierProvider);
+    final Map<String, Map<String, dynamic>> categoryData = {};
+    // userData の各要素に対して処理を行う
+    for (var save in userData) {
+      // すでに categoryData に同じ name が存在するかを確認
+      if (categoryData.containsKey(save.name)) {
+        // 既存のエントリを更新する
+        categoryData[save.name]!['totalPrice'] += save.price; // price を合計に追加
+        categoryData[save.name]!['count'] += 1; // 出現回数をインクリメント
+      } else {
+        // 新しいエントリを作成する
+        categoryData[save.name] = {
+          'totalPrice': save.price, // 初期の price を設定
+          'count': 1, // 出現回数を1に設定
+        };
+      }
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -210,10 +228,34 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                   mainAxisSpacing: 16.0,
                   childAspectRatio: 2.0, 
                   children: [
-                    _buildGridItem(Icons.local_drink, Colors.blue, '23回', '¥3,690' ),
-                    _buildGridItem(Icons.fastfood, Colors.orange, '15回', '¥2,500'),
-                    _buildGridItem(Icons.icecream, Colors.lightGreen,'8回', '¥1,540'),
-                    _buildGridItem(Icons.star, Colors.green,'13回', '¥2,489'),
+                    // 飲み物のデータを表示
+                    _buildGridItem(
+                      Icons.local_drink, 
+                      Colors.blue, 
+                      '${categoryData['飲み物']?['count'] ?? 0}回', 
+                      '¥${categoryData['飲み物']?['totalPrice'] ?? 0}'
+                    ),
+                    // 食事のデータを表示
+                    _buildGridItem(
+                      Icons.fastfood, 
+                      Colors.orange, 
+                      '${categoryData['食事']?['count'] ?? 0}回', 
+                      '¥${categoryData['食事']?['totalPrice'] ?? 0}'
+                    ),
+                    // 菓子類のデータを表示
+                    _buildGridItem(
+                      Icons.icecream, 
+                      Colors.lightGreen, 
+                      '${categoryData['菓子類']?['count'] ?? 0}回', 
+                      '¥${categoryData['菓子類']?['totalPrice'] ?? 0}'
+                    ),
+                    // その他のデータを表示
+                    _buildGridItem(
+                      Icons.star, 
+                      Colors.green, 
+                      '${categoryData['その他']?['count'] ?? 0}回', 
+                      '¥${categoryData['その他']?['totalPrice'] ?? 0}'
+                    ),
                   ],
                 ),
               ]
