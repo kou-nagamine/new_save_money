@@ -3,8 +3,8 @@ import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/user_log.dart';
 import 'package:new_save_money/views/pages/calculator/providers/all_price.dart';
-
 import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
+import "/views/pages/reference/reference_page.dart"; // HomePage のインポートを忘れずに
 
 class MoneyHistoryList extends ConsumerWidget {
   const MoneyHistoryList({super.key});
@@ -27,14 +27,14 @@ class MoneyHistoryList extends ConsumerWidget {
         final int price = item.price;
 
         // 用途に応じて色を変更
-        final Color priceColor = payment ?  Color(0xFF2CB13C) : Color(0xFFE82929);
+        final Color priceColor = payment ? Color(0xFF2CB13C) : Color(0xFFE82929);
 
         return Dismissible(
           key: Key(item.toString()),
           onDismissed: (direction) {
             final price = item.price; // 削除する項目の価格を取得
             ref.read(userLogNotifierProvider.notifier).deleteLog(index); // データを削除
-            ref.read(allPriceNotifierProvider.notifier).deletePrice(payment,price); // トータル金額から削除
+            ref.read(allPriceNotifierProvider.notifier).deletePrice(payment, price); // トータル金額から削除
           },
           background: Container(
             color: Colors.red,
@@ -54,8 +54,8 @@ class MoneyHistoryList extends ConsumerWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black87,
+                      ? Colors.white
+                      : Colors.black87,
                 ),
               ),
               leading: Container(
@@ -79,6 +79,20 @@ class MoneyHistoryList extends ConsumerWidget {
                   color: priceColor, // ここで色を設定
                 ),
               ),
+              onTap: () {
+                // paymentがtrueの場合のみHomePageに遷移
+                if (payment == false) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReferencePage(),
+                    ),
+                  );
+
+                } else {
+                  // 何もしない (null処理)
+                }
+              },
             ),
           ),
         );
