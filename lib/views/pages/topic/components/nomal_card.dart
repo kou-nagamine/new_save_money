@@ -162,7 +162,7 @@ class NomalCard extends StatelessWidget {
   void navigateWithCustomTransition(BuildContext context) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => TopicContent(index: index),
+        pageBuilder: (context, animation, secondaryAnimation) => TopicContent(index: index, imageUrl: imageUrl,),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);  // 下から上にスライド
           const end = Offset.zero;

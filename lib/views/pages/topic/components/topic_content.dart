@@ -13,9 +13,18 @@ import '/views/pages/calculator/providers/all_price.dart';
 //freezed
 import '/views/pages/home/providers/save.dart';
 
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 class TopicContent extends ConsumerStatefulWidget{
-  const TopicContent({required this.index, super.key});
+  const TopicContent({
+    required this.index, 
+    required this.imageUrl,
+    super.key
+    });
   final int index;  // インデックスを受け取る
+  final String imageUrl;
+
+
 
   @override
   _TopicContentState createState() => _TopicContentState();
@@ -31,6 +40,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
     final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
 
+    
     return Scaffold(
       body: DraggableHome(
         leading: IconButton(  // 戻るボタン ここでカスタム出来ます。
@@ -42,7 +52,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
         ),
         curvedBodyRadius: 0,
         title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),
-        headerWidget: headerWidget(context), // Custom header
+        headerWidget: headerWidget(context,widget.imageUrl), // Custom header
         headerExpandedHeight: 0.5,
         body: [
           CustomForm(),
@@ -92,83 +102,112 @@ class _TopicContentState extends ConsumerState<TopicContent> {
     );
   }
 
-  Widget headerWidget(BuildContext context) {
+  Widget headerWidget(BuildContext context,  String imageUrl) {
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
     return Hero(
       tag: 'card-hero-${widget.index}',
-      child: Stack(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 1.0,
-            height: MediaQuery.of(context).size.height * 0.6,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/AI_image.jpeg'),
-                fit: BoxFit.cover, // 画像を全体にカバー
-              ),
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 1.0,
-            height: MediaQuery.of(context).size.height * 0.6,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  Colors.black.withOpacity(0.9), // 90%の不透明度の黒
-                  Colors.white.withOpacity(0), // 白
-                ],
-                stops: [0.1, 1], // 黒が85%の位置で終了し、残りは白
-              ),
-            ),
-            child: Column(
+      child: FutureBuilder<String>(
+        future: firebase_storage.FirebaseStorage.instance
+            .ref(imageUrl)
+            .getDownloadURL(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container(
+              width: MediaQuery.of(context).size.width * 1.0,
+              height: MediaQuery.of(context).size.height * 0.6,
+              child: const Center(child: CircularProgressIndicator()),
+            );
+          } else if (snapshot.hasError) {
+            return Container(
+              width: MediaQuery.of(context).size.width * 1.0,
+              height: MediaQuery.of(context).size.height * 0.6,
+              color: Colors.grey,
+              child: const Center(child: Icon(Icons.error, color: Colors.red)),
+            );
+          } else if (snapshot.hasData) {
+            return Stack(
               children: [
-                Spacer(),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 10),
-                        Icon(
-                          Icons.local_drink,
-                          size: 35,
-                          color: Colors.blue[400],
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          '外食',
-                          style: TextStyle(
-                            fontSize: 35,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                Container(
+                  width: MediaQuery.of(context).size.width * 1.0,
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image:  NetworkImage(snapshot.data!),
+                      fit: BoxFit.cover, // 画像を全体にカバー
                     ),
-                  ],
+                  ),
                 ),
-                SizedBox(height: 30),
+                Container(
+                  width: MediaQuery.of(context).size.width * 1.0,
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.9), // 90%の不透明度の黒
+                        Colors.white.withOpacity(0), // 白
+                      ],
+                      stops: [0.1, 1], // 黒が85%の位置で終了し、残りは白
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Spacer(),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(width: 10),
+                              Icon(
+                                Icons.local_drink,
+                                size: 35,
+                                color: Colors.blue[400],
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                '外食',
+                                style: TextStyle(
+                                  fontSize: 35,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 30),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 50,
+                  left: 10,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context); // 前のページに戻る
+                      temporaryTopicListNotifier.resetState();
+                    },
+                    icon: Icon(
+                      Icons.arrow_circle_left_rounded,
+                      color: Colors.black,
+                      size: 50,
+                    ),
+                  ),
+                ),
               ],
-            ),
-          ),
-          Positioned(
-            top: 50,
-            left: 10,
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context); // 前のページに戻る
-                temporaryTopicListNotifier.resetState();
-              },
-              icon: Icon(
-                Icons.arrow_circle_left_rounded,
-                color: Colors.black,
-                size: 50,
-              ),
-            ),
-          ),
-        ],
+            );
+          } else {
+            return Container(
+              width: MediaQuery.of(context).size.width * 1.0,
+              height: MediaQuery.of(context).size.height * 0.6,
+              color: Colors.grey,
+              child: const Center(child: Icon(Icons.error)),
+            );
+          }
+        },
       ),
     );
   }
