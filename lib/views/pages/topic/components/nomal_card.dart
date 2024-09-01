@@ -1,10 +1,70 @@
 import 'package:flutter/material.dart';
-
 import '../components/topic_content.dart';
 
+//firebase
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as cloud_firestore;
+
+//Storageに保存した画像のURLを取得する際のコード
+class NetworkImageBuilder extends FutureBuilder {
+  NetworkImageBuilder(Future<String> item)
+  :item = item,
+  super(
+    future: item,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+          ),
+          child: const Center(child: CircularProgressIndicator()),
+        );
+      } else if (snapshot.hasError) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+          ),
+          child: const Center(child: Icon(Icons.error, color: Colors.red)),
+        );
+      } else if (snapshot.hasData) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.zero,
+            image: DecorationImage(
+              image: NetworkImage(snapshot.data!),
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+        );
+      } else {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+          ),
+          child: const Center(child: Icon(Icons.error)),
+        );
+      }
+    },
+  );
+  final Future<String> item;
+}
+
+
+
 class NomalCard extends StatelessWidget {
-  const NomalCard({required this.index,super.key});
-    final int index;  // インデックスを保持
+  final int index;  // インデックスを保持
+  final String title;
+  final String description;
+  final String imageUrl;
+
+  const NomalCard({
+    required this.index,
+    required this.title,
+    required this.description,
+    required this.imageUrl,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +75,6 @@ class NomalCard extends StatelessWidget {
         child: InkWell(
           onTap: () {
              navigateWithCustomTransition(context);
-            //  Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => TopicContent(index: index)),
-            //   );
           },
           child: Hero(
             tag: 'card-hero-$index',
@@ -32,21 +88,17 @@ class NomalCard extends StatelessWidget {
                 ),
               );
             },
-            child: Card(
+            child:  Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
               clipBehavior: Clip.hardEdge,
               child: Stack(
                 children: [
-                  Container(
-                    decoration:  BoxDecoration(
-                      borderRadius: BorderRadius.zero,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/AI_image.jpeg'),
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
+                  NetworkImageBuilder(
+                    firebase_storage.FirebaseStorage.instance
+                        .ref(imageUrl)
+                        .getDownloadURL(),
                   ),
                   Positioned(
                     bottom: 0,
@@ -65,14 +117,14 @@ class NomalCard extends StatelessWidget {
                           stops: [0, 1], // 黒が85%の位置で終了し、残りは白
                         ),
                       ),
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'タイトル',
+                              title,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w800,
@@ -83,7 +135,7 @@ class NomalCard extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'ここに説明文が入ります',
+                              description,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Colors.white,
@@ -100,7 +152,7 @@ class NomalCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            )
           )
         ),
       ),

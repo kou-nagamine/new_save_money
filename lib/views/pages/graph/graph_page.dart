@@ -303,8 +303,8 @@ Widget _buildGridItem(IconData icon, Color color ,String count, String price,) {
           Column(
             children: [
               SizedBox(height: 3),
-              Text(count, style: TextStyle(fontSize: 16, color: Colors.black87 ,fontWeight: FontWeight.bold)),
-              Text(price, style: TextStyle(fontSize: 16, color: Colors.black87 ,fontWeight: FontWeight.bold)),
+              Text(count, style: TextStyle(fontSize: 14, color: Colors.black87 ,fontWeight: FontWeight.bold)),
+              Text(price, style: TextStyle(fontSize: 14, color: Colors.black87 ,fontWeight: FontWeight.bold)),
             ],
           ),
           SizedBox(width: 0),
