@@ -19,10 +19,14 @@ class TopicContent extends ConsumerStatefulWidget{
   const TopicContent({
     required this.index, 
     required this.imageUrl,
+    required this.title,
+    required this.description,
     super.key
     });
   final int index;  // インデックスを受け取る
   final String imageUrl;
+  final String title;
+  final String description;
 
 
 
@@ -52,7 +56,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
         ),
         curvedBodyRadius: 0,
         title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),
-        headerWidget: headerWidget(context,widget.imageUrl), // Custom header
+        headerWidget: headerWidget(context,widget.imageUrl,widget.title,widget.description ), // Custom header
         headerExpandedHeight: 0.5,
         body: [
           CustomForm(),
@@ -102,7 +106,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
     );
   }
 
-  Widget headerWidget(BuildContext context,  String imageUrl) {
+  Widget headerWidget(BuildContext context,  String imageUrl, String title, String description) {
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
     return Hero(
       tag: 'card-hero-${widget.index}',
@@ -160,20 +164,22 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SizedBox(width: 10),
-                              Icon(
-                                Icons.local_drink,
-                                size: 35,
-                                color: Colors.blue[400],
-                              ),
-                              SizedBox(width: 10),
                               Text(
-                                '外食',
+                                title,
                                 style: TextStyle(
                                   fontSize: 35,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              // Text(
+                              //   description,
+                              //   style: TextStyle(
+                              //     fontSize: 16,
+                              //     color: Colors.white,
+                              //     fontWeight: FontWeight.bold,
+                              //   ),
+                              // )
                             ],
                           ),
                         ],
