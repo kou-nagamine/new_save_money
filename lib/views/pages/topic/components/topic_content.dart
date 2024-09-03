@@ -39,12 +39,12 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   Widget build(BuildContext context) {
     final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
     // ボタンを押せるかどうかを判定
-    final isButtonEnabled = temporaryTopicList[0] != null && temporaryTopicList[1] != null;
+    // final isButtonEnabled = temporaryTopicList[0] != null && temporaryTopicList[1] != null;
+    final isButtonEnabled = true;
     final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
     final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
 
-    
     return Scaffold(
       body: DraggableHome(
         leading: IconButton(  // 戻るボタン ここでカスタム出来ます。
@@ -77,8 +77,8 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 );
                 // Saveクラスのインスタンスを作成
                 final save = Save(
-                  name: temporaryTopicList[0], // カテゴリ名
-                  price: temporaryTopicList[1], // 価格
+                  name: temporaryTopicList[0] ?? widget.title, // カテゴリ名
+                  price: temporaryTopicList[1] ?? 1500, // 価格
                   icon: Icons.local_activity, // カテゴリアイコン
                   color: Color(0xffE82929), // カテゴリカラー
                   payment: false, 
