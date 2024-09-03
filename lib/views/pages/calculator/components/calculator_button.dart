@@ -52,7 +52,9 @@ class CalculatorButton extends ConsumerWidget {
               chargeNotifier.cancelCharge(); 
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CommonNavigationBar()),
+                MaterialPageRoute(
+                  builder: (context) => CommonNavigationBar(initialIndex: 0),
+                ),
               );
               final allNotifier = ref.read(allPriceNotifierProvider.notifier);  // 全体の値を変更するnotifierを取得
               allNotifier.updateAllPrice(int.parse(chageState)); // 全体の値にchargeStateを追加

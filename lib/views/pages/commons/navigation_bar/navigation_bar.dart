@@ -36,12 +36,22 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   late int selectedIndex;
   bool isBottomNavVisible = true; // BottomNavigationBar の表示状態を管理
+  static bool _isFirstLaunch = true; // アプリ全体の初回起動かどうかを判定するフラグ
 
   @override
   void initState() {
     super.initState();
     selectedIndex = widget.initialIndex;
     isBottomNavVisible = selectedIndex != 1; // 初期化時に記録ページでなければ表示
+
+   if (_isFirstLaunch && selectedIndex == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _isFirstLaunch = false; // フラグをfalseに設定
+          _onItemTapped(1); // インデックスを1に変更
+        });
+      });
+    }
   }
 
   final _screens = [
