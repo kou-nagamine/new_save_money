@@ -30,14 +30,13 @@ class HomePage extends ConsumerWidget {
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
     final showPopUp = ref.watch(showPopUpNotifierProvider); //ポップアップの表示
     print('$historyData');
-
+    
     if (showPopUp) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration.zero, () {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return PayDialog(
-              //message: "今回の800円のお買い物では下記の我慢によって節約できました!",
             );
           },
         ).then((_) {
