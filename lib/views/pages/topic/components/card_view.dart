@@ -32,12 +32,16 @@ class RecomendCardView extends StatelessWidget {
 
 //NormalCardのPageView
 class NomalCardView extends StatelessWidget {
-  const NomalCardView({super.key});
+  const NomalCardView({super.key, required this.category});
+  final String category;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<cloud_firestore.QuerySnapshot>(
-      stream: cloud_firestore.FirebaseFirestore.instance.collection('topic_content').snapshots(),
+      stream: cloud_firestore.FirebaseFirestore.instance
+      .collection('topic_content')
+      .where('category', isEqualTo: category)
+      .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const CircularProgressIndicator();
