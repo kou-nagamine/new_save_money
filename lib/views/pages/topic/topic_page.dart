@@ -71,9 +71,9 @@ class TopicPage extends StatelessWidget {
             },
             body: const TabBarView(
               children: [
-                NomalCardView(),
-                NomalCardView(),
-                NomalCardView(),
+                NomalCardView(category: '勉強'),
+                NomalCardView(category: '楽しむ'),
+                NomalCardView(category: 'その他'),
               ],
             ),
           ),

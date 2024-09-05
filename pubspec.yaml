@@ -59,6 +59,7 @@ dependencies:
   cloud_firestore: ^5.3.0
   firebase_storage: ^12.2.0
   cached_network_image: 3.4.0
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -97,6 +98,7 @@ flutter:
     - assets/images/meisi.png
     - assets/images/AI_image.jpeg
     - assets/images/moneyimage.jpeg
+    - assets/animations/high_five.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
