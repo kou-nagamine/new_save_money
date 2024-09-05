@@ -2,6 +2,7 @@
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../home/components/pay_dialog.dart';
 //components
 import 'custom_form.dart';
 //pages
@@ -10,10 +11,13 @@ import '/views/pages/commons/navigation_bar/navigation_bar.dart';
 import "/views/pages/home/providers/user_log.dart";
 import '/views/pages/topic/providers/temporary_topic_list.dart';
 import '/views/pages/calculator/providers/all_price.dart';
+import '/views/pages/home/providers/show_dialog.dart';
 //freezed
 import '/views/pages/home/providers/save.dart';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import 'package:new_save_money/views/pages/home/home_page.dart';
 
 class TopicContent extends ConsumerStatefulWidget{
   const TopicContent({
@@ -38,12 +42,14 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   @override
   Widget build(BuildContext context) {
     final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
+    final showPopUp = ref.watch(showPopUpNotifierProvider);
     // ボタンを押せるかどうかを判定
     // final isButtonEnabled = temporaryTopicList[0] != null && temporaryTopicList[1] != null;
     final isButtonEnabled = true;
     final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
     final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
+    // showPopUpをtrueに設定
 
     return Scaffold(
       body: DraggableHome(
@@ -70,15 +76,12 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),
-              onPressed: isButtonEnabled ? () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CommonNavigationBar()),
-                );
+              onPressed: isButtonEnabled ? () async {
+                final price = temporaryTopicList[1] ?? 1500;
                 // Saveクラスのインスタンスを作成
                 final save = Save(
                   name: temporaryTopicList[0] ?? widget.title, // カテゴリ名
-                  price: temporaryTopicList[1] ?? 1500, // 価格
+                  price: price, // 価格
                   icon: Icons.local_activity, // カテゴリアイコン
                   color: Color(0xffE82929), // カテゴリカラー
                   payment: false, 
@@ -87,9 +90,15 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 );
                 userLogNotifier.updateState(save);
                 temporaryTopicListNotifier.resetState();
-                allPriceNotifier.subtractPrice(temporaryTopicList[1]);
-              }
-              : null,
+                allPriceNotifier.subtractPrice(price);
+
+                ref.read(showPopUpNotifierProvider.notifier).show();
+
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CommonNavigationBar()),
+                );
+              } : null,
               child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               backgroundColor: isButtonEnabled ? Color(0xff005BEA) : Colors.grey,
               elevation: 10,

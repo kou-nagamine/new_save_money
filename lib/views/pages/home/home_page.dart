@@ -13,6 +13,7 @@ import 'components/money_history.dart';
 //import '../calculator/calculator_page.dart';
 import '../graph/graph_page.dart';
 import '../setting/setting_page.dart';
+import '../home/components/pay_dialog.dart';
 
 //commons
 import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
@@ -20,13 +21,32 @@ import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar
 //riverpods
 import '../calculator/providers/all_price.dart';
 import "./providers/user_log.dart";
+import '../home/providers/show_dialog.dart';
 
 class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context , WidgetRef ref) {
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
+    final showPopUp = ref.watch(showPopUpNotifierProvider); //ポップアップの表示
     print('$historyData');
+
+    if (showPopUp) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return PayDialog(
+              //message: "今回の800円のお買い物では下記の我慢によって節約できました!",
+            );
+          },
+        ).then((_) {
+          // ポップアップを閉じたらshowPopUpをfalseにリセット
+          ref.read(showPopUpNotifierProvider.notifier).hide();
+        });
+      });
+    }
+
     return Scaffold(
       body: Stack(
         children: [
