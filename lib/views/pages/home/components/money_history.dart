@@ -32,7 +32,6 @@ class MoneyHistoryList extends ConsumerWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('a'),
             Dismissible(
               key: Key(item.toString()),
               onDismissed: (direction) {
