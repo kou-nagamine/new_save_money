@@ -29,72 +29,78 @@ class MoneyHistoryList extends ConsumerWidget {
         // 用途に応じて色を変更
         final Color priceColor = payment ? Color(0xFF2CB13C) : Color(0xFFE82929);
 
-        return Dismissible(
-          key: Key(item.toString()),
-          onDismissed: (direction) {
-            final price = item.price; // 削除する項目の価格を取得
-            ref.read(userLogNotifierProvider.notifier).deleteLog(index); // データを削除
-            ref.read(allPriceNotifierProvider.notifier).deletePrice(payment, price); // トータル金額から削除
-          },
-          background: Container(
-            color: Colors.red,
-            child: Icon(
-              Icons.delete,
-              color: Colors.white,
-              size: 40,
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0.0),
-              title: Text(
-                categoryName,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black87,
-                ),
-              ),
-              leading: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  categoryIcon,
-                  size: 20,
-                  color: color,
-                ),
-              ),
-              trailing: Text(
-                "¥${NumberFormat("#,###").format(price)}",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: priceColor, // ここで色を設定
-                ),
-              ),
-              onTap: () {
-                // paymentがtrueの場合のみHomePageに遷移
-                if (payment == false) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ReferencePage(),
-                    ),
-                  );
-
-                } else {
-                  // 何もしない (null処理)
-                }
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('a'),
+            Dismissible(
+              key: Key(item.toString()),
+              onDismissed: (direction) {
+                final price = item.price; // 削除する項目の価格を取得
+                ref.read(userLogNotifierProvider.notifier).deleteLog(index); // データを削除
+                ref.read(allPriceNotifierProvider.notifier).deletePrice(payment, price); // トータル金額から削除
               },
+              background: Container(
+                color: Colors.red,
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                  size: 40,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0.0),
+                  title: Text(
+                    categoryName,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black87,
+                    ),
+                  ),
+                  leading: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      categoryIcon,
+                      size: 20,
+                      color: color,
+                    ),
+                  ),
+                  trailing: Text(
+                    "¥${NumberFormat("#,###").format(price)}",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: priceColor, // ここで色を設定
+                    ),
+                  ),
+                  onTap: () {
+                    // paymentがtrueの場合のみHomePageに遷移
+                    if (payment == false) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReferencePage(),
+                        ),
+                      );
+            
+                    } else {
+                      // 何もしない (null処理)
+                    }
+                  },
+                ),
+              ),
             ),
-          ),
+          ],
         );
       },
     );
