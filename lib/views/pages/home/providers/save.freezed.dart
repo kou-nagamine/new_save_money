@@ -14,15 +14,24 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+Save _$SaveFromJson(Map<String, dynamic> json) {
+  return _Save.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Save {
   String get name => throw _privateConstructorUsedError;
   int get price => throw _privateConstructorUsedError;
+  @IconDataConverter()
   IconData get icon => throw _privateConstructorUsedError;
+  @ColorConverter()
   Color get color => throw _privateConstructorUsedError;
   String get dataTime => throw _privateConstructorUsedError;
   String get memo => throw _privateConstructorUsedError;
   bool get payment => throw _privateConstructorUsedError;
+
+  /// Serializes this Save to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.
@@ -38,8 +47,8 @@ abstract class $SaveCopyWith<$Res> {
   $Res call(
       {String name,
       int price,
-      IconData icon,
-      Color color,
+      @IconDataConverter() IconData icon,
+      @ColorConverter() Color color,
       String dataTime,
       String memo,
       bool payment});
@@ -111,8 +120,8 @@ abstract class _$$SaveImplCopyWith<$Res> implements $SaveCopyWith<$Res> {
   $Res call(
       {String name,
       int price,
-      IconData icon,
-      Color color,
+      @IconDataConverter() IconData icon,
+      @ColorConverter() Color color,
       String dataTime,
       String memo,
       bool payment});
@@ -173,23 +182,29 @@ class __$$SaveImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@JsonSerializable(explicitToJson: true)
 class _$SaveImpl implements _Save {
   const _$SaveImpl(
       {required this.name,
       required this.price,
-      required this.icon,
-      required this.color,
+      @IconDataConverter() required this.icon,
+      @ColorConverter() required this.color,
       required this.dataTime,
       required this.memo,
       this.payment = true});
+
+  factory _$SaveImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SaveImplFromJson(json);
 
   @override
   final String name;
   @override
   final int price;
   @override
+  @IconDataConverter()
   final IconData icon;
   @override
+  @ColorConverter()
   final Color color;
   @override
   final String dataTime;
@@ -219,6 +234,7 @@ class _$SaveImpl implements _Save {
             (identical(other.payment, payment) || other.payment == payment));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, name, price, icon, color, dataTime, memo, payment);
@@ -230,25 +246,36 @@ class _$SaveImpl implements _Save {
   @pragma('vm:prefer-inline')
   _$$SaveImplCopyWith<_$SaveImpl> get copyWith =>
       __$$SaveImplCopyWithImpl<_$SaveImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SaveImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Save implements Save {
   const factory _Save(
       {required final String name,
       required final int price,
-      required final IconData icon,
-      required final Color color,
+      @IconDataConverter() required final IconData icon,
+      @ColorConverter() required final Color color,
       required final String dataTime,
       required final String memo,
       final bool payment}) = _$SaveImpl;
+
+  factory _Save.fromJson(Map<String, dynamic> json) = _$SaveImpl.fromJson;
 
   @override
   String get name;
   @override
   int get price;
   @override
+  @IconDataConverter()
   IconData get icon;
   @override
+  @ColorConverter()
   Color get color;
   @override
   String get dataTime;

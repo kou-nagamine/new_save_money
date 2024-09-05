@@ -49,6 +49,7 @@ dependencies:
   flutter_markdown:
   url_launcher: ^6.3.0
   freezed_annotation:
+  json_annotation: ^4.9.0
   
   flutter_localizations:
     sdk: flutter
@@ -76,6 +77,8 @@ dev_dependencies:
   riverpod_generator:
   riverpod_analyzer_utils:
   freezed:
+  json_serializable:
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
