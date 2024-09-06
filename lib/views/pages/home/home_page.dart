@@ -158,8 +158,6 @@ class HomePage extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          ref.read(allPriceNotifierProvider.notifier).resetPreferences();
-                          ref.read(userLogNotifierProvider.notifier).resetLogs();
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => GraphPage()),
