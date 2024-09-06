@@ -1,4 +1,5 @@
 //package
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,18 +30,21 @@ class HomePage extends ConsumerWidget {
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
     final showPopUp = ref.watch(showPopUpNotifierProvider); //ポップアップの表示
-    print('$historyData');
-    
+
+    log('Current showPopUp state: $showPopUp');
     if (showPopUp) {
+      // 状態をすぐにリセットして再度表示されないようにする
+      ref.read(showPopUpNotifierProvider.notifier).hide();
+
+      // ダイアログを一度だけ表示する
       Future.delayed(Duration.zero, () {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return PayDialog(
-            );
+            return PayDialog();
           },
         ).then((_) {
-          // ポップアップを閉じたらshowPopUpをfalseにリセット
+          // ダイアログが閉じたら再度状態をリセット（必要に応じて）
           ref.read(showPopUpNotifierProvider.notifier).hide();
         });
       });

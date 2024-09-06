@@ -26,6 +26,13 @@ class AllPriceNotifier extends _$AllPriceNotifier{
     await prefs.setStringList('all_price', savedData);
   }
 
+  // データをリセットするメソッド
+  Future<void> resetPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('all_price'); // 'all_price' キーのデータを削除
+    state = [0, 0]; // ステートを初期値にリセット
+  }
+
   void updateAllPrice(int price) {
     if(price != 0){
       state[0] += price;
