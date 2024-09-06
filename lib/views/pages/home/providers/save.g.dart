@@ -14,7 +14,7 @@ _$SaveImpl _$$SaveImplFromJson(Map<String, dynamic> json) => _$SaveImpl(
       color: const ColorConverter().fromJson((json['color'] as num).toInt()),
       dataTime: json['dataTime'] as String,
       memo: json['memo'] as String,
-      payment: json['payment'] as bool? ?? true,
+      deposit: json['deposit'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$SaveImplToJson(_$SaveImpl instance) =>
@@ -25,5 +25,5 @@ Map<String, dynamic> _$$SaveImplToJson(_$SaveImpl instance) =>
       'color': const ColorConverter().toJson(instance.color),
       'dataTime': instance.dataTime,
       'memo': instance.memo,
-      'payment': instance.payment,
+      'deposit': instance.deposit,
     };

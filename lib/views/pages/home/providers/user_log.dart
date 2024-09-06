@@ -59,4 +59,10 @@ class UserLogNotifier extends _$UserLogNotifier {
     state = newState;
     _saveToPreferences();
   }
+
+  // リストを空にリセットする関数
+  void resetLogs() {
+    state = []; // 状態を空のリストにリセット
+    _saveToPreferences();
+  }
 }

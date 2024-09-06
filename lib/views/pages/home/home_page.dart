@@ -1,4 +1,6 @@
 //package
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,25 +28,27 @@ import '../home/providers/show_dialog.dart';
 class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context , WidgetRef ref) {
+    
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
-    final showPopUp = ref.watch(showPopUpNotifierProvider); //ポップアップの表示
+    // final showPopUp = ref.watch(showPopUpNotifierProvider); //ポップアップの表示
     print('$historyData');
+    //log('showPopUp: $showPopUp');
     
-    if (showPopUp) {
-      Future.delayed(Duration.zero, () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return PayDialog(
-            );
-          },
-        ).then((_) {
-          // ポップアップを閉じたらshowPopUpをfalseにリセット
-          ref.read(showPopUpNotifierProvider.notifier).hide();
-        });
-      });
-    }
+    // if (showPopUp) {
+    //   Future.delayed(Duration.zero, () {
+        // showDialog(
+        //   context: context,
+        //   builder: (BuildContext context) {
+        //     return PayDialog(
+        //     );
+        //   },
+        // ).then((_) {
+        //   // ポップアップを閉じたらshowPopUpをfalseにリセット
+        //   ref.read(showPopUpNotifierProvider.notifier).hide();
+        // });
+    //   });
+    // }
 
     return Scaffold(
       body: Stack(
@@ -154,6 +158,8 @@ class HomePage extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: () {
+                          ref.read(allPriceNotifierProvider.notifier).resetPreferences();
+                          ref.read(userLogNotifierProvider.notifier).resetLogs();
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => GraphPage()),
