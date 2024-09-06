@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
 
 
 class PayDialog extends ConsumerStatefulWidget{
@@ -69,7 +70,12 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
         Center(
           child: TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+               Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CommonNavigationBar(initialIndex: 0),
+                ),
+              );
             },
             child: const Text('閉じる',
             style: TextStyle(
