@@ -32,8 +32,6 @@ class TopicContent extends ConsumerStatefulWidget{
   final String title;
   final String description;
 
-
-
   @override
   _TopicContentState createState() => _TopicContentState();
 }
@@ -55,7 +53,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
       body: DraggableHome(
         leading: IconButton(  // 戻るボタン ここでカスタム出来ます。
           icon: Icon(Icons.arrow_back),
-          onPressed: () {
+          onPressed: () async {
             Navigator.of(context).pop();
             temporaryTopicListNotifier.resetState();
           },
@@ -84,7 +82,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   price: price, // 価格
                   icon: Icons.local_activity, // カテゴリアイコン
                   color: Color(0xffE82929), // カテゴリカラー
-                  payment: false, 
+                  deposit: false, 
                   dataTime: "",// 必要に応じて true または false に設定
                   memo: ""
                 );
@@ -94,9 +92,12 @@ class _TopicContentState extends ConsumerState<TopicContent> {
 
                 ref.read(showPopUpNotifierProvider.notifier).show();
 
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CommonNavigationBar()),
+                await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return PayDialog(
+                    );
+                  },
                 );
               } : null,
               child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),

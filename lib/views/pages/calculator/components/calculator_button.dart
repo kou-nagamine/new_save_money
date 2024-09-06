@@ -66,7 +66,7 @@ class CalculatorButton extends ConsumerWidget {
                 icon: temporaryList[1] as IconData, // カテゴリアイコン
                 color: temporaryList[2] as Color, // カテゴリカラー
                 price: int.parse(chageState), // 価格
-                payment: true, // 必要に応じて true または false に設定
+                deposit: true, // 必要に応じて true または false に設定
                 dataTime: "",
                 memo: ""
               );

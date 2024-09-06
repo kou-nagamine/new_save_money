@@ -13,6 +13,9 @@ class MoneyHistoryList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userSaveLog = ref.watch(userLogNotifierProvider); // Riverpodのプロバイダを監視し、状態の変更を反映
 
+    // 最新の deposit = false のアイテムのインデックスを取得
+    final firstDepositFalseIndex = userSaveLog.indexWhere((item) => !item.deposit);
+
     return ListView.builder(
       padding: const EdgeInsets.only(top: 10),
       itemCount: userSaveLog.length, // 履歴データの数だけリストアイテムを作成
@@ -23,86 +26,88 @@ class MoneyHistoryList extends ConsumerWidget {
         final String categoryName = item.name;
         final IconData categoryIcon = item.icon;
         final Color color = item.color;
-        final bool payment = item.payment; // 用途（入金か出金）を取得
+        final bool deposit = item.deposit; // 用途（入金か出金）を取得
         final int price = item.price;
 
         // 用途に応じて色を変更
-        final Color priceColor = payment ? Color(0xFF2CB13C) : Color(0xFFE82929);
+        final Color priceColor = deposit ? Color(0xFF2CB13C) : Color(0xFFE82929);
 
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('a'),
-            Dismissible(
-              key: Key(item.toString()),
-              onDismissed: (direction) {
-                final price = item.price; // 削除する項目の価格を取得
-                ref.read(userLogNotifierProvider.notifier).deleteLog(index); // データを削除
-                ref.read(allPriceNotifierProvider.notifier).deletePrice(payment, price); // トータル金額から削除
-              },
-              background: Container(
-                color: Colors.red,
-                child: Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                  size: 40,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0.0),
-                  title: Text(
-                    categoryName,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black87,
-                    ),
-                  ),
-                  leading: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      categoryIcon,
-                      size: 20,
-                      color: color,
-                    ),
-                  ),
-                  trailing: Text(
-                    "¥${NumberFormat("#,###").format(price)}",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: priceColor, // ここで色を設定
-                    ),
-                  ),
-                  onTap: () {
-                    // paymentがtrueの場合のみHomePageに遷移
-                    if (payment == false) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ReferencePage(),
-                        ),
-                      );
-            
-                    } else {
-                      // 何もしない (null処理)
-                    }
-                  },
-                ),
+        // Dismissibleで囲む条件: 最新の deposit = false のアイテム以前のもの、または deposit = false がない場合
+        final shouldWrapWithDismissible = firstDepositFalseIndex == -1 || index <= firstDepositFalseIndex;
+
+        if (shouldWrapWithDismissible) {
+          return Dismissible(
+            key: Key(item.toString()),
+            onDismissed: (direction) {
+              final price = item.price; // 削除する項目の価格を取得
+              ref.read(userLogNotifierProvider.notifier).deleteLog(index); // データを削除
+              ref.read(allPriceNotifierProvider.notifier).deletePrice(deposit, price); // トータル金額から削除
+            },
+            background: Container(
+              color: Colors.red,
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+                size: 40,
               ),
             ),
-          ],
-        );
+            child: buildListTile(context, categoryName, categoryIcon, color, price, priceColor, deposit),
+          );
+        } else {
+          // Dismissible で囲まない通常の ListTile
+          return buildListTile(context, categoryName, categoryIcon, color, price, priceColor, deposit);
+        }
+      },
+    );
+  }
+
+  // 共通のListTileビルダー
+  ListTile buildListTile(BuildContext context, String categoryName, IconData categoryIcon, Color color, int price, Color priceColor, bool deposit) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0.0),
+      title: Text(
+        categoryName,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black87,
+        ),
+      ),
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          categoryIcon,
+          size: 20,
+          color: color,
+        ),
+      ),
+      trailing: Text(
+        "¥${NumberFormat("#,###").format(price)}",
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: priceColor, // ここで色を設定
+        ),
+      ),
+      onTap: () {
+        // depositがfalseの場合のみReferencePageに遷移
+        if (!deposit) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ReferencePage(),
+            ),
+          );
+        }
       },
     );
   }
 }
+

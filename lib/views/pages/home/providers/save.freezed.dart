@@ -28,7 +28,7 @@ mixin _$Save {
   Color get color => throw _privateConstructorUsedError;
   String get dataTime => throw _privateConstructorUsedError;
   String get memo => throw _privateConstructorUsedError;
-  bool get payment => throw _privateConstructorUsedError;
+  bool get deposit => throw _privateConstructorUsedError;
 
   /// Serializes this Save to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +51,7 @@ abstract class $SaveCopyWith<$Res> {
       @ColorConverter() Color color,
       String dataTime,
       String memo,
-      bool payment});
+      bool deposit});
 }
 
 /// @nodoc
@@ -75,7 +75,7 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
     Object? color = null,
     Object? dataTime = null,
     Object? memo = null,
-    Object? payment = null,
+    Object? deposit = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -102,9 +102,9 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String,
-      payment: null == payment
-          ? _value.payment
-          : payment // ignore: cast_nullable_to_non_nullable
+      deposit: null == deposit
+          ? _value.deposit
+          : deposit // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -124,7 +124,7 @@ abstract class _$$SaveImplCopyWith<$Res> implements $SaveCopyWith<$Res> {
       @ColorConverter() Color color,
       String dataTime,
       String memo,
-      bool payment});
+      bool deposit});
 }
 
 /// @nodoc
@@ -145,7 +145,7 @@ class __$$SaveImplCopyWithImpl<$Res>
     Object? color = null,
     Object? dataTime = null,
     Object? memo = null,
-    Object? payment = null,
+    Object? deposit = null,
   }) {
     return _then(_$SaveImpl(
       name: null == name
@@ -172,9 +172,9 @@ class __$$SaveImplCopyWithImpl<$Res>
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String,
-      payment: null == payment
-          ? _value.payment
-          : payment // ignore: cast_nullable_to_non_nullable
+      deposit: null == deposit
+          ? _value.deposit
+          : deposit // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -191,7 +191,7 @@ class _$SaveImpl implements _Save {
       @ColorConverter() required this.color,
       required this.dataTime,
       required this.memo,
-      this.payment = true});
+      this.deposit = true});
 
   factory _$SaveImpl.fromJson(Map<String, dynamic> json) =>
       _$$SaveImplFromJson(json);
@@ -212,11 +212,11 @@ class _$SaveImpl implements _Save {
   final String memo;
   @override
   @JsonKey()
-  final bool payment;
+  final bool deposit;
 
   @override
   String toString() {
-    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, payment: $payment)';
+    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, deposit: $deposit)';
   }
 
   @override
@@ -231,13 +231,13 @@ class _$SaveImpl implements _Save {
             (identical(other.dataTime, dataTime) ||
                 other.dataTime == dataTime) &&
             (identical(other.memo, memo) || other.memo == memo) &&
-            (identical(other.payment, payment) || other.payment == payment));
+            (identical(other.deposit, deposit) || other.deposit == deposit));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, name, price, icon, color, dataTime, memo, payment);
+      runtimeType, name, price, icon, color, dataTime, memo, deposit);
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.
@@ -263,7 +263,7 @@ abstract class _Save implements Save {
       @ColorConverter() required final Color color,
       required final String dataTime,
       required final String memo,
-      final bool payment}) = _$SaveImpl;
+      final bool deposit}) = _$SaveImpl;
 
   factory _Save.fromJson(Map<String, dynamic> json) = _$SaveImpl.fromJson;
 
@@ -282,7 +282,7 @@ abstract class _Save implements Save {
   @override
   String get memo;
   @override
-  bool get payment;
+  bool get deposit;
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.

@@ -27,29 +27,27 @@ import '../home/providers/show_dialog.dart';
 class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context , WidgetRef ref) {
+    
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
-    final showPopUp = ref.watch(showPopUpNotifierProvider); //ポップアップの表示
-
-    log('Current showPopUp state: $showPopUp');
-    if (showPopUp) {
-      // 状態をすぐにリセットして再度表示されないようにする
-      ref.read(showPopUpNotifierProvider.notifier).hide();
-
-      // ダイアログを一度だけ表示する
-      Future.delayed(Duration.zero, () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return PayDialog();
-          },
-        ).then((_) {
-          // ダイアログが閉じたら再度状態をリセット（必要に応じて）
-          ref.read(showPopUpNotifierProvider.notifier).hide();
-        });
-      });
-    }
-
+    // final showPopUp = ref.watch(showPopUpNotifierProvider); //ポップアップの表示
+    print('$historyData');
+    //log('showPopUp: $showPopUp');
+    
+    // if (showPopUp) {
+    //   Future.delayed(Duration.zero, () {
+        // showDialog(
+        //   context: context,
+        //   builder: (BuildContext context) {
+        //     return PayDialog(
+        //     );
+        //   },
+        // ).then((_) {
+        //   // ポップアップを閉じたらshowPopUpをfalseにリセット
+        //   ref.read(showPopUpNotifierProvider.notifier).hide();
+        // });
+    //   });
+    // }
     return Scaffold(
       body: Stack(
         children: [

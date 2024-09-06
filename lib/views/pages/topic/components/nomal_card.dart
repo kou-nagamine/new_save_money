@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/topic_content.dart';
+import '../../home/components/pay_dialog.dart';
 
 //firebase
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -74,7 +75,7 @@ class NomalCard extends StatelessWidget {
         color: Colors.transparent,  // Materialの背景色を透明に設定
         child: InkWell(
           onTap: () {
-             navigateWithCustomTransition(context);
+            navigateWithCustomTransition(context);
           },
           child: Hero(
             tag: 'card-hero-$index',
@@ -159,7 +160,7 @@ class NomalCard extends StatelessWidget {
     );
   }
   // カスタムページ遷移アニメーション
-  void navigateWithCustomTransition(BuildContext context) {
+  void navigateWithCustomTransition(BuildContext context){
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => TopicContent(index: index, imageUrl: imageUrl, description: description, title: title),
@@ -179,5 +180,12 @@ class NomalCard extends StatelessWidget {
         transitionDuration: Duration(milliseconds: 700),  // アニメーションの長さ
       ),
     );
+    // await showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return PayDialog(
+    //     );
+    //   },
+    // );
   }
 }

@@ -18,7 +18,7 @@ class Save with _$Save {
     @ColorConverter() required Color color,
     required String dataTime,
     required String memo,
-    @Default(true) bool payment,
+    @Default(true) bool deposit,
   }) =_Save;
 
   factory Save.fromJson(Map<String, dynamic> json) => _$SaveFromJson(json);
