@@ -6,10 +6,12 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //components
 import '../graph/graph_data.dart';
-
 //riverpods
 import '../calculator/providers/all_price.dart';
 import '../home/providers/user_log.dart';
+
+//freezed
+import '../home/providers/save.dart';
 
 class GraphPage extends ConsumerStatefulWidget {
   const GraphPage({super.key});
@@ -19,7 +21,7 @@ class GraphPage extends ConsumerStatefulWidget {
 }
 
 class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProviderStateMixin {
-  String selectedOption = '貯蓄額'; // 初期値
+  String selectedOption = '貯蓄額';
   late AnimationController _chartanimationController;
   late Animation<double> _chartanimation;
 
@@ -52,21 +54,41 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
     final allPrice = ref.watch(allPriceNotifierProvider); 
     final userData = ref.watch(userLogNotifierProvider);
     final Map<String, Map<String, dynamic>> categoryData = {};
+
+    List<FlSpot> flSpots = [];
+    double cumulativeTotal = 0;
+
+    // 日付リストを作成
+    List<String> dates = [];
+
+    // 最初の点 (0, 0) を追加
+    flSpots.add(FlSpot(0, 0));
+
+    for (var i = 0; i < userData.length; i++) {
+      cumulativeTotal += userData[i].price;
+      flSpots.add(FlSpot((i + 1).toDouble(), cumulativeTotal));
+     
+      final dateFormat = DateFormat('yyyy-MM-dd'); // 実際のフォーマットに合わせて調整
+      final parsedDate = dateFormat.parse(userData[i].dataTime); // ここで日付の解析
+      dates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
+    }
+
+    // LineChartDataをgraph_dataから呼び出す
+    LineChartData chartData = createLineChartData(flSpots, dates);
+
     // userData の各要素に対して処理を行う
     for (var save in userData) {
-      // すでに categoryData に同じ name が存在するかを確認
       if (categoryData.containsKey(save.name)) {
-        // 既存のエントリを更新する
-        categoryData[save.name]!['totalPrice'] += save.price; // price を合計に追加
-        categoryData[save.name]!['count'] += 1; // 出現回数をインクリメント
+        categoryData[save.name]!['totalPrice'] += save.price;
+        categoryData[save.name]!['count'] += 1;
       } else {
-        // 新しいエントリを作成する
         categoryData[save.name] = {
-          'totalPrice': save.price, // 初期の price を設定
-          'count': 1, // 出現回数を1に設定
+          'totalPrice': save.price,
+          'count': 1,
         };
       }
     }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -142,9 +164,10 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                     bottom: 12,
                   ),
                   child:LineChart(
-                    selectedOption == '推移'
-                    ? animatedChart(savedData(), _chartanimation.value)
-                    : animatedChart(allData(), _chartanimation.value),
+                    animatedChart(chartData, _chartanimation.value),
+                    // selectedOption == '推移'
+                    // ? animatedChart(savedData(), _chartanimation.value)
+                    // : animatedChart(allData(), _chartanimation.value),
                   )
                 ),
               ),
