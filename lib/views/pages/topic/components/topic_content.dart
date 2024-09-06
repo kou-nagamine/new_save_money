@@ -70,7 +70,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
         floatingActionButton: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: EdgeInsets.only(bottom: 0),
             width: double.infinity,
             child: FloatingActionButton(
               shape: RoundedRectangleBorder(

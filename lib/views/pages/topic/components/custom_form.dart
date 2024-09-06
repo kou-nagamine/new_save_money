@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
 //providers
 import '/views/pages/calculator/providers/all_price.dart';
@@ -73,8 +74,8 @@ class _CustomFormState extends ConsumerState<CustomForm> {
     setState(() {
       _EnteredPrice = _priceController.text; // 入力された金額を取得して変数に保存
       int enteredPriceInt = int.tryParse(_EnteredPrice) ?? 0; // 文字列を整数に変換、失敗したら0
-      calculatedPrice = allPraice[1] - enteredPriceInt; // 6055から引いた金額を計算
-      double calculatedPercent = (enteredPriceInt.toDouble() / 6055 * 100); // 割合を計算
+      calculatedPrice = allPraice[1] - enteredPriceInt; 
+      double calculatedPercent = (allPraice[0]/ enteredPriceInt.toDouble() * 100); // 割合を計算
       _calculatedPercent = double.parse(calculatedPercent.toStringAsFixed(1)); // 少数第1位に丸める
       if (calculatedPrice < 0) {
         calculatedPrice = 0; // 0未満の場合は0にする
@@ -108,7 +109,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               Container(
                 height: 50,
                 child: Row(
@@ -214,6 +215,78 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   ],
                 ),
               ),
+              (int.tryParse(_EnteredPrice) ?? 0) > allPraice[0]
+                ? Container(
+                  height: 70,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Color(0xffF5F5F5),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child:  _calculatedPercent >= 10.0 
+                      ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center, 
+                        children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.report, 
+                                  color: Color(0xffFF9500),
+                                  size: 15,),
+                                Text(
+                                  '全額割り当てれないため口座の残高を表示しています。'
+                                  ,style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xffFF9500),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: '¥${NumberFormat("#,###").format(allPraice[1])} ($_calculatedPercent%)',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xffE82929),
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '分割り当てます。',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff5B5B5B),
+                                        ),
+                                      ),
+                                    ]
+                                  )
+                                )
+                              ],
+                            ),
+                         ],
+                       )
+                       : Center(
+                         child: Text(
+                           '最低10%以上の残高が必要です。',
+                           style: TextStyle(
+                             fontSize: 16,
+                             fontWeight: FontWeight.bold,
+                             color: Color(0xffE82929),
+                           ),
+                         ),
+                       )
+                     ),
+                  )
+                : Container(),
               // 日付選択フィールド
               Container(
                 height: 50,
@@ -323,6 +396,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   ]
                 ),
               ),
+              SizedBox(height: 5),
               Container(
                 height: 300,
                 alignment: Alignment.center,
@@ -342,26 +416,23 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                     SizedBox(height: 20),
                     Text('¥${NumberFormat("#,###").format(allPraice[1])}',
                       style: TextStyle(
-                        fontSize: 36,
+                        fontSize: 32,
                         fontWeight: FontWeight.w800,
                         color: Colors.black54,
                       ),
                     ),
-                    Icon(Icons.arrow_downward, size: 20, color: Colors.black),
+                    Lottie.asset('assets/animations/arrow.json',
+                      width: 80,
+                      height: 60,
+                      fit: BoxFit.cover,
+                    ),
                     Text('¥${NumberFormat("#,###").format(calculatedPrice)}',
                     style: TextStyle(
-                      fontSize: 64,
+                      fontSize: 50,
                       fontWeight: FontWeight.w800,
                       color: Colors.black,
                       ),
                     ),
-                    Text('-¥${NumberFormat("#,###").format(int.tryParse(_EnteredPrice) ?? 0)} (-$_calculatedPercent%)',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xffE82929),
-                      ),
-                    ), 
                   ],  
                 ),
               ),
