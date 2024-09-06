@@ -67,10 +67,15 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
     for (var i = 0; i < userData.length; i++) {
       cumulativeTotal += userData[i].price;
       flSpots.add(FlSpot((i + 1).toDouble(), cumulativeTotal));
-     
-      final dateFormat = DateFormat('yyyy-MM-dd'); // 実際のフォーマットに合わせて調整
-      final parsedDate = dateFormat.parse(userData[i].dataTime); // ここで日付の解析
-      dates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
+      
+      try {
+        final dateFormat = DateFormat('yyyy-MM-dd'); // 実際のフォーマットに合わせて調整
+        final parsedDate = dateFormat.parse(userData[i].dataTime); // ここで日付の解析
+        dates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
+      } catch (e) {
+        print('Invalid date format: ${userData[i].dataTime}');
+        dates.add('Invalid date'); // エラーハンドリング
+      }
     }
 
     // LineChartDataをgraph_dataから呼び出す
