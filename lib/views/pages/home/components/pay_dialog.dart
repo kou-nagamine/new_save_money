@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
+import 'package:new_save_money/views/pages/home/providers/save.dart';
+
+//riverpod
+import 'package:new_save_money/views/pages/home/providers/user_log.dart'; 
 
 
 class PayDialog extends ConsumerStatefulWidget{
@@ -28,6 +32,13 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
+    // UserLogNotifierのstateを取得
+    final userLogs = ref.watch(userLogNotifierProvider);
+    // 修正した部分
+    final changedLogs = ref.watch(userLogNotifierProvider.notifier).getChangedLogs();
+
+    // 最新のSaveのpriceを取得
+    final latestPrice = userLogs.isNotEmpty ? userLogs.first.price : 0;
     return AlertDialog(
       contentPadding: const EdgeInsets.all(15),
       content:  SizedBox(
@@ -53,13 +64,29 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
               padding: const EdgeInsets.only(top: 10),
               child: Column(
                 children: [
-                  Text('今回の800円のお買い物では下記の我慢によって節約できました!',
+                  Text('今回の$latestPrice円のお買い物では下記の我慢によって節約できました!',
                    style: const TextStyle(
                     fontSize: 16, fontWeight: FontWeight.bold
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: changedLogs.length,
+                itemBuilder: (context, index) {
+                  final log = changedLogs[index];
+                  return ListTile(
+                    title: Text('ログ名: ${log.name}'),
+                    subtitle: Text(
+                      log.status == SaveStatus.inUse
+                          ? '使用額: ${log.usedAmount} / ${log.price} 円'
+                          : '使用額: ${log.usedAmount}円',
+                    ),
+                  );
+                },
               ),
             ),
           ],

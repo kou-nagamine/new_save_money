@@ -89,8 +89,9 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 userLogNotifier.updateState(save);
                 temporaryTopicListNotifier.resetState();
                 allPriceNotifier.subtractPrice(price);
+                userLogNotifier.updateLogsBasedOnPrice(price);
 
-                ref.read(showPopUpNotifierProvider.notifier).show();
+                // ref.read(showPopUpNotifierProvider.notifier).show();
 
                 await showDialog(
                   context: context,
