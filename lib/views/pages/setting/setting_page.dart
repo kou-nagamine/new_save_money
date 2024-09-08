@@ -5,6 +5,8 @@ import "./components/record_card.dart";
 import "components/custom_header.dart";
 import "components/switch_item.dart";
 import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
+import 'package:figma_squircle/figma_squircle.dart';
+import '../setting/components/danger_dialog.dart';
 
 //MaterialWithModalsPageRoute
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -49,12 +51,6 @@ void _launchURL(String url) async {
           children: [
             RecordCard(),
             Container(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          // children: [
-          //   CustomHeader(title: 'あなたについて'),
-          //   RecordCard(),
-          //   Container(
-          // height: containerHeight,
             padding: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,13 +58,13 @@ void _launchURL(String url) async {
                 Text(
                   '設定',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 20), // タイトルと最初の項目の間に余白を追加
+                SizedBox(height: 10), // タイトルと最初の項目の間に余白を追加
                 Container(
-                  height: 56,
+                  height: 50,
                   child:  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,7 +72,7 @@ void _launchURL(String url) async {
                       Row(
                         children: [
                           iconoir.BellNotification(
-                            width: 30,
+                            width: 25,
                             color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
                               : Colors.black,
@@ -84,7 +80,7 @@ void _launchURL(String url) async {
                           Padding(child: Text(
                               '通知をONにする',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ) , padding: EdgeInsets.only(left: 20),
@@ -96,7 +92,7 @@ void _launchURL(String url) async {
                   ),
                 ),
                 Container(
-                  height: 56,
+                  height: 50,
                   child:  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,7 +100,7 @@ void _launchURL(String url) async {
                       Row(
                         children: [
                           iconoir.SmartphoneDevice(
-                            width: 30,
+                            width: 25,
                             color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
                               : Colors.black,
@@ -112,7 +108,7 @@ void _launchURL(String url) async {
                           Padding(child: Text(
                             '入出金をデフォルトにする',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
                           ) , 
@@ -124,7 +120,7 @@ void _launchURL(String url) async {
                   ),
                 ),
                 Container(
-                  height: 56,
+                  height: 50,
                   child:  InkWell(
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
@@ -142,7 +138,7 @@ void _launchURL(String url) async {
                     child: Row(
                       children: [
                         iconoir.InfoCircle(
-                          width: 30,
+                          width: 25,
                           color: Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black,
@@ -150,7 +146,7 @@ void _launchURL(String url) async {
                         Padding(
                           child: Text('このアプリについて',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,),
                         ) , 
                         padding: EdgeInsets.only(left: 20)),
@@ -159,14 +155,14 @@ void _launchURL(String url) async {
                   ),
                 ),
                 Container(
-                  height: 56,
+                  height: 50,
                   child: InkWell( 
                      onTap: () => _launchURL('https://flutter.dev/'), // リンクに飛ばす
                     child:  Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         iconoir.SendDiagonal(
-                          width: 30,
+                          width: 25,
                           color: Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black,
@@ -174,7 +170,7 @@ void _launchURL(String url) async {
                         Padding(
                           child: Text('フィードバックをおくる',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
                         ) , 
@@ -182,11 +178,59 @@ void _launchURL(String url) async {
                         ],
                       ),
                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                  'Danger Zone',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff5B5B5B),
+                  ),
+                ),
+                  Container(
+                  height: 50,
+                  child: InkWell( 
+                    onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => DangerDialog(),
+                    ),
+                    child:  Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        iconoir.WarningTriangleSolid(
+                          width: 25,
+                          color: Color(0xffd1242f),
+                        ),
+                        Padding(
+                          child: Text('すべての履歴を削除する',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900,
+                            color: Color(0xffd1242f),
+                          ),
+                        ) , 
+                        padding: EdgeInsets.only(left: 20)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Version 0.1.1(20240908)',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff5B5B5B),
+                      ),
+                    ),
                   )
                 ],
               ),
             ),  
-          ],
+         ],
         ),
       ),
     );
