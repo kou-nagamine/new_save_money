@@ -396,7 +396,6 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   ]
                 ),
               ),
-              SizedBox(height: 5),
               Container(
                 height: 300,
                 alignment: Alignment.center,
@@ -413,7 +412,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                                   : Colors.black,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 5),
                     Text('¥${NumberFormat("#,###").format(allPraice[1])}',
                       style: TextStyle(
                         fontSize: 32,
