@@ -29,6 +29,10 @@ mixin _$Save {
   String get dataTime => throw _privateConstructorUsedError;
   String get memo => throw _privateConstructorUsedError;
   bool get deposit => throw _privateConstructorUsedError;
+  SaveStatus get status => throw _privateConstructorUsedError; // 状態を示すプロパティを追加
+  int get usedAmount =>
+      throw _privateConstructorUsedError; // 使用された金額を追跡するプロパティを追加
+  double get remainingPercentage => throw _privateConstructorUsedError;
 
   /// Serializes this Save to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +55,10 @@ abstract class $SaveCopyWith<$Res> {
       @ColorConverter() Color color,
       String dataTime,
       String memo,
-      bool deposit});
+      bool deposit,
+      SaveStatus status,
+      int usedAmount,
+      double remainingPercentage});
 }
 
 /// @nodoc
@@ -76,6 +83,9 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
     Object? dataTime = null,
     Object? memo = null,
     Object? deposit = null,
+    Object? status = null,
+    Object? usedAmount = null,
+    Object? remainingPercentage = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -106,6 +116,18 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
           ? _value.deposit
           : deposit // ignore: cast_nullable_to_non_nullable
               as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as SaveStatus,
+      usedAmount: null == usedAmount
+          ? _value.usedAmount
+          : usedAmount // ignore: cast_nullable_to_non_nullable
+              as int,
+      remainingPercentage: null == remainingPercentage
+          ? _value.remainingPercentage
+          : remainingPercentage // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -124,7 +146,10 @@ abstract class _$$SaveImplCopyWith<$Res> implements $SaveCopyWith<$Res> {
       @ColorConverter() Color color,
       String dataTime,
       String memo,
-      bool deposit});
+      bool deposit,
+      SaveStatus status,
+      int usedAmount,
+      double remainingPercentage});
 }
 
 /// @nodoc
@@ -146,6 +171,9 @@ class __$$SaveImplCopyWithImpl<$Res>
     Object? dataTime = null,
     Object? memo = null,
     Object? deposit = null,
+    Object? status = null,
+    Object? usedAmount = null,
+    Object? remainingPercentage = null,
   }) {
     return _then(_$SaveImpl(
       name: null == name
@@ -176,6 +204,18 @@ class __$$SaveImplCopyWithImpl<$Res>
           ? _value.deposit
           : deposit // ignore: cast_nullable_to_non_nullable
               as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as SaveStatus,
+      usedAmount: null == usedAmount
+          ? _value.usedAmount
+          : usedAmount // ignore: cast_nullable_to_non_nullable
+              as int,
+      remainingPercentage: null == remainingPercentage
+          ? _value.remainingPercentage
+          : remainingPercentage // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -191,7 +231,10 @@ class _$SaveImpl implements _Save {
       @ColorConverter() required this.color,
       required this.dataTime,
       required this.memo,
-      this.deposit = true});
+      this.deposit = true,
+      this.status = SaveStatus.unUsed,
+      this.usedAmount = 0,
+      this.remainingPercentage = 1.0});
 
   factory _$SaveImpl.fromJson(Map<String, dynamic> json) =>
       _$$SaveImplFromJson(json);
@@ -213,10 +256,21 @@ class _$SaveImpl implements _Save {
   @override
   @JsonKey()
   final bool deposit;
+  @override
+  @JsonKey()
+  final SaveStatus status;
+// 状態を示すプロパティを追加
+  @override
+  @JsonKey()
+  final int usedAmount;
+// 使用された金額を追跡するプロパティを追加
+  @override
+  @JsonKey()
+  final double remainingPercentage;
 
   @override
   String toString() {
-    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, deposit: $deposit)';
+    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, deposit: $deposit, status: $status, usedAmount: $usedAmount, remainingPercentage: $remainingPercentage)';
   }
 
   @override
@@ -231,13 +285,18 @@ class _$SaveImpl implements _Save {
             (identical(other.dataTime, dataTime) ||
                 other.dataTime == dataTime) &&
             (identical(other.memo, memo) || other.memo == memo) &&
-            (identical(other.deposit, deposit) || other.deposit == deposit));
+            (identical(other.deposit, deposit) || other.deposit == deposit) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.usedAmount, usedAmount) ||
+                other.usedAmount == usedAmount) &&
+            (identical(other.remainingPercentage, remainingPercentage) ||
+                other.remainingPercentage == remainingPercentage));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, name, price, icon, color, dataTime, memo, deposit);
+  int get hashCode => Object.hash(runtimeType, name, price, icon, color,
+      dataTime, memo, deposit, status, usedAmount, remainingPercentage);
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.
@@ -263,7 +322,10 @@ abstract class _Save implements Save {
       @ColorConverter() required final Color color,
       required final String dataTime,
       required final String memo,
-      final bool deposit}) = _$SaveImpl;
+      final bool deposit,
+      final SaveStatus status,
+      final int usedAmount,
+      final double remainingPercentage}) = _$SaveImpl;
 
   factory _Save.fromJson(Map<String, dynamic> json) = _$SaveImpl.fromJson;
 
@@ -283,6 +345,12 @@ abstract class _Save implements Save {
   String get memo;
   @override
   bool get deposit;
+  @override
+  SaveStatus get status; // 状態を示すプロパティを追加
+  @override
+  int get usedAmount; // 使用された金額を追跡するプロパティを追加
+  @override
+  double get remainingPercentage;
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.

@@ -48,7 +48,6 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
               width: 100,
               height: 100,
               fit: BoxFit.contain,
-              
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),

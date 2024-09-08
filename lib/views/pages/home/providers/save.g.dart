@@ -15,6 +15,11 @@ _$SaveImpl _$$SaveImplFromJson(Map<String, dynamic> json) => _$SaveImpl(
       dataTime: json['dataTime'] as String,
       memo: json['memo'] as String,
       deposit: json['deposit'] as bool? ?? true,
+      status: $enumDecodeNullable(_$SaveStatusEnumMap, json['status']) ??
+          SaveStatus.unUsed,
+      usedAmount: (json['usedAmount'] as num?)?.toInt() ?? 0,
+      remainingPercentage:
+          (json['remainingPercentage'] as num?)?.toDouble() ?? 1.0,
     );
 
 Map<String, dynamic> _$$SaveImplToJson(_$SaveImpl instance) =>
@@ -26,4 +31,13 @@ Map<String, dynamic> _$$SaveImplToJson(_$SaveImpl instance) =>
       'dataTime': instance.dataTime,
       'memo': instance.memo,
       'deposit': instance.deposit,
+      'status': _$SaveStatusEnumMap[instance.status]!,
+      'usedAmount': instance.usedAmount,
+      'remainingPercentage': instance.remainingPercentage,
     };
+
+const _$SaveStatusEnumMap = {
+  SaveStatus.used: 'used',
+  SaveStatus.inUse: 'inUse',
+  SaveStatus.unUsed: 'unUsed',
+};
