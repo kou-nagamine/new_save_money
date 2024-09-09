@@ -242,7 +242,7 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'カテゴリー別の我慢',
+                  'カテゴリー別のついで記録',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -329,6 +329,7 @@ Widget _buildGridItem(IconData icon, Color color ,String count, String price,) {
         children: [
           Icon(icon, size: 30, color: color,),
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: 3),
               Text(count, style: TextStyle(fontSize: 14, color: Colors.black87 ,fontWeight: FontWeight.bold)),
