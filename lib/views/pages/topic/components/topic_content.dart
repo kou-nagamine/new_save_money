@@ -136,7 +136,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
             return Container(
               width: MediaQuery.of(context).size.width * 1.0,
               height: MediaQuery.of(context).size.height * 0.6,
-              color: Colors.grey,
+              color: Colors.white,
               child: const Center(child: Icon(Icons.error, color: Colors.red)),
             );
           } else if (snapshot.hasData) {
@@ -183,14 +183,6 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              // Text(
-                              //   description,
-                              //   style: TextStyle(
-                              //     fontSize: 16,
-                              //     color: Colors.white,
-                              //     fontWeight: FontWeight.bold,
-                              //   ),
-                              // )
                             ],
                           ),
                         ],
@@ -202,17 +194,31 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 Positioned(
                   top: 50,
                   left: 10,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context); // 前のページに戻る
-                      temporaryTopicListNotifier.resetState();
-                    },
-                    icon: Icon(
-                      Icons.arrow_circle_left_rounded,
-                      color: Colors.black,
-                      size: 50,
-                    ),
-                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context); // 前のページに戻る
+                          temporaryTopicListNotifier.resetState();
+                        },
+                        icon: Icon(
+                          Icons.arrow_circle_left_rounded,
+                          color: Colors.black,
+                          weight: 700,
+                          size: 50,
+                        ),
+                      ),
+                    ],
+                  )
                 ),
               ],
             );
