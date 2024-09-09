@@ -103,6 +103,7 @@ flutter:
     - assets/images/moneyimage.jpeg
     - assets/animations/high_five.json
     - assets/animations/arrow.json
+    - assets/animations/error.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
