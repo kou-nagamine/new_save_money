@@ -4,14 +4,14 @@ import 'package:new_save_money/views/pages/calculator/providers/temporary_list.d
 
 final List<Map<String, dynamic>> choicesLists = [
   {
-    'icon': Icons.lunch_dining,
-    'color': Colors.orange,
-    'label': '食事',
-  },
-  {
     'icon': Icons.local_drink,
     'color': Colors.blue,
     'label': '飲み物',
+  },
+  {
+    'icon': Icons.lunch_dining,
+    'color': Colors.orange,
+    'label': '食事',
   },
   {
     'icon': Icons.icecream,
@@ -33,7 +33,7 @@ class CalculatorCateGory extends ConsumerStatefulWidget {
 }
 
 class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
-  int selectedIndex = 1;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {

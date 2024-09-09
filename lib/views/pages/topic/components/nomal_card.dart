@@ -106,16 +106,16 @@ class NomalCard extends StatelessWidget {
                     left: 0,
                     right: 0,
                     child: Container(
-                      height: 260,
+                      height: 300,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
                           colors: [
                             Colors.black.withOpacity(0.9), // 90%の不透明度の黒
-                            Colors.white.withOpacity(0.1), // 白
+                            Colors.white.withOpacity(0.01), // 白
                           ],
-                          stops: [0, 1], // 黒が85%の位置で終了し、残りは白
+                          stops: [0, 1], 
                         ),
                       ),
                       child: Padding(
