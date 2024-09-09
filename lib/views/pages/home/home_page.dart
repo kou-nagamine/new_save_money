@@ -64,33 +64,34 @@ class HomePage extends ConsumerWidget {
               },
             ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.14,
-            left: 30,
-            right: 30,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'あなたのついで口座残高',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff5B5B5B),
+          Padding(
+            padding: EdgeInsets.only(top:115,left: 25),
+            child: Positioned(
+              top: MediaQuery.of(context).size.height * 0.14,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'あなたのついで口座残高',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff5B5B5B),
+                    ),
                   ),
-                ),
-                Text(
-                  '¥ ${NumberFormat("#,###").format(allPrice[1])}',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                  Text(
+                    '¥ ${NumberFormat("#,###").format(allPrice[1])}',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                SizedBox(height: 50,
-                child: CategoryBarChart(),),
-              ],
+                  SizedBox(height: 20),
+                  SizedBox(height: 50,
+                  child: CategoryBarChart(),),
+                ],
+              ),
             ),
           ),
           Positioned(
