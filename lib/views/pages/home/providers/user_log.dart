@@ -13,8 +13,10 @@ class UserLogNotifier extends _$UserLogNotifier {
   // 初期状態として空のリストを返す
   @override
   List<Save> build() {
-    //このプロバイダーがDisposeされた時に出力される
-    ref.onDispose((){log('Dispose');});
+    // このプロバイダーがDisposeされた時に出力される
+    ref.onDispose(() {
+      log('Dispose');
+    });
     _loadFromPreferences();
     return [];
   }
@@ -46,7 +48,7 @@ class UserLogNotifier extends _$UserLogNotifier {
       final newState = List<Save>.from(state);
       newState.removeAt(index); // 指定したインデックスの項目を削除
       state = newState;
-      _saveToPreferences();  // 更新された状態を反映
+      _saveToPreferences(); // 更新された状態を反映
     } else {
       // 範囲外のインデックスに対する処理（エラーハンドリング）
       print('Invalid index: $index');
@@ -72,45 +74,65 @@ class UserLogNotifier extends _$UserLogNotifier {
     int total = 0;
     changedLogs.clear(); // 更新のたびにリセット
 
-    for (var log in state) {
+    // 新しいログリストを作成
+    List<Save> updatedLogs = [];
+
+    // 古いデータから順に処理するためにリストを反転
+    for (var log in state.reversed) {
       final originalStatus = log.status;
+      int originalUsedAmount = log.usedAmount;
 
       if (originalStatus == SaveStatus.used) {
-        continue; // すでにusedのものは処理しない
+        // すでにusedのものは変更せずに追加
+        updatedLogs.add(log);
+        continue; // 処理をスキップ
       }
 
       if (log.deposit && total < targetPrice) {
-        if (total + log.price <= targetPrice) {
-          log = log.copyWith(
-            status: SaveStatus.used, 
-            usedAmount: log.price,
-            remainingPercentage: 0.0,
-          );
-          total += log.price;
-        } else {
-          int usedAmount = targetPrice - total;
-          double remaining = 1 - (usedAmount / log.price);
-          log = log.copyWith(
-            status: SaveStatus.inUse, 
-            usedAmount: usedAmount,
-            remainingPercentage: remaining,
-          );
-          total = targetPrice;
+        while (total < targetPrice && log.remainingPercentage > 0) {
+          int remainingTarget = targetPrice - total; // 割り当て可能な残りの金額
+          int remainingLogValue = (log.price * log.remainingPercentage).toInt(); // ログの残りの金額
+
+          if (remainingTarget >= remainingLogValue) {
+            // 全額使用できる場合
+            log = log.copyWith(
+              status: SaveStatus.used,
+              usedAmount: log.price,
+              remainingPercentage: 0.0,
+            );
+            total += remainingLogValue;
+          } else {
+            // 部分的にしか使用できない場合
+            int usedAmount = remainingTarget; // 割り当て可能な金額
+            double remaining = (remainingLogValue - usedAmount) / log.price; // 残りの割合を計算
+            log = log.copyWith(
+              status: SaveStatus.inUse,
+              usedAmount: log.price - remainingLogValue + usedAmount,
+              remainingPercentage: remaining,
+            );
+            total += usedAmount; // 割り当てた分だけtotalに加算
+          }
         }
       } else {
+        // depositがfalseの場合またはtotalがtargetPrice以上の場合
         log = log.copyWith(
           status: SaveStatus.unUsed,
           remainingPercentage: 1.0,
         );
       }
+      // 更新されたログを追加
+      updatedLogs.add(log);
 
       // 状態が変わったものを追跡
-      if (originalStatus == SaveStatus.unUsed && (log.status == SaveStatus.inUse || log.status == SaveStatus.used)) {
+      // ログの内容が変わったら追跡
+      if (originalUsedAmount != log.usedAmount || originalStatus != log.status) {
         changedLogs.add(log);
       }
     }
 
-    state = [...state];
+    // 古い順で処理したのでリストを再び反転して元の順序に戻す
+    state = updatedLogs.reversed.toList();
+
     _saveToPreferences();
   }
 

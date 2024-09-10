@@ -40,14 +40,17 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   @override
   Widget build(BuildContext context) {
     final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
-    final showPopUp = ref.watch(showPopUpNotifierProvider);
+
     // ボタンを押せるかどうかを判定
-    // final isButtonEnabled = temporaryTopicList[0] != null && temporaryTopicList[1] != null;
-    final isButtonEnabled = true;
+    final isButtonEnabled = temporaryTopicList[0] != null && temporaryTopicList[1] != null;
+
+    //
     final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
     final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
-    // showPopUpをtrueに設定
+
+    //
+    final allPrice = ref.watch(allPriceNotifierProvider);
 
     return Scaffold(
       body: DraggableHome(
@@ -75,7 +78,11 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 borderRadius: BorderRadius.circular(50),
               ),
               onPressed: isButtonEnabled ? () async {
-                final price = temporaryTopicList[1] ?? 1500;
+                int price = temporaryTopicList[1] ?? 1500;
+                // allPriceの値を取得して比較
+                if (price > allPrice[1]) {  // ここでtemporaryTopicList[1]とallPrice[1]を比較
+                  price = allPrice[1];  // priceがallPriceより大きい場合、allPriceに変更
+                }
                 // Saveクラスのインスタンスを作成
                 final save = Save(
                   name: temporaryTopicList[0] ?? widget.title, // カテゴリ名
@@ -90,8 +97,6 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 temporaryTopicListNotifier.resetState();
                 allPriceNotifier.subtractPrice(price);
                 userLogNotifier.updateLogsBasedOnPrice(price);
-
-                // ref.read(showPopUpNotifierProvider.notifier).show();
 
                 await showDialog(
                   context: context,

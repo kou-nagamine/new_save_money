@@ -7,22 +7,31 @@ class TemporaryTopicListNotifier extends _$TemporaryTopicListNotifier {
   // 初期状態として空のリストを返す
   @override
   List<dynamic> build() {
-    return [null,null,DateTime.now(),''];
+    return [null, null, DateTime.now(), ''];
   }
+
   void resetState() {
-    state = [null,null,DateTime.now(),''];
+    state = [null, null, DateTime.now(), ''];
   }
-  // データを追加する関数
-  void updateTitle (String title) {
-    state[0] = title;
+
+  // データを追加する関数（新しいリストを作成してstateに再代入）
+  void updateTitle(String title) {
+    // 新しいリストを作成してstateに代入
+    state = [title, state[1], state[2], state[3]];
   }
-  void updatePrice (int price) {
-    state[1] = price;
+
+  void updatePrice(int price) {
+    // 新しいリストを作成してstateに代入
+    state = [state[0], price, state[2], state[3]];
   }
-  void updateDate (DateTime date) {
-    state[2] = date;
+
+  void updateDate(DateTime date) {
+    // 新しいリストを作成してstateに代入
+    state = [state[0], state[1], date, state[3]];
   }
-  void updateMemo (String memo) {
-    state[3] = memo;
+
+  void updateMemo(String memo) {
+    // 新しいリストを作成してstateに代入
+    state = [state[0], state[1], state[2], memo];
   }
 }

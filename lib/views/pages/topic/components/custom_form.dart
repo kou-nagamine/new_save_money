@@ -34,9 +34,9 @@ class _CustomFormState extends ConsumerState<CustomForm> {
 
     // Initialize calculatedPrice with allPraice[1]
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final allPraice = ref.read(allPriceNotifierProvider);
+      final allPrice = ref.read(allPriceNotifierProvider);
       setState(() {
-        calculatedPrice = allPraice[1];
+        calculatedPrice = allPrice[1];
       });
     });
 
@@ -70,12 +70,12 @@ class _CustomFormState extends ConsumerState<CustomForm> {
     });
   }
 
-  void _getEnteredPrice(allPraice) {
+  void _getEnteredPrice(allPrice) {
     setState(() {
       _EnteredPrice = _priceController.text; // 入力された金額を取得して変数に保存
       int enteredPriceInt = int.tryParse(_EnteredPrice) ?? 0; // 文字列を整数に変換、失敗したら0
-      calculatedPrice = allPraice[1] - enteredPriceInt; 
-      double calculatedPercent = (allPraice[0]/ enteredPriceInt.toDouble() * 100); // 割合を計算
+      calculatedPrice = allPrice[1] - enteredPriceInt; 
+      double calculatedPercent = (allPrice[0]/ enteredPriceInt.toDouble() * 100); // 割合を計算
       _calculatedPercent = double.parse(calculatedPercent.toStringAsFixed(1)); // 少数第1位に丸める
       if (calculatedPrice < 0) {
         calculatedPrice = 0; // 0未満の場合は0にする
@@ -96,7 +96,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   @override
   Widget build(BuildContext context) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
-    final allPraice = ref.watch(allPriceNotifierProvider);
+    final allPrice = ref.watch(allPriceNotifierProvider);
 
     return GestureDetector(
       onTap: () {
@@ -148,7 +148,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                               : Colors.black,
                         ),
                         textInputAction: TextInputAction.done,
-                        onSubmitted: (_) {
+                        onEditingComplete: () {
                           FocusScope.of(context).unfocus();
                         },
                         onChanged: (value) {
@@ -202,11 +202,11 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           color: Color(0xffE82929),
                         ),
                         textInputAction: TextInputAction.done,
-                        onSubmitted: (_) {
+                        onEditingComplete: () {
                           FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
                         },
                         onChanged: (value) {
-                          _getEnteredPrice(allPraice); // 入力された金額を取得して処理する
+                          _getEnteredPrice(allPrice); // 入力された金額を取得して処理する
                           int price = int.tryParse(value) ?? 0;
                           temporaryTopicList.updatePrice(price);
                         },
@@ -215,7 +215,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   ],
                 ),
               ),
-              (int.tryParse(_EnteredPrice) ?? 0) > allPraice[0]
+              (int.tryParse(_EnteredPrice) ?? 0) > allPrice[0]
                 ? Container(
                   height: 70,
                   decoration: BoxDecoration(
@@ -252,7 +252,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: '¥${NumberFormat("#,###").format(allPraice[1])} ($_calculatedPercent%)',
+                                        text: '¥${NumberFormat("#,###").format(allPrice[1])} ($_calculatedPercent%)',
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -413,7 +413,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                       ),
                     ),
                     SizedBox(height: 5),
-                    Text('¥${NumberFormat("#,###").format(allPraice[1])}',
+                    Text('¥${NumberFormat("#,###").format(allPrice[1])}',
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.w800,
