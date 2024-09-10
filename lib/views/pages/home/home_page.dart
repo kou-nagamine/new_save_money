@@ -30,7 +30,6 @@ import '../home/providers/show_dialog.dart';
 class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context , WidgetRef ref) {
-    
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
     return Scaffold(
@@ -64,10 +63,10 @@ class HomePage extends ConsumerWidget {
               },
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(top:115,left: 25),
-            child: Positioned(
-              top: MediaQuery.of(context).size.height * 0.14,
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.14,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -92,7 +91,7 @@ class HomePage extends ConsumerWidget {
                   child: CategoryBarChart(),),
                 ],
               ),
-            ),
+            )
           ),
           Positioned(
             bottom: 0,
@@ -122,7 +121,6 @@ class HomePage extends ConsumerWidget {
                             context,
                             MaterialPageRoute(builder: (context) => GraphPage()),
                           );
-                          print(allPrice);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -153,7 +151,7 @@ class HomePage extends ConsumerWidget {
                     child: historyData.isEmpty
                     ? const Padding(
                       padding:  EdgeInsets.only(top: 50),
-                      child: Text('我慢した金額を入力しよう！'))
+                      child: Text('ついで出費を記録しよう！'))
                     : MoneyHistoryList(),
                   )
                 ],

@@ -103,7 +103,7 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
                 ),
               );
             },
-            child: const Text('閉じる',
+            child: const Text('ホームに戻る',
             style: TextStyle(
               fontSize: 16, 
               fontWeight: FontWeight.bold,
