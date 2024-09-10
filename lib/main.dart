@@ -12,6 +12,8 @@ import 'firebase_insert.dart';
 
 import '/views/pages/topic/components/topic_content.dart';
 
+import '../views/pages/walkthrough/pageview.dart';
+
 //commons
 import 'views/pages/commons/navigation_bar/navigation_bar.dart';
 
@@ -52,8 +54,8 @@ class MyApp extends StatelessWidget {
       //   colorScheme: ColorScheme.dark(),
       //   useMaterial3: true
       // ),
-      //home:TopicContent(),
-      home:CommonNavigationBar(initialIndex: 0),
+      home:PageViewWidget(),
+      //home:CommonNavigationBar(initialIndex: 0),
 
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
