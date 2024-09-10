@@ -42,7 +42,7 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
     return AlertDialog(
       contentPadding: const EdgeInsets.all(15),
       content:  SizedBox(
-        height: 300,
+        height: 450,
         width: 400,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
