@@ -102,6 +102,8 @@ flutter:
     - assets/images/meisi.png
     - assets/images/AI_image.jpeg
     - assets/images/moneyimage.jpeg
+    - assets/images/walkthrough.png
+
     - assets/animations/high_five.json
     - assets/animations/arrow.json
     - assets/animations/error.json
