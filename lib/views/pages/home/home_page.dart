@@ -86,7 +86,7 @@ class HomePage extends ConsumerWidget {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   SizedBox(height: 50,
                   child: CategoryBarChart(),),
                 ],
