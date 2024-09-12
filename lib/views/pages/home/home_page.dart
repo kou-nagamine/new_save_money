@@ -62,33 +62,96 @@ class HomePage extends ConsumerWidget {
           ),
           Positioned(
             top: MediaQuery.of(context).size.height * 0.14,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'あなたのついで口座残高',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff5B5B5B),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GraphPage()),
+                );
+              },
+              child:  Container(
+                padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'あなたのついで口座残高',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff5B5B5B),
+                      ),
                     ),
-                  ),
-                  Text(
-                    '¥ ${NumberFormat("#,###").format(allPrice[1])}',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '¥ ${NumberFormat("#,###").format(allPrice[1])}',
+                          style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(width: 50),
+                        Container(
+                          width: 200,
+                          height: 30,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                               Text(
+                                '詳細',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              Icon(
+                                Icons.chevron_right,
+                                size: 40,
+                                color: Colors.blue,
+                              ),
+                            ],
+                          )
+                        )
+                      ]
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  SizedBox(height: 50,
-                  child: CategoryBarChart(),),
-                ],
-              ),
-            )
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: 'これまでの累計ついで額   ',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff5B5B5B),
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: '¥${NumberFormat("#,###").format(allPrice[0])}',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    SizedBox(height: 50,
+                    child: CategoryBarChart(),),
+                  ],
+                ),
+              )
+            ),
           ),
           Positioned(
             bottom: 0,
@@ -112,36 +175,6 @@ class HomePage extends ConsumerWidget {
                       ),
                       PaymentMenu(),
                       Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => GraphPage()),
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              'グラフを確認する',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.blue
-                              ),
-                            ),
-                            Container(
-                              height: 28,
-                              alignment: Alignment.center,  
-                              child: Icon(
-                                Icons.chevron_right,
-                                size: 30,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),    
                     ],
                   ),
                   Expanded(
