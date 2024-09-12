@@ -5,22 +5,22 @@ import 'package:new_save_money/views/pages/calculator/providers/temporary_list.d
 final List<Map<String, dynamic>> choicesLists = [
   {
     'icon': Icons.local_drink,
-    'color': Colors.blue,
+    'color': Color(0xff0071FF),
     'label': '飲み物',
   },
   {
     'icon': Icons.lunch_dining,
-    'color': Colors.orange,
+    'color': Color(0xffFF9500),
     'label': '食事',
   },
   {
     'icon': Icons.icecream,
-    'color': Colors.lightGreen,
+    'color': Color(0xff34C759),
     'label': '菓子類',
   },
   {
     'icon': Icons.star,
-    'color': Colors.green,
+    'color': Color(0xffFF2D55),
     'label': 'その他',
   },
 ];

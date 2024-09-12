@@ -235,7 +235,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                                   color: Color(0xffFF9500),
                                   size: 15,),
                                 Text(
-                                  '全額割り当てれないため口座の残高を表示しています。'
+                                  '全額割り当てる残高がありません。'
                                   ,style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,

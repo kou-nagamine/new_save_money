@@ -61,7 +61,7 @@ class HomePage extends ConsumerWidget {
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.14,
+            top: MediaQuery.of(context).size.height * 0.13,
             child: GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -70,12 +70,13 @@ class HomePage extends ConsumerWidget {
                 );
               },
               child:  Container(
+                width: MediaQuery.of(context).size.width * 1.0,
                 padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'あなたのついで口座残高',
+                      'あなたのついで残高',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
@@ -83,7 +84,7 @@ class HomePage extends ConsumerWidget {
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
@@ -94,9 +95,9 @@ class HomePage extends ConsumerWidget {
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(width: 50),
+                        //SizedBox(width: 50),
                         Container(
-                          width: 200,
+                          padding: EdgeInsets.only(right: 30),
                           height: 30,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -119,6 +120,7 @@ class HomePage extends ConsumerWidget {
                         )
                       ]
                     ),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
