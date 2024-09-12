@@ -153,7 +153,10 @@ class MoneyHistoryList extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ReferencePage(),
+                    builder: (context) => ReferencePage(
+                      title: categoryName,
+                      itemIndex: index,
+                    ),
                   ),
                 );
               }
