@@ -25,8 +25,8 @@ class CategoryBarChart extends ConsumerWidget {
       }
     }
     // allPrice[1] が存在し、かつ 0 でないことを確認して、ゼロ割りを回避する
-    double totalAmount = (allPrice.length > 1 && allPrice[1] != 0)
-    ? allPrice[1].toDouble()
+    double totalAmount = (allPrice.length > 1 && allPrice[0] != 0)
+    ? allPrice[0].toDouble()
     : 1.0; 
 
     // それぞれのコンテナの幅の割合

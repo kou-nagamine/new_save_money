@@ -319,7 +319,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           },
                           onConfirm: (date) {
                             print('confirm $date');
-                            temporaryTopicList.updateDate(date.toString());
+                            temporaryTopicList.updateDate(date);
                             setState(() {
                               _selectedDate = date; // 日付を更新
                             });

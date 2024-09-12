@@ -38,7 +38,7 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
         height: MediaQuery.of(context).size.height * 0.2,
         width: 300,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset(
               'assets/animations/error.json',
@@ -55,15 +55,13 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Column(
-                children: [
-                  Text('この操作は２度と元にもどせません。',
-                   style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold
-                    ),
-                    textAlign: TextAlign.center,
+              child: Center(
+                child:  Text('この操作は２度と元にもどせません。',
+                  style: const TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold
                   ),
-                ],
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ],
