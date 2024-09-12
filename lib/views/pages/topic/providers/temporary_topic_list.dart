@@ -25,7 +25,7 @@ class TemporaryTopicListNotifier extends _$TemporaryTopicListNotifier {
     state = [state[0], price, state[2], state[3]];
   }
 
-  void updateDate(DateTime date) {
+  void updateDate(String date) {
     // 新しいリストを作成してstateに代入
     state = [state[0], state[1], date, state[3]];
   }

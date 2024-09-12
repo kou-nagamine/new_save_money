@@ -202,6 +202,9 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
                 ),
               );
             },
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 1), // ここでpaddingをカスタマイズ
+            ),
             child: const Text('ホームに戻る',
             style: TextStyle(
               fontSize: 16, 

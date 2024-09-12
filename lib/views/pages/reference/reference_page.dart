@@ -27,8 +27,9 @@ class ReferencePage extends ConsumerWidget {
     final userSaveLog = ref.watch(userLogNotifierProvider);
     // 該当アイテムを取得
     final item = userSaveLog[itemIndex];
-    final String date = item.dataTime;
+    final DateTime date = item.dataTime;
     final int price = item.price;
+    final String memo = item.memo;
     final latestPrice = userSaveLog.isNotEmpty ? userSaveLog.first.price : 0;
     // latestPriceが0でない場合のみパーセンテージを計算
     final double supplementPercentage = latestPrice != 0 
@@ -45,24 +46,28 @@ class ReferencePage extends ConsumerWidget {
           },
         ),
         title: Text("出費の履歴", style: TextStyle(fontWeight: FontWeight.bold)),
-        headerWidget: headerWidget(context),
+        headerWidget: headerWidget(context, ref),
         headerExpandedHeight: 0.5,
         body: [
           PaymentContet(
             date: date,
             price: price,
             compensatingRatio: formattedPercentage,
-            memo: item.memo,
+            memo: memo,
           )
         ],
       ),
     );
   }
 
-  Widget headerWidget(BuildContext context) {
+  Widget headerWidget(BuildContext context, WidgetRef ref) {
+    final userSaveLog = ref.watch(userLogNotifierProvider);
+    final item = userSaveLog[itemIndex];
+    final String imageUrl = item.imageUrl;
+
     return FutureBuilder<String>(
       future: firebase_storage.FirebaseStorage.instance
-          .ref("enjoy/travel.webp")
+          .ref(imageUrl)
           .getDownloadURL(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

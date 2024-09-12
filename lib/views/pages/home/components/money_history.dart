@@ -66,6 +66,7 @@ class MoneyHistoryList extends ConsumerWidget {
     final Color color = item.color;
     final bool deposit = item.deposit;
     final int price = item.price;
+    final DateTime date = item.dataTime;
     final double remainingPercentage = item.remainingPercentage;
 
     // 用途に応じて色を変更
@@ -105,7 +106,7 @@ class MoneyHistoryList extends ConsumerWidget {
               ),
             ),
             subtitle: Text(
-              "2021/10/10", // 必要に応じて実際の日付に変更
+              '${date.year}年${date.month}月${date.day}日', // 必要に応じて実際の日付に変更
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,

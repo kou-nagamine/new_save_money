@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 //converter
 import '../../../../converters/icon_data_converter.dart';
 import '../../../../converters/color_converter.dart';
+import '../../../../converters/date_converter.dart';
 
 part 'save.freezed.dart';
 part 'save.g.dart';
@@ -19,8 +20,9 @@ class Save with _$Save {
     required int price,
     @IconDataConverter() required IconData icon,
     @ColorConverter() required Color color,
-    required String dataTime,
+    @DateTimeConverter() required DateTime dataTime, // DateTimeConverterを適用
     required String memo,
+    @Default('') String imageUrl, // デフォルト値を設定
     @Default(true) bool deposit,
     @Default(SaveStatus.unUsed) SaveStatus status, // 状態を示すプロパティを追加
     @Default(0) int usedAmount, // 使用された金額を追跡するプロパティを追加

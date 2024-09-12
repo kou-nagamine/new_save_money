@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 
 class PaymentContet extends StatelessWidget {
-  final String date;
+  final DateTime date;
   final int price;
   final String compensatingRatio;
   final String memo;
@@ -26,7 +26,7 @@ class PaymentContet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              date,
+              '${date.year}年${date.month}月${date.day}日',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

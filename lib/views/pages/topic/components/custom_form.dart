@@ -23,7 +23,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
-  final TextEditingController _priceController = TextEditingController(); //
+  final TextEditingController _priceController = TextEditingController(); 
   int calculatedPrice = 0;
   String _EnteredPrice = ''; // 入力された金額を保持する変数
   double _calculatedPercent = 0.0; // 計算結果を保持する変数
@@ -319,7 +319,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           },
                           onConfirm: (date) {
                             print('confirm $date');
-                            temporaryTopicList.updateDate(date);
+                            temporaryTopicList.updateDate(date.toString());
                             setState(() {
                               _selectedDate = date; // 日付を更新
                             });
