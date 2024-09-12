@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
 import 'package:new_save_money/views/pages/home/providers/save.dart';
+import 'package:intl/intl.dart';
 
 //riverpod
 import 'package:new_save_money/views/pages/home/providers/user_log.dart'; 
@@ -67,7 +68,7 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
                 children: [
                   Text('今回の$latestPrice円のお買い物では下記の我慢によって節約できました!',
                    style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold
+                    fontSize: 13, fontWeight: FontWeight.bold
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -88,84 +89,101 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
                   final remainingPercentage = log.remainingPercentage;
                   final priceColor = deposit ? Colors.black : Color(0xFFE82929);
 
-                  return Stack(
-                    children: [
-                      ListTile(
-                        dense: true,
-                        contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        title: Text(
-                          categoryName,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Color(0xff3C3C43),
-                          ),
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.all(0),
+                    decoration: ShapeDecoration(
+                      color: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Color(0xffDDDDDD),
+                          width: 1.5,
                         ),
-                        subtitle: Text(
-                          "2021/10/10", // 必要に応じて実際の日付に変更
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Color(0xffA4A4A4),
-                          ),
-                        ),
-                        leading: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color(0xffF1F1F1),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            categoryIcon,
-                            size: 20,
-                            color: color,
-                          ),
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "¥$price",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                color: priceColor,
-                              ),
-                            ),
-                            Opacity(
-                              opacity: deposit ? 0.0 : 1.0,
-                              child: Icon(
-                                Icons.chevron_right_rounded,
-                                size: 30,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
+                        borderRadius: SmoothBorderRadius(
+                          cornerRadius: 20,
+                          cornerSmoothing: 0.7,
                         ),
                       ),
-                      Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * (1.0 - remainingPercentage),
-                            decoration: ShapeDecoration(
-                              color: Color(0xffD9D9D9).withOpacity(0.5), // 灰色で透明なオーバーレイ
-                              shape: RoundedRectangleBorder(
-                                borderRadius: SmoothBorderRadius(
-                                  cornerRadius: 20,
-                                  cornerSmoothing: 0.7,
+                    ),
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          title: Text(
+                            categoryName,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Color(0xff3C3C43),
+                            ),
+                          ),
+                          subtitle: Text(
+                            "2021/10/10", // 必要に応じて実際の日付に変更
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Color(0xffA4A4A4),
+                            ),
+                          ),
+                          leading: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xffF1F1F1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              categoryIcon,
+                              size: 20,
+                              color: color,
+                            ),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "¥¥${NumberFormat("#,###").format(price)}",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: priceColor,
+                                ),
+                              ),
+                              Opacity(
+                                opacity: deposit ? 0.0 : 1.0,
+                                child: Icon(
+                                  Icons.chevron_right_rounded,
+                                  size: 30,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * (1.0 - remainingPercentage),
+                              decoration: ShapeDecoration(
+                                color: Color(0xffD9D9D9).withOpacity(0.5), // 灰色で透明なオーバーレイ
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: SmoothBorderRadius(
+                                    cornerRadius: 20,
+                                    cornerSmoothing: 0.7,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    )
                   );
                 },
               ),

@@ -231,8 +231,8 @@ class _TopicContentState extends ConsumerState<TopicContent> {
             return Container(
               width: MediaQuery.of(context).size.width * 1.0,
               height: MediaQuery.of(context).size.height * 0.6,
-              color: Colors.grey,
-              child: const Center(child: Icon(Icons.error)),
+              color: Colors.white,
+              child: const Center(child: Icon(Icons.error, color: Colors.red)),
             );
           }
         },

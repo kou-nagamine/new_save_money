@@ -40,7 +40,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
       });
     });
 
-    // FocusNodeのリスナーを追加
+    // テキストフィールドを選択したときにスクロールする
     _focusNode1.addListener(() {
       if (_focusNode1.hasFocus) {
         Scrollable.ensureVisible(

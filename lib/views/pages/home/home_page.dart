@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:iconoir_flutter/regular/box.dart';
 import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
-import 'package:pull_down_button/pull_down_button.dart';
 
 //components
 import 'components/money_history.dart';
@@ -15,7 +14,6 @@ import 'components/money_history.dart';
 //import '../calculator/calculator_page.dart';
 import '../graph/graph_page.dart';
 import '../setting/setting_page.dart';
-import '../home/components/pay_dialog.dart';
 import 'components/menu_ios.dart';
 import 'components/category_graph.dart';
 
@@ -25,7 +23,6 @@ import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar
 //riverpods
 import '../calculator/providers/all_price.dart';
 import "./providers/user_log.dart";
-import '../home/providers/show_dialog.dart';
 
 class HomePage extends ConsumerWidget {
   @override
