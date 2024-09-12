@@ -147,7 +147,7 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "¥¥${NumberFormat("#,###").format(price)}",
+                                "¥${NumberFormat("#,###").format(price)}",
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
