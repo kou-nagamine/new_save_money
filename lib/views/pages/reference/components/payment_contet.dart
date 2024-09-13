@@ -43,12 +43,13 @@ class PaymentContet extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Container(
+              width: MediaQuery.of(context).size.width * 0.9,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 color: Color(0xffF5F5F5),
               ),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: IntrinsicWidth( 
                   child:  Row(
                     mainAxisAlignment: MainAxisAlignment.center,

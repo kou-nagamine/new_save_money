@@ -159,7 +159,7 @@ class HomePage extends ConsumerWidget {
             bottom: 0,
             child: Container(
               width: MediaQuery.of(context).size.width * 1.0,
-              height: MediaQuery.of(context).size.height * 0.7,
+              height: MediaQuery.of(context).size.height * 0.68,
               padding: EdgeInsets.fromLTRB(25, 15, 25, 100),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
