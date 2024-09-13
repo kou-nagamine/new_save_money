@@ -62,6 +62,7 @@ dependencies:
   cached_network_image: 3.4.0
   lottie: ^3.1.2
   pull_down_button: ^0.10.1
+  uuid:
 
 dev_dependencies:
   flutter_test:

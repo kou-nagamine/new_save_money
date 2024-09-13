@@ -21,6 +21,11 @@ _$SaveImpl _$$SaveImplFromJson(Map<String, dynamic> json) => _$SaveImpl(
       usedAmount: (json['usedAmount'] as num?)?.toInt() ?? 0,
       remainingPercentage:
           (json['remainingPercentage'] as num?)?.toDouble() ?? 1.0,
+      linkedDepositId: json['linkedDepositId'] as String?,
+      linkedWithdrawals: (json['linkedWithdrawals'] as List<dynamic>?)
+              ?.map((e) => Withdrawal.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$SaveImplToJson(_$SaveImpl instance) =>
@@ -36,6 +41,9 @@ Map<String, dynamic> _$$SaveImplToJson(_$SaveImpl instance) =>
       'status': _$SaveStatusEnumMap[instance.status]!,
       'usedAmount': instance.usedAmount,
       'remainingPercentage': instance.remainingPercentage,
+      'linkedDepositId': instance.linkedDepositId,
+      'linkedWithdrawals':
+          instance.linkedWithdrawals.map((e) => e.toJson()).toList(),
     };
 
 const _$SaveStatusEnumMap = {
@@ -43,3 +51,15 @@ const _$SaveStatusEnumMap = {
   SaveStatus.inUse: 'inUse',
   SaveStatus.unUsed: 'unUsed',
 };
+
+_$WithdrawalImpl _$$WithdrawalImplFromJson(Map<String, dynamic> json) =>
+    _$WithdrawalImpl(
+      id: json['id'] as String,
+      amount: (json['amount'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$$WithdrawalImplToJson(_$WithdrawalImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'amount': instance.amount,
+    };
