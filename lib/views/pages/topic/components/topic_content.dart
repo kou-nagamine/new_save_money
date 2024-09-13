@@ -79,6 +79,9 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               ),
               onPressed: isButtonEnabled ? () async {
                 int price = temporaryTopicList[1] ?? 1500;
+                DateTime date = temporaryTopicList[2] ?? DateTime.now();
+                String memo = temporaryTopicList[3] ?? "メモがありません";
+
                 // allPriceの値を取得して比較
                 if (price > allPrice[1]) {  // ここでtemporaryTopicList[1]とallPrice[1]を比較
                   price = allPrice[1];  // priceがallPriceより大きい場合、allPriceに変更
@@ -90,8 +93,9 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   icon: Icons.local_activity, // カテゴリアイコン
                   color: Color(0xffE82929), // カテゴリカラー
                   deposit: false, 
-                  dataTime: "",// 必要に応じて true または false に設定
-                  memo: ""
+                  dataTime: date,// 必要に応じて true または false に設定
+                  memo: memo,
+                  imageUrl: widget.imageUrl,
                 );
                 userLogNotifier.updateState(save);
                 temporaryTopicListNotifier.resetState();
@@ -231,8 +235,8 @@ class _TopicContentState extends ConsumerState<TopicContent> {
             return Container(
               width: MediaQuery.of(context).size.width * 1.0,
               height: MediaQuery.of(context).size.height * 0.6,
-              color: Colors.grey,
-              child: const Center(child: Icon(Icons.error)),
+              color: Colors.white,
+              child: const Center(child: Icon(Icons.error, color: Colors.red)),
             );
           }
         },

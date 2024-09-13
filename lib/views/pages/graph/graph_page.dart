@@ -70,7 +70,8 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
       
       try {
         final dateFormat = DateFormat('yyyy-MM-dd'); // 実際のフォーマットに合わせて調整
-        final parsedDate = dateFormat.parse(userData[i].dataTime); // ここで日付の解析
+        DateTime parsedDate;
+        parsedDate = userData[i].dataTime;
         dates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
       } catch (e) {
         print('Invalid date format: ${userData[i].dataTime}');
@@ -297,20 +298,44 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
   LineChartData animatedChart(LineChartData data, double t){
   return LineChartData(
     borderData: data.borderData,
-      titlesData: data.titlesData,
-      gridData: data.gridData,
-      lineBarsData: data.lineBarsData.map((barData) {
-        return LineChartBarData(
-          spots: barData.spots
-              .sublist(0, (barData.spots.length * t).toInt()), // tに基づいてスポットを描画
-          isCurved: barData.isCurved,
-          curveSmoothness: barData.curveSmoothness,
-          color: barData.color,
-          barWidth: barData.barWidth,
-          belowBarData: barData.belowBarData,
-          dotData: barData.dotData,
-        );
-      }).toList(),
+    titlesData: data.titlesData,
+    gridData: data.gridData,
+    lineBarsData: data.lineBarsData.map((barData) {
+      final List<FlSpot> animatedSpots = [];
+      // スポットの間をアニメーションで描画する
+      for (int i = 0; i < barData.spots.length - 1; i++) {
+        final currentSpot = barData.spots[i];
+        final nextSpot = barData.spots[i + 1];
+
+        // アニメーションの進行度合いに応じて線を伸ばす
+        if (t >= (i + 1) / (barData.spots.length - 1)) {
+          // 次のスポットまで完全に描画
+          animatedSpots.add(currentSpot);
+        } else if (t > i / (barData.spots.length - 1)) {
+          // 部分的に描画
+          final progress = (t - i / (barData.spots.length - 1)) * (barData.spots.length - 1);
+          final double interpolatedX = currentSpot.x + (nextSpot.x - currentSpot.x) * progress;
+          final double interpolatedY = currentSpot.y + (nextSpot.y - currentSpot.y) * progress;
+          animatedSpots.add(currentSpot);
+          animatedSpots.add(FlSpot(interpolatedX, interpolatedY));
+          break;
+        }
+      }
+
+      if (t == 1) {
+        // アニメーションが完了したら、最後のスポットを追加
+        animatedSpots.add(barData.spots.last);
+      }
+      return LineChartBarData(
+        spots: animatedSpots,
+        isCurved: barData.isCurved,
+        curveSmoothness: barData.curveSmoothness,
+        color: barData.color,
+        barWidth: barData.barWidth,
+        belowBarData: barData.belowBarData,
+        dotData: barData.dotData,
+      );
+    }).toList(),
       lineTouchData: data.lineTouchData,
     );
   }

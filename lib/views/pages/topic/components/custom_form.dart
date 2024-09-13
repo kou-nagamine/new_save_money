@@ -23,7 +23,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
-  final TextEditingController _priceController = TextEditingController(); //
+  final TextEditingController _priceController = TextEditingController(); 
   int calculatedPrice = 0;
   String _EnteredPrice = ''; // 入力された金額を保持する変数
   double _calculatedPercent = 0.0; // 計算結果を保持する変数
@@ -40,7 +40,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
       });
     });
 
-    // FocusNodeのリスナーを追加
+    // テキストフィールドを選択したときにスクロールする
     _focusNode1.addListener(() {
       if (_focusNode1.hasFocus) {
         Scrollable.ensureVisible(
@@ -235,7 +235,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                                   color: Color(0xffFF9500),
                                   size: 15,),
                                 Text(
-                                  '全額割り当てれないため口座の残高を表示しています。'
+                                  '全額割り当てる残高がありません。'
                                   ,style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,

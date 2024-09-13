@@ -219,7 +219,7 @@ void _launchURL(String url) async {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Version 0.1.1(20240908)',
+                      'Version 0.2.0(240912)',
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,

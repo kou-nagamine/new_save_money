@@ -27,7 +27,7 @@ class CategoryBarChart extends ConsumerWidget {
     // allPrice[1] が存在し、かつ 0 でないことを確認して、ゼロ割りを回避する
     double totalAmount = (allPrice.length > 1 && allPrice[0] != 0)
     ? allPrice[0].toDouble()
-    : 1.0; // allPrice[1] が 0 または存在しない場合は 1.0 を使用
+    : 1.0; 
 
     // それぞれのコンテナの幅の割合
     double drinkPercentage = ((categoryData['飲み物']?['totalPrice'] ?? 0 ) / totalAmount).toDouble();

@@ -26,8 +26,11 @@ mixin _$Save {
   IconData get icon => throw _privateConstructorUsedError;
   @ColorConverter()
   Color get color => throw _privateConstructorUsedError;
-  String get dataTime => throw _privateConstructorUsedError;
+  @DateTimeConverter()
+  DateTime get dataTime =>
+      throw _privateConstructorUsedError; // DateTimeConverterを適用
   String get memo => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError; // デフォルト値を設定
   bool get deposit => throw _privateConstructorUsedError;
   SaveStatus get status => throw _privateConstructorUsedError; // 状態を示すプロパティを追加
   int get usedAmount =>
@@ -53,8 +56,9 @@ abstract class $SaveCopyWith<$Res> {
       int price,
       @IconDataConverter() IconData icon,
       @ColorConverter() Color color,
-      String dataTime,
+      @DateTimeConverter() DateTime dataTime,
       String memo,
+      String imageUrl,
       bool deposit,
       SaveStatus status,
       int usedAmount,
@@ -82,6 +86,7 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
     Object? color = null,
     Object? dataTime = null,
     Object? memo = null,
+    Object? imageUrl = null,
     Object? deposit = null,
     Object? status = null,
     Object? usedAmount = null,
@@ -107,10 +112,14 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
       dataTime: null == dataTime
           ? _value.dataTime
           : dataTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       memo: null == memo
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       deposit: null == deposit
           ? _value.deposit
@@ -144,8 +153,9 @@ abstract class _$$SaveImplCopyWith<$Res> implements $SaveCopyWith<$Res> {
       int price,
       @IconDataConverter() IconData icon,
       @ColorConverter() Color color,
-      String dataTime,
+      @DateTimeConverter() DateTime dataTime,
       String memo,
+      String imageUrl,
       bool deposit,
       SaveStatus status,
       int usedAmount,
@@ -170,6 +180,7 @@ class __$$SaveImplCopyWithImpl<$Res>
     Object? color = null,
     Object? dataTime = null,
     Object? memo = null,
+    Object? imageUrl = null,
     Object? deposit = null,
     Object? status = null,
     Object? usedAmount = null,
@@ -195,10 +206,14 @@ class __$$SaveImplCopyWithImpl<$Res>
       dataTime: null == dataTime
           ? _value.dataTime
           : dataTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       memo: null == memo
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       deposit: null == deposit
           ? _value.deposit
@@ -229,8 +244,9 @@ class _$SaveImpl implements _Save {
       required this.price,
       @IconDataConverter() required this.icon,
       @ColorConverter() required this.color,
-      required this.dataTime,
+      @DateTimeConverter() required this.dataTime,
       required this.memo,
+      this.imageUrl = '',
       this.deposit = true,
       this.status = SaveStatus.unUsed,
       this.usedAmount = 0,
@@ -250,9 +266,15 @@ class _$SaveImpl implements _Save {
   @ColorConverter()
   final Color color;
   @override
-  final String dataTime;
+  @DateTimeConverter()
+  final DateTime dataTime;
+// DateTimeConverterを適用
   @override
   final String memo;
+  @override
+  @JsonKey()
+  final String imageUrl;
+// デフォルト値を設定
   @override
   @JsonKey()
   final bool deposit;
@@ -270,7 +292,7 @@ class _$SaveImpl implements _Save {
 
   @override
   String toString() {
-    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, deposit: $deposit, status: $status, usedAmount: $usedAmount, remainingPercentage: $remainingPercentage)';
+    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, imageUrl: $imageUrl, deposit: $deposit, status: $status, usedAmount: $usedAmount, remainingPercentage: $remainingPercentage)';
   }
 
   @override
@@ -285,6 +307,8 @@ class _$SaveImpl implements _Save {
             (identical(other.dataTime, dataTime) ||
                 other.dataTime == dataTime) &&
             (identical(other.memo, memo) || other.memo == memo) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             (identical(other.deposit, deposit) || other.deposit == deposit) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.usedAmount, usedAmount) ||
@@ -295,8 +319,19 @@ class _$SaveImpl implements _Save {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, name, price, icon, color,
-      dataTime, memo, deposit, status, usedAmount, remainingPercentage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      name,
+      price,
+      icon,
+      color,
+      dataTime,
+      memo,
+      imageUrl,
+      deposit,
+      status,
+      usedAmount,
+      remainingPercentage);
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.
@@ -320,8 +355,9 @@ abstract class _Save implements Save {
       required final int price,
       @IconDataConverter() required final IconData icon,
       @ColorConverter() required final Color color,
-      required final String dataTime,
+      @DateTimeConverter() required final DateTime dataTime,
       required final String memo,
+      final String imageUrl,
       final bool deposit,
       final SaveStatus status,
       final int usedAmount,
@@ -340,9 +376,12 @@ abstract class _Save implements Save {
   @ColorConverter()
   Color get color;
   @override
-  String get dataTime;
+  @DateTimeConverter()
+  DateTime get dataTime; // DateTimeConverterを適用
   @override
   String get memo;
+  @override
+  String get imageUrl; // デフォルト値を設定
   @override
   bool get deposit;
   @override

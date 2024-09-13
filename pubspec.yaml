@@ -1,5 +1,5 @@
 name: new_save_money
-description: "A new Flutter project."
+description: "ついで出費を抑え、自分の好きなものや大事なものにお金を回すことを勧めるアプリ"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

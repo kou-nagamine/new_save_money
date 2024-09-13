@@ -54,8 +54,8 @@ class MyApp extends StatelessWidget {
       //   colorScheme: ColorScheme.dark(),
       //   useMaterial3: true
       // ),
-      home:PageViewWidget(),
-      //home:CommonNavigationBar(initialIndex: 0),
+      //home:PageViewWidget(),
+      home:CommonNavigationBar(initialIndex: 0),
 
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

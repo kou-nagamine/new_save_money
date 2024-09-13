@@ -67,8 +67,9 @@ class CalculatorButton extends ConsumerWidget {
                 color: temporaryList[2] as Color, // カテゴリカラー
                 price: int.parse(chageState), // 価格
                 deposit: true, // 必要に応じて true または false に設定
-                dataTime: DateTime.now().toString(),
-                memo: ""
+                dataTime: DateTime.now(),
+                memo: "",
+                imageUrl: "",
               );
               // Save インスタンスを updateState に渡す
               userLogNotifier.updateState(save);
