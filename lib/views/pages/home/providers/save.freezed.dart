@@ -35,7 +35,10 @@ mixin _$Save {
   SaveStatus get status => throw _privateConstructorUsedError; // 状態を示すプロパティを追加
   int get usedAmount =>
       throw _privateConstructorUsedError; // 使用された金額を追跡するプロパティを追加
-  double get remainingPercentage => throw _privateConstructorUsedError;
+  double get remainingPercentage =>
+      throw _privateConstructorUsedError; // 残りの割合を追跡するプロパティを追加
+  String? get linkedDepositId => throw _privateConstructorUsedError;
+  List<Withdrawal> get linkedWithdrawals => throw _privateConstructorUsedError;
 
   /// Serializes this Save to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -62,7 +65,9 @@ abstract class $SaveCopyWith<$Res> {
       bool deposit,
       SaveStatus status,
       int usedAmount,
-      double remainingPercentage});
+      double remainingPercentage,
+      String? linkedDepositId,
+      List<Withdrawal> linkedWithdrawals});
 }
 
 /// @nodoc
@@ -91,6 +96,8 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
     Object? status = null,
     Object? usedAmount = null,
     Object? remainingPercentage = null,
+    Object? linkedDepositId = freezed,
+    Object? linkedWithdrawals = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -137,6 +144,14 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
           ? _value.remainingPercentage
           : remainingPercentage // ignore: cast_nullable_to_non_nullable
               as double,
+      linkedDepositId: freezed == linkedDepositId
+          ? _value.linkedDepositId
+          : linkedDepositId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      linkedWithdrawals: null == linkedWithdrawals
+          ? _value.linkedWithdrawals
+          : linkedWithdrawals // ignore: cast_nullable_to_non_nullable
+              as List<Withdrawal>,
     ) as $Val);
   }
 }
@@ -159,7 +174,9 @@ abstract class _$$SaveImplCopyWith<$Res> implements $SaveCopyWith<$Res> {
       bool deposit,
       SaveStatus status,
       int usedAmount,
-      double remainingPercentage});
+      double remainingPercentage,
+      String? linkedDepositId,
+      List<Withdrawal> linkedWithdrawals});
 }
 
 /// @nodoc
@@ -185,6 +202,8 @@ class __$$SaveImplCopyWithImpl<$Res>
     Object? status = null,
     Object? usedAmount = null,
     Object? remainingPercentage = null,
+    Object? linkedDepositId = freezed,
+    Object? linkedWithdrawals = null,
   }) {
     return _then(_$SaveImpl(
       name: null == name
@@ -231,6 +250,14 @@ class __$$SaveImplCopyWithImpl<$Res>
           ? _value.remainingPercentage
           : remainingPercentage // ignore: cast_nullable_to_non_nullable
               as double,
+      linkedDepositId: freezed == linkedDepositId
+          ? _value.linkedDepositId
+          : linkedDepositId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      linkedWithdrawals: null == linkedWithdrawals
+          ? _value._linkedWithdrawals
+          : linkedWithdrawals // ignore: cast_nullable_to_non_nullable
+              as List<Withdrawal>,
     ));
   }
 }
@@ -250,7 +277,10 @@ class _$SaveImpl implements _Save {
       this.deposit = true,
       this.status = SaveStatus.unUsed,
       this.usedAmount = 0,
-      this.remainingPercentage = 1.0});
+      this.remainingPercentage = 1.0,
+      this.linkedDepositId,
+      final List<Withdrawal> linkedWithdrawals = const []})
+      : _linkedWithdrawals = linkedWithdrawals;
 
   factory _$SaveImpl.fromJson(Map<String, dynamic> json) =>
       _$$SaveImplFromJson(json);
@@ -289,10 +319,22 @@ class _$SaveImpl implements _Save {
   @override
   @JsonKey()
   final double remainingPercentage;
+// 残りの割合を追跡するプロパティを追加
+  @override
+  final String? linkedDepositId;
+  final List<Withdrawal> _linkedWithdrawals;
+  @override
+  @JsonKey()
+  List<Withdrawal> get linkedWithdrawals {
+    if (_linkedWithdrawals is EqualUnmodifiableListView)
+      return _linkedWithdrawals;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_linkedWithdrawals);
+  }
 
   @override
   String toString() {
-    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, imageUrl: $imageUrl, deposit: $deposit, status: $status, usedAmount: $usedAmount, remainingPercentage: $remainingPercentage)';
+    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, imageUrl: $imageUrl, deposit: $deposit, status: $status, usedAmount: $usedAmount, remainingPercentage: $remainingPercentage, linkedDepositId: $linkedDepositId, linkedWithdrawals: $linkedWithdrawals)';
   }
 
   @override
@@ -314,7 +356,11 @@ class _$SaveImpl implements _Save {
             (identical(other.usedAmount, usedAmount) ||
                 other.usedAmount == usedAmount) &&
             (identical(other.remainingPercentage, remainingPercentage) ||
-                other.remainingPercentage == remainingPercentage));
+                other.remainingPercentage == remainingPercentage) &&
+            (identical(other.linkedDepositId, linkedDepositId) ||
+                other.linkedDepositId == linkedDepositId) &&
+            const DeepCollectionEquality()
+                .equals(other._linkedWithdrawals, _linkedWithdrawals));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -331,7 +377,9 @@ class _$SaveImpl implements _Save {
       deposit,
       status,
       usedAmount,
-      remainingPercentage);
+      remainingPercentage,
+      linkedDepositId,
+      const DeepCollectionEquality().hash(_linkedWithdrawals));
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.
@@ -361,7 +409,9 @@ abstract class _Save implements Save {
       final bool deposit,
       final SaveStatus status,
       final int usedAmount,
-      final double remainingPercentage}) = _$SaveImpl;
+      final double remainingPercentage,
+      final String? linkedDepositId,
+      final List<Withdrawal> linkedWithdrawals}) = _$SaveImpl;
 
   factory _Save.fromJson(Map<String, dynamic> json) = _$SaveImpl.fromJson;
 
@@ -389,12 +439,183 @@ abstract class _Save implements Save {
   @override
   int get usedAmount; // 使用された金額を追跡するプロパティを追加
   @override
-  double get remainingPercentage;
+  double get remainingPercentage; // 残りの割合を追跡するプロパティを追加
+  @override
+  String? get linkedDepositId;
+  @override
+  List<Withdrawal> get linkedWithdrawals;
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SaveImplCopyWith<_$SaveImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Withdrawal _$WithdrawalFromJson(Map<String, dynamic> json) {
+  return _Withdrawal.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Withdrawal {
+  String get id => throw _privateConstructorUsedError; // 出金の一意なID
+  int get amount => throw _privateConstructorUsedError;
+
+  /// Serializes this Withdrawal to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of Withdrawal
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $WithdrawalCopyWith<Withdrawal> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $WithdrawalCopyWith<$Res> {
+  factory $WithdrawalCopyWith(
+          Withdrawal value, $Res Function(Withdrawal) then) =
+      _$WithdrawalCopyWithImpl<$Res, Withdrawal>;
+  @useResult
+  $Res call({String id, int amount});
+}
+
+/// @nodoc
+class _$WithdrawalCopyWithImpl<$Res, $Val extends Withdrawal>
+    implements $WithdrawalCopyWith<$Res> {
+  _$WithdrawalCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of Withdrawal
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? amount = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$WithdrawalImplCopyWith<$Res>
+    implements $WithdrawalCopyWith<$Res> {
+  factory _$$WithdrawalImplCopyWith(
+          _$WithdrawalImpl value, $Res Function(_$WithdrawalImpl) then) =
+      __$$WithdrawalImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String id, int amount});
+}
+
+/// @nodoc
+class __$$WithdrawalImplCopyWithImpl<$Res>
+    extends _$WithdrawalCopyWithImpl<$Res, _$WithdrawalImpl>
+    implements _$$WithdrawalImplCopyWith<$Res> {
+  __$$WithdrawalImplCopyWithImpl(
+      _$WithdrawalImpl _value, $Res Function(_$WithdrawalImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Withdrawal
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? amount = null,
+  }) {
+    return _then(_$WithdrawalImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$WithdrawalImpl implements _Withdrawal {
+  const _$WithdrawalImpl({required this.id, required this.amount});
+
+  factory _$WithdrawalImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WithdrawalImplFromJson(json);
+
+  @override
+  final String id;
+// 出金の一意なID
+  @override
+  final int amount;
+
+  @override
+  String toString() {
+    return 'Withdrawal(id: $id, amount: $amount)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WithdrawalImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.amount, amount) || other.amount == amount));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, amount);
+
+  /// Create a copy of Withdrawal
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WithdrawalImplCopyWith<_$WithdrawalImpl> get copyWith =>
+      __$$WithdrawalImplCopyWithImpl<_$WithdrawalImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$WithdrawalImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Withdrawal implements Withdrawal {
+  const factory _Withdrawal(
+      {required final String id, required final int amount}) = _$WithdrawalImpl;
+
+  factory _Withdrawal.fromJson(Map<String, dynamic> json) =
+      _$WithdrawalImpl.fromJson;
+
+  @override
+  String get id; // 出金の一意なID
+  @override
+  int get amount;
+
+  /// Create a copy of Withdrawal
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$WithdrawalImplCopyWith<_$WithdrawalImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
