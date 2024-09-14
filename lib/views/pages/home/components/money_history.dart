@@ -1,4 +1,5 @@
 import 'dart:developer';
+import '../../home/providers/save.dart';
 
 import 'package:figma_squircle/figma_squircle.dart';
 import "package:flutter/foundation.dart";
@@ -20,23 +21,72 @@ class MoneyHistoryList extends ConsumerWidget {
     // 最新の deposit = false のアイテムのインデックスを取得
     final firstDepositFalseIndex = userSaveLog.indexWhere((item) => !item.deposit);
 
+    // 「割り当て済み」ラベルが挿入されたかどうかを追跡
+    bool assignedLabelInserted = false;
+    bool inAssignedLabelInserted = false;
+
     return ListView.builder(
       padding: const EdgeInsets.only(top: 0),
       itemCount: userSaveLog.length,
       itemBuilder: (context, index) {
+        final item = userSaveLog[index];
+
         // Dismissibleで囲む条件: 最新の deposit = false のアイテム以前のもの、または deposit = false がない場合
         final shouldWrapWithDismissible = firstDepositFalseIndex == -1 || index <= firstDepositFalseIndex;
 
-        if (shouldWrapWithDismissible) {
-          return Dismissible(
-            key: Key(userSaveLog[index].toString()),
-            onDismissed: (direction) {
-              final item = userSaveLog[index];
-              final price = item.price;
-              final deposit = item.deposit;
+        // 「割り当て済み」ラベルを挿入する条件
+        final assignLabel = item.deposit && item.status == SaveStatus.used && !assignedLabelInserted;
 
+        final inAssignLabel = item.deposit && item.status == SaveStatus.inUse && !inAssignedLabelInserted;
+
+        // ウィジェットリストを作成
+        List<Widget> widgets = [];
+
+        // 「割り当て済み」ラベルを挿入
+        if (assignLabel) {
+          assignedLabelInserted = true; // ラベルが挿入されたことを記録
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Text(
+                '割り当て済み',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          );
+        }
+
+        if (inAssignLabel) {
+          inAssignedLabelInserted = true; // ラベルが挿入されたことを記録
+          // remainingPercentageを100分率に変換して整数にする
+          int percentage = (100 - (item.remainingPercentage * 100)).round();
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Text(
+                '${percentage}%割り当て中',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          );
+        }
+
+        // Dismissibleで囲むかどうかの条件に従い、リストアイテムを追加
+        Widget listTile = buildListTile(context, ref, index);
+        if (shouldWrapWithDismissible) {
+          listTile = Dismissible(
+            key: Key(item.toString()),
+            onDismissed: (direction) {
               ref.read(userLogNotifierProvider.notifier).deleteLog(index);
-              ref.read(allPriceNotifierProvider.notifier).deletePrice(deposit, price);
+              ref.read(allPriceNotifierProvider.notifier).deletePrice(item.deposit, item.price);
             },
             background: Container(
               color: Colors.red,
@@ -46,11 +96,17 @@ class MoneyHistoryList extends ConsumerWidget {
                 size: 40,
               ),
             ),
-            child: buildListTile(context, ref, index),
+            child: listTile,
           );
-        } else {
-          return buildListTile(context, ref, index);
         }
+
+        // リストアイテムを追加
+        widgets.add(listTile);
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: widgets,
+        );
       },
     );
   }
@@ -169,7 +225,7 @@ class MoneyHistoryList extends ConsumerWidget {
               child: Container(
                 width: MediaQuery.of(context).size.width * (1.0 - remainingPercentage),
                 decoration: ShapeDecoration(
-                  color:  Color(0xffD9D9D9).withOpacity(0.5), // 灰色で透明なオーバーレイ
+                  color: Color(0xffD9D9D9).withOpacity(0.5), // 灰色で透明なオーバーレイ
                   shape: RoundedRectangleBorder(
                     borderRadius: SmoothBorderRadius(
                       cornerRadius: 20,
