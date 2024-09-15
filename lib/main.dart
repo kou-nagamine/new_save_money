@@ -20,23 +20,31 @@ import 'views/pages/commons/navigation_bar/navigation_bar.dart';
 //MaterialWithModalsPageRoute
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+//shared_preferences
+import 'package:shared_preferences/shared_preferences.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
+
+  final prefs = await SharedPreferences.getInstance();
+  final bool finTutorial = prefs.getBool('tutorial') ?? false;
+
   // データ挿入処理
   //await DataInsert().insertData();
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      child: MyApp(finTutorial:finTutorial),
     )
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class MyApp extends StatelessWidget{
+  final bool finTutorial;
+  const MyApp({super.key, required this.finTutorial});
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,7 +63,9 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true
       // ),
       //home:PageViewWidget(),
-      home:CommonNavigationBar(initialIndex: 0),
+       home: finTutorial
+          ? CommonNavigationBar(initialIndex: 0)
+          : PageViewWidget(),
 
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
