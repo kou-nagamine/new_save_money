@@ -7,6 +7,8 @@ import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar
 import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 import 'package:new_save_money/views/pages/calculator/providers/all_price.dart';
 
+//shared_preferences
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DangerDialog extends ConsumerStatefulWidget{
 
@@ -72,9 +74,11 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
           mainAxisAlignment: MainAxisAlignment.spaceEvenly, // ボタン間にスペースを均等に配置
           children: [
             TextButton(
-              onPressed: () {
+              onPressed: () async{
                 ref.read(userLogNotifierProvider.notifier).resetLogs();
                 ref.read(allPriceNotifierProvider.notifier).resetPreferences();
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.remove('tutorial');
                 Navigator.push(
                   context,
                   MaterialPageRoute(
