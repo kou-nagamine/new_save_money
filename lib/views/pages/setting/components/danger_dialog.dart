@@ -75,16 +75,23 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
           children: [
             TextButton(
               onPressed: () async{
-                ref.read(userLogNotifierProvider.notifier).resetLogs();
-                ref.read(allPriceNotifierProvider.notifier).resetPreferences();
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.remove('tutorial');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CommonNavigationBar(initialIndex: 0),
-                  ),
-                );
+                try {
+                  ref.read(userLogNotifierProvider.notifier).resetLogs();
+                  ref.read(allPriceNotifierProvider.notifier).resetPreferences();
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.remove('tutorial');
+                  if (mounted) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CommonNavigationBar(initialIndex: 0),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  // エラーハンドリング（例えば、ダイアログを表示するなど）
+                  print('Error: $e');
+                }
               },
               child: Container(
                 alignment: Alignment.center,
