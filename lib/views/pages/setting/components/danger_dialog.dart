@@ -78,7 +78,7 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
                 try {
                   ref.read(userLogNotifierProvider.notifier).resetLogs();
                   ref.read(allPriceNotifierProvider.notifier).resetPreferences();
-                  final prefs = await SharedPreferences.getInstance();
+                  final prefs = await SharedPreferences.getInstance(); // チュートリアルを削除する
                   await prefs.remove('tutorial');
                   if (mounted) {
                     Navigator.push(
