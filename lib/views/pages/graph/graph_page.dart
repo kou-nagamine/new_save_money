@@ -95,6 +95,17 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
       }
     }
 
+    // Get the current date
+    String currentDate = DateFormat('yyyy/MM/dd').format(DateTime.now());
+
+    // Check if userData has one or more elements
+    String displayDateRange;
+    if (userData.isNotEmpty) {
+      displayDateRange = '${DateFormat('yyyy/MM/dd').format(userData[0].dataTime)} ~ $currentDate';
+    } else {
+      displayDateRange = 'データがありません'; // "No data available"
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -115,9 +126,9 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  '2024/5/10 ~ 2024/8/15',
-                  style: TextStyle(
+                Text(
+                  displayDateRange,  // Display either the date range or "No data available"
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
