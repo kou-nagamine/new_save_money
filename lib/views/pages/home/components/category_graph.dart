@@ -47,7 +47,7 @@ class CategoryBarChart extends ConsumerWidget {
     // テキストを表示するための最小幅
     double minTextWidth = 70;
 
-    return allPrice[1] == 0
+    return allPrice[0] == 0
       ? Container(
         decoration: ShapeDecoration(
           shape: SmoothRectangleBorder(
