@@ -95,15 +95,15 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
       }
     }
 
-    // Get the current date
+    // 現在の日付を取得
     String currentDate = DateFormat('yyyy/MM/dd').format(DateTime.now());
 
-    // Check if userData has one or more elements
+    //　データがある場合は、最新の日付を取得
     String displayDateRange;
     if (userData.isNotEmpty) {
-      displayDateRange = '${DateFormat('yyyy/MM/dd').format(userData[0].dataTime)} ~ $currentDate';
+      displayDateRange = '${DateFormat('yyyy/MM/dd').format(userData[userData.length - 1].dataTime)} ~ $currentDate';
     } else {
-      displayDateRange = 'データがありません'; // "No data available"
+      displayDateRange = 'データがありません'; // データがない場合
     }
 
     return Scaffold(
@@ -127,7 +127,7 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  displayDateRange,  // Display either the date range or "No data available"
+                  displayDateRange,   // 表示する日付の範囲
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
