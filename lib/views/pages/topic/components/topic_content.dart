@@ -80,6 +80,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               onPressed: isButtonEnabled ? () async {
                 final currentDateTime = DateTime.now();
                 int price = temporaryTopicList[1] ?? 1500;
+                String memo = temporaryTopicList[3] ?? "メモがありません";
                 // allPriceの値を取得して比較
                 if (price > allPrice[1]) {  // ここでtemporaryTopicList[1]とallPrice[1]を比較
                   price = allPrice[1];  // priceがallPriceより大きい場合、allPriceに変更
@@ -92,7 +93,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   color: Color(0xffE82929), // カテゴリカラー
                   deposit: false, 
                   dataTime: currentDateTime,// 必要に応じて true または false に設定
-                  memo: "",
+                  memo: memo,
                   imageUrl: widget.imageUrl,
                 );
                 userLogNotifier.updateState(save);
