@@ -74,11 +74,16 @@ class _CustomFormState extends ConsumerState<CustomForm> {
     setState(() {
       _EnteredPrice = _priceController.text; // 入力された金額を取得して変数に保存
       int enteredPriceInt = int.tryParse(_EnteredPrice) ?? 0; // 文字列を整数に変換、失敗したら0
-      calculatedPrice = allPrice[1] - enteredPriceInt; 
-      double calculatedPercent = (allPrice[0]/ enteredPriceInt.toDouble() * 100); // 割合を計算
-      _calculatedPercent = double.parse(calculatedPercent.toStringAsFixed(1)); // 少数第1位に丸める
+      //　残高表示用
+      calculatedPrice = allPrice[1] - enteredPriceInt;
       if (calculatedPrice < 0) {
         calculatedPrice = 0; // 0未満の場合は0にする
+      }
+      //割合表示用
+      double calculatedPercent = (allPrice[1]/ enteredPriceInt.toDouble() * 100); //　所持金/入力金額 = 割り当て率
+      _calculatedPercent = double.parse(calculatedPercent.toStringAsFixed(1)); // 少数第1位に丸める
+      if (_calculatedPercent > 100) {
+        _calculatedPercent = 100; // 100%を超えた場合は100%にする
       }
     });
   }
@@ -215,7 +220,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   ],
                 ),
               ),
-              (int.tryParse(_EnteredPrice) ?? 0) > allPrice[0]
+              (int.tryParse(_EnteredPrice) ?? 0) > allPrice[1]
                 ? Container(
                   height: 70,
                   decoration: BoxDecoration(

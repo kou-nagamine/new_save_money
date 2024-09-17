@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:iconoir_flutter/regular/box.dart';
-import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 import 'package:intl/intl.dart'; // NumberFormatを使用するためにインポート
 
 //components
@@ -16,9 +15,6 @@ import '../graph/graph_page.dart';
 import '../setting/setting_page.dart';
 import 'components/menu_ios.dart';
 import 'components/category_graph.dart';
-
-//commons
-import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
 
 //riverpods
 import '../calculator/providers/all_price.dart';

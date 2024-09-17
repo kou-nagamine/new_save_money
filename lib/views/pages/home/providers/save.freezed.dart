@@ -39,6 +39,7 @@ mixin _$Save {
       throw _privateConstructorUsedError; // 残りの割合を追跡するプロパティを追加
   String? get linkedDepositId => throw _privateConstructorUsedError;
   List<Withdrawal> get linkedWithdrawals => throw _privateConstructorUsedError;
+  double get salePercentage => throw _privateConstructorUsedError;
 
   /// Serializes this Save to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -67,7 +68,8 @@ abstract class $SaveCopyWith<$Res> {
       int usedAmount,
       double remainingPercentage,
       String? linkedDepositId,
-      List<Withdrawal> linkedWithdrawals});
+      List<Withdrawal> linkedWithdrawals,
+      double salePercentage});
 }
 
 /// @nodoc
@@ -98,6 +100,7 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
     Object? remainingPercentage = null,
     Object? linkedDepositId = freezed,
     Object? linkedWithdrawals = null,
+    Object? salePercentage = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -152,6 +155,10 @@ class _$SaveCopyWithImpl<$Res, $Val extends Save>
           ? _value.linkedWithdrawals
           : linkedWithdrawals // ignore: cast_nullable_to_non_nullable
               as List<Withdrawal>,
+      salePercentage: null == salePercentage
+          ? _value.salePercentage
+          : salePercentage // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -176,7 +183,8 @@ abstract class _$$SaveImplCopyWith<$Res> implements $SaveCopyWith<$Res> {
       int usedAmount,
       double remainingPercentage,
       String? linkedDepositId,
-      List<Withdrawal> linkedWithdrawals});
+      List<Withdrawal> linkedWithdrawals,
+      double salePercentage});
 }
 
 /// @nodoc
@@ -204,6 +212,7 @@ class __$$SaveImplCopyWithImpl<$Res>
     Object? remainingPercentage = null,
     Object? linkedDepositId = freezed,
     Object? linkedWithdrawals = null,
+    Object? salePercentage = null,
   }) {
     return _then(_$SaveImpl(
       name: null == name
@@ -258,6 +267,10 @@ class __$$SaveImplCopyWithImpl<$Res>
           ? _value._linkedWithdrawals
           : linkedWithdrawals // ignore: cast_nullable_to_non_nullable
               as List<Withdrawal>,
+      salePercentage: null == salePercentage
+          ? _value.salePercentage
+          : salePercentage // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -279,7 +292,8 @@ class _$SaveImpl implements _Save {
       this.usedAmount = 0,
       this.remainingPercentage = 1.0,
       this.linkedDepositId,
-      final List<Withdrawal> linkedWithdrawals = const []})
+      final List<Withdrawal> linkedWithdrawals = const [],
+      required this.salePercentage})
       : _linkedWithdrawals = linkedWithdrawals;
 
   factory _$SaveImpl.fromJson(Map<String, dynamic> json) =>
@@ -333,8 +347,11 @@ class _$SaveImpl implements _Save {
   }
 
   @override
+  final double salePercentage;
+
+  @override
   String toString() {
-    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, imageUrl: $imageUrl, deposit: $deposit, status: $status, usedAmount: $usedAmount, remainingPercentage: $remainingPercentage, linkedDepositId: $linkedDepositId, linkedWithdrawals: $linkedWithdrawals)';
+    return 'Save(name: $name, price: $price, icon: $icon, color: $color, dataTime: $dataTime, memo: $memo, imageUrl: $imageUrl, deposit: $deposit, status: $status, usedAmount: $usedAmount, remainingPercentage: $remainingPercentage, linkedDepositId: $linkedDepositId, linkedWithdrawals: $linkedWithdrawals, salePercentage: $salePercentage)';
   }
 
   @override
@@ -360,7 +377,9 @@ class _$SaveImpl implements _Save {
             (identical(other.linkedDepositId, linkedDepositId) ||
                 other.linkedDepositId == linkedDepositId) &&
             const DeepCollectionEquality()
-                .equals(other._linkedWithdrawals, _linkedWithdrawals));
+                .equals(other._linkedWithdrawals, _linkedWithdrawals) &&
+            (identical(other.salePercentage, salePercentage) ||
+                other.salePercentage == salePercentage));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -379,7 +398,8 @@ class _$SaveImpl implements _Save {
       usedAmount,
       remainingPercentage,
       linkedDepositId,
-      const DeepCollectionEquality().hash(_linkedWithdrawals));
+      const DeepCollectionEquality().hash(_linkedWithdrawals),
+      salePercentage);
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.
@@ -411,7 +431,8 @@ abstract class _Save implements Save {
       final int usedAmount,
       final double remainingPercentage,
       final String? linkedDepositId,
-      final List<Withdrawal> linkedWithdrawals}) = _$SaveImpl;
+      final List<Withdrawal> linkedWithdrawals,
+      required final double salePercentage}) = _$SaveImpl;
 
   factory _Save.fromJson(Map<String, dynamic> json) = _$SaveImpl.fromJson;
 
@@ -444,6 +465,8 @@ abstract class _Save implements Save {
   String? get linkedDepositId;
   @override
   List<Withdrawal> get linkedWithdrawals;
+  @override
+  double get salePercentage;
 
   /// Create a copy of Save
   /// with the given fields replaced by the non-null parameter values.

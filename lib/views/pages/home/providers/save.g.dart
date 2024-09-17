@@ -26,6 +26,7 @@ _$SaveImpl _$$SaveImplFromJson(Map<String, dynamic> json) => _$SaveImpl(
               ?.map((e) => Withdrawal.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      salePercentage: (json['salePercentage'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$SaveImplToJson(_$SaveImpl instance) =>
@@ -44,6 +45,7 @@ Map<String, dynamic> _$$SaveImplToJson(_$SaveImpl instance) =>
       'linkedDepositId': instance.linkedDepositId,
       'linkedWithdrawals':
           instance.linkedWithdrawals.map((e) => e.toJson()).toList(),
+      'salePercentage': instance.salePercentage,
     };
 
 const _$SaveStatusEnumMap = {

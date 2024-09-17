@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:new_save_money/views/pages/topic/topic_page.dart';
-
-import '../components/topic_content.dart';
 
 class RecomendCard extends StatelessWidget {
   const RecomendCard({super.key});

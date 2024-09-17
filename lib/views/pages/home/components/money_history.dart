@@ -5,7 +5,6 @@ import 'package:figma_squircle/figma_squircle.dart';
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 import '../providers/user_log.dart';
 import 'package:new_save_money/views/pages/calculator/providers/all_price.dart';
 import 'package:intl/intl.dart';

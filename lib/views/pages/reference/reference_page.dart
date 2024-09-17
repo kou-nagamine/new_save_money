@@ -3,7 +3,6 @@ import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:new_save_money/views/pages/home/providers/user_log.dart';
-import 'package:new_save_money/views/pages/home/providers/save.dart';
 
 // components
 import 'components/payment_contet.dart';
@@ -30,12 +29,7 @@ class ReferencePage extends ConsumerWidget {
     final DateTime date = item.dataTime;
     final int price = item.price;
     final String memo = item.memo;
-    final latestPrice = userSaveLog.isNotEmpty ? userSaveLog.first.price : 0;
-    // latestPriceが0でない場合のみパーセンテージを計算
-    final double supplementPercentage = latestPrice != 0 
-        ? (latestPrice / price) * 100 
-        : 100; 
-    final String formattedPercentage = supplementPercentage.toStringAsFixed(1);
+    final String formattedPercentage =userSaveLog[itemIndex].salePercentage.toStringAsFixed(1);
 
     return Scaffold(
       body: DraggableHome(

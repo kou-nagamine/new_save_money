@@ -70,6 +70,7 @@ class CalculatorButton extends ConsumerWidget {
                 dataTime: DateTime.now(),
                 memo: "",
                 imageUrl: "",
+                salePercentage: 0,
               );
               // Save インスタンスを updateState に渡す
               userLogNotifier.updateState(save);

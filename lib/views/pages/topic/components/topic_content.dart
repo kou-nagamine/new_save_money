@@ -5,19 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../home/components/pay_dialog.dart';
 //components
 import 'custom_form.dart';
-//pages
-import '/views/pages/commons/navigation_bar/navigation_bar.dart';
 //providers
 import "/views/pages/home/providers/user_log.dart";
 import '/views/pages/topic/providers/temporary_topic_list.dart';
 import '/views/pages/calculator/providers/all_price.dart';
-import '/views/pages/home/providers/show_dialog.dart';
 //freezed
 import '/views/pages/home/providers/save.dart';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-import 'package:new_save_money/views/pages/home/home_page.dart';
 
 class TopicContent extends ConsumerStatefulWidget{
   const TopicContent({
@@ -78,12 +74,17 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 borderRadius: BorderRadius.circular(50),
               ),
               onPressed: isButtonEnabled ? () async {
-                final currentDateTime = DateTime.now();
+                final currentDateTime = temporaryTopicList[2] ?? DateTime.now();
                 int price = temporaryTopicList[1] ?? 1500;
                 // allPriceの値を取得して比較
+                double salePercentage = allPrice[1]/  price * 100;
+                if (salePercentage > 100) {
+                  salePercentage = 100;
+                }
                 if (price > allPrice[1]) {  // ここでtemporaryTopicList[1]とallPrice[1]を比較
                   price = allPrice[1];  // priceがallPriceより大きい場合、allPriceに変更
                 }
+                
                 // Saveクラスのインスタンスを作成
                 final save = Save(
                   name: temporaryTopicList[0] ?? widget.title, // カテゴリ名
@@ -94,6 +95,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   dataTime: currentDateTime,// 必要に応じて true または false に設定
                   memo: "",
                   imageUrl: widget.imageUrl,
+                  salePercentage: salePercentage,
                 );
                 userLogNotifier.updateState(save);
                 temporaryTopicListNotifier.resetState();

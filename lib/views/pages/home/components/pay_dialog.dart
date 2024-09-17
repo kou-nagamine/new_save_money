@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
-import 'package:new_save_money/views/pages/home/providers/save.dart';
 import 'package:intl/intl.dart';
 
 //riverpod
