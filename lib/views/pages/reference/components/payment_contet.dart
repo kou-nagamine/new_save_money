@@ -19,8 +19,7 @@ class PaymentContet extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) { 
-    return SingleChildScrollView(
-      child: Padding(
+    return Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +102,6 @@ class PaymentContet extends StatelessWidget {
             ),
           ],
         ),
-      )
-    );
+      );
   }
 }

@@ -51,25 +51,28 @@ class ReferencePage extends ConsumerWidget {
         headerWidget: headerWidget(context, ref),
         headerExpandedHeight: 0.5,
         body: [
-          PaymentContet(
-            date: date,
-            price: price,
-            compensatingRatio: formattedPercentage,
-            memo: memo,
-          ),
-          Container(
-            child: ListView.builder(
-              padding: const EdgeInsets.only(top: 0),
-              itemCount: filteredWithdrawals.length,
-              itemBuilder: (context, index) {
-                final withdrawalId = filteredWithdrawals[index];
-                return ListTile(
-                  title: Text('Withdrawal ID: $withdrawalId'),
-                  // You can add more details here as needed
-                );
-              },
-            ),
-          ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                PaymentContet(
+                  date: date,
+                  price: price,
+                  compensatingRatio: formattedPercentage,
+                  memo: memo,
+                ),
+                // ListViewにbuildListTileを使用
+                ListView.builder(
+                  padding: const EdgeInsets.only(top: 0),
+                  physics: const NeverScrollableScrollPhysics(), // スクロールを無効化
+                  shrinkWrap: true, // ListViewが自身の高さを決定する
+                  itemCount: ref.watch(userLogNotifierProvider).length, // データの長さを指定
+                  itemBuilder: (context, index) {
+                    return buildListTile(context, ref, index); // buildListTileを呼び出す
+                  },
+              ),
+              ],
+            )
+          )
         ],
       ),
     );
