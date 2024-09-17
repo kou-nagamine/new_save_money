@@ -71,7 +71,7 @@ class UserLogNotifier extends _$UserLogNotifier {
       // 出金と同じidを持った入金logを探す
       if (log.deposit && log.linkedWithdrawals.any((w) => w.id == withdrawalLog.linkedDepositId)) {
         var matchingWithdrawals = log.linkedWithdrawals.where((w) => w.id == withdrawalLog.linkedDepositId).toList();
-        // 該当のlogのusedAmount,remainingPercentage, statusをリセットする
+        // 該当のlogのusedAmount,remainingPercentage, statusをリセットする 
         if (matchingWithdrawals.isNotEmpty) {
           int totalAmountToRevert = matchingWithdrawals.fold(0, (sum, withdrawal) => sum + withdrawal.amount);
 
@@ -106,6 +106,7 @@ class UserLogNotifier extends _$UserLogNotifier {
     state = []; // 状態を空のリストにリセット
     _saveToPreferences();
   }
+
   void updateLogsBasedOnPrice(int targetPrice) {
     int total = 0;
     changedLogs.clear(); // 更新のたびにリセット

@@ -27,7 +27,7 @@ class Save with _$Save {
     @Default(SaveStatus.unUsed) SaveStatus status, // 状態を示すプロパティを追加
     @Default(0) int usedAmount, // 使用された金額を追跡するプロパティを追加
     @Default(1.0) double remainingPercentage, // 残りの割合を追跡するプロパティを追加
-    String? linkedDepositId,
+    String? linkedDepositId, //入金と出金を紐づけられるための出金につけられるID
     @Default([]) List<Withdrawal> linkedWithdrawals,
     @Default(0.0) double? salePercentage,
   }) =_Save;
@@ -38,7 +38,7 @@ class Save with _$Save {
 @freezed
 class Withdrawal with _$Withdrawal {
   const factory Withdrawal({
-    required String id, // 出金の一意なID
+    required String id, //　ある出金で使われた入金につけられるID
     required int amount, // 使用された金額
   }) = _Withdrawal;
 
