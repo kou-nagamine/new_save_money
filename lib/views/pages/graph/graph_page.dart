@@ -95,6 +95,17 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
       }
     }
 
+    // 現在の日付を取得
+    String currentDate = DateFormat('yyyy/MM/dd').format(DateTime.now());
+
+    //　データがある場合は、最新の日付を取得
+    String displayDateRange;
+    if (userData.isNotEmpty) {
+      displayDateRange = '${DateFormat('yyyy/MM/dd').format(userData[userData.length - 1].dataTime)} ~ $currentDate';
+    } else {
+      displayDateRange = 'データがありません'; // データがない場合
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -115,9 +126,9 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  '2024/5/10 ~ 2024/8/15',
-                  style: TextStyle(
+                Text(
+                  displayDateRange,   // 表示する日付の範囲
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),

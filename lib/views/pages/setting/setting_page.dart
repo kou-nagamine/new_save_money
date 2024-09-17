@@ -203,7 +203,7 @@ void _launchURL(String url) async {
                           color: Color(0xffd1242f),
                         ),
                         Padding(
-                          child: Text('すべての履歴を削除する',
+                          child: Text('すべてのデータを削除する',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w900,

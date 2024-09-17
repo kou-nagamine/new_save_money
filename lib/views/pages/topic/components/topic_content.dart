@@ -76,6 +76,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               onPressed: isButtonEnabled ? () async {
                 final currentDateTime = temporaryTopicList[2] ?? DateTime.now();
                 int price = temporaryTopicList[1] ?? 1500;
+                String memo = temporaryTopicList[3] ?? "メモがありません";
                 // allPriceの値を取得して比較
                 double salePercentage = allPrice[1]/  price * 100;
                 if (salePercentage > 100) {
@@ -93,7 +94,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   color: Color(0xffE82929), // カテゴリカラー
                   deposit: false, 
                   dataTime: currentDateTime,// 必要に応じて true または false に設定
-                  memo: "",
+                  memo: memo,
                   imageUrl: widget.imageUrl,
                   salePercentage: salePercentage,
                 );

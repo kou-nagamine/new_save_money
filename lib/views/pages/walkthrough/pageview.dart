@@ -1,6 +1,12 @@
+//package
 import 'dart:async';
-import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
 import 'package:flutter/material.dart';
+
+//commons
+import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
+
+//shared_preferences
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PageViewWidget extends StatefulWidget {
   const PageViewWidget({Key? key}) : super(key: key);
@@ -211,10 +217,12 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
-                onPressed: () {
+                onPressed: () async{
+                  final prefs = await SharedPreferences.getInstance();
                   if (_currentPageIndex < 3) {
                     _updateCurrentPageIndex(_currentPageIndex + 1);
                   } else {
+                    prefs.setBool('tutorial', true);
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

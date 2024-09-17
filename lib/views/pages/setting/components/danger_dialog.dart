@@ -7,6 +7,8 @@ import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar
 import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 import 'package:new_save_money/views/pages/calculator/providers/all_price.dart';
 
+//shared_preferences
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DangerDialog extends ConsumerStatefulWidget{
 
@@ -72,15 +74,24 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
           mainAxisAlignment: MainAxisAlignment.spaceEvenly, // ボタン間にスペースを均等に配置
           children: [
             TextButton(
-              onPressed: () {
-                ref.read(userLogNotifierProvider.notifier).resetLogs();
-                ref.read(allPriceNotifierProvider.notifier).resetPreferences();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CommonNavigationBar(initialIndex: 0),
-                  ),
-                );
+              onPressed: () async{
+                try {
+                  ref.read(userLogNotifierProvider.notifier).resetLogs();
+                  ref.read(allPriceNotifierProvider.notifier).resetPreferences();
+                  final prefs = await SharedPreferences.getInstance(); // チュートリアルを削除する
+                  await prefs.remove('tutorial');
+                  if (mounted) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CommonNavigationBar(initialIndex: 0),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  // エラーハンドリング（例えば、ダイアログを表示するなど）
+                  print('Error: $e');
+                }
               },
               child: Container(
                 alignment: Alignment.center,
