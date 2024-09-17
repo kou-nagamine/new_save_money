@@ -29,7 +29,7 @@ class ReferencePage extends ConsumerWidget {
     final DateTime date = item.dataTime;
     final int price = item.price;
     final String memo = item.memo;
-    final String formattedPercentage =userSaveLog[itemIndex].salePercentage.toStringAsFixed(1);
+    final String formattedPercentage =userSaveLog[itemIndex].salePercentage?.toStringAsFixed(1) ?? "0.0" ;
 
     return Scaffold(
       body: DraggableHome(

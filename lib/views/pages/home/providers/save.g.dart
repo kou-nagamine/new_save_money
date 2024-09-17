@@ -26,7 +26,7 @@ _$SaveImpl _$$SaveImplFromJson(Map<String, dynamic> json) => _$SaveImpl(
               ?.map((e) => Withdrawal.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      salePercentage: (json['salePercentage'] as num).toDouble(),
+      salePercentage: (json['salePercentage'] as num?)?.toDouble() ?? 0.0,
     );
 
 Map<String, dynamic> _$$SaveImplToJson(_$SaveImpl instance) =>

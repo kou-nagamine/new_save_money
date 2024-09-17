@@ -29,7 +29,7 @@ class Save with _$Save {
     @Default(1.0) double remainingPercentage, // 残りの割合を追跡するプロパティを追加
     String? linkedDepositId,
     @Default([]) List<Withdrawal> linkedWithdrawals,
-    required double salePercentage,
+    @Default(0.0) double? salePercentage,
   }) =_Save;
 
   factory Save.fromJson(Map<String, dynamic> json) => _$SaveFromJson(json);
