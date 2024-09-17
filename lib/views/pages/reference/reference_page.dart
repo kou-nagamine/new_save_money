@@ -7,6 +7,7 @@ import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:intl/intl.dart';
 import 'dart:developer';
+import '../home/providers/save.dart';
 
 // components
 import 'components/payment_contet.dart';
@@ -27,17 +28,17 @@ class ReferencePage extends ConsumerWidget {
     final userSaveLog = ref.watch(userLogNotifierProvider);
     // 該当アイテムを取得
     final item = userSaveLog[itemIndex];
+    final id = item.linkedDepositId;
     final DateTime date = item.dataTime;
     final int price = item.price;
     final String memo = item.memo;
     final String formattedPercentage =userSaveLog[itemIndex].salePercentage?.toStringAsFixed(1) ?? "0.0" ;
      // linkedDepositIdと合致するWithdrawalを取得
-    final filteredWithdrawals = userSaveLog
-        .where((log) => log.linkedDepositId == item.linkedDepositId && log.deposit == true)
-        .map((log) => log.linkedWithdrawals)
-        .expand((withdrawals) => withdrawals) // Flatten the list of linkedWithdrawals
-        .map((withdrawal) => withdrawal.id) // Get the ID of each Withdrawal
-        .toList();
+    // linkedDepositIdと合致する Save オブジェクトを取得
+    final filteredWithdrawals = userSaveLog.where((log) =>
+        log.deposit == true && 
+        log.linkedWithdrawals.any((withdrawal) => withdrawal.id == item.linkedDepositId)
+    ).toList();
 
      return Scaffold(
       body: DraggableHome(
@@ -65,11 +66,12 @@ class ReferencePage extends ConsumerWidget {
                   padding: const EdgeInsets.only(top: 0),
                   physics: const NeverScrollableScrollPhysics(), // スクロールを無効化
                   shrinkWrap: true, // ListViewが自身の高さを決定する
-                  itemCount: ref.watch(userLogNotifierProvider).length, // データの長さを指定
+                  itemCount: filteredWithdrawals.length, // データの長さを指定
                   itemBuilder: (context, index) {
-                    return buildListTile(context, ref, index); // buildListTileを呼び出す
+                    // フィルタリングされたリストを使って描画
+                    return buildListTile(context, ref, filteredWithdrawals[index], id); // buildListTileを呼び出す
                   },
-              ),
+                ),
               ],
             )
           )
@@ -77,6 +79,7 @@ class ReferencePage extends ConsumerWidget {
       ),
     );
   }
+  
 
   Widget headerWidget(BuildContext context, WidgetRef ref) {
     final userSaveLog = ref.watch(userLogNotifierProvider);
@@ -260,11 +263,7 @@ class ReferencePage extends ConsumerWidget {
   }
 }
 
-// 共通のListTile
-Widget buildListTile(BuildContext context, WidgetRef ref, int index) {
-  final userSaveLog = ref.watch(userLogNotifierProvider);
-  final item = userSaveLog[index];
-
+Widget buildListTile(BuildContext context, WidgetRef ref, Save item, String? linkedDepositId) {
   // Save 型のプロパティを取得
   final String categoryName = item.name;
   final IconData categoryIcon = item.icon;
@@ -277,7 +276,18 @@ Widget buildListTile(BuildContext context, WidgetRef ref, int index) {
   // 用途に応じて色を変更
   final Color priceColor = deposit ? Colors.black : Color(0xFFE82929);
 
-  log('Item: $categoryName, Remaining Percentage: $remainingPercentage');
+  // linkedDepositId に一致する Withdrawal の amount を取得
+  final linkedWithdrawalAmount = item.linkedWithdrawals
+      .firstWhere(
+        (withdrawal) => withdrawal.id == linkedDepositId,
+        orElse: () => Withdrawal(id: '', amount: 0), // デフォルト値として 0 の Withdrawal
+      )
+      .amount;
+
+  // amount を item.price で割って割合を計算
+  final double adjustedPercentage = price > 0 ? linkedWithdrawalAmount / price : 0.0;
+
+  log('Item: $categoryName, Remaining Percentage: $remainingPercentage, Adjusted Percentage: $adjustedPercentage');
 
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 5),
@@ -354,25 +364,12 @@ Widget buildListTile(BuildContext context, WidgetRef ref, int index) {
               ),
             ],
           ),
-          onTap: () {
-            if (!deposit) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReferencePage(
-                    title: categoryName,
-                    itemIndex: index,
-                  ),
-                ),
-              );
-            }
-          },
         ),
         Positioned.fill(
           child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              width: MediaQuery.of(context).size.width * (1.0 - remainingPercentage),
+              width: MediaQuery.of(context).size.width * (adjustedPercentage), // adjustedPercentage を使用
               decoration: ShapeDecoration(
                 color: Color(0xffD9D9D9).withOpacity(0.5), // 灰色で透明なオーバーレイ
                 shape: RoundedRectangleBorder(
