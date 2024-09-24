@@ -20,71 +20,151 @@ class MoneyHistoryList extends ConsumerWidget {
     // 最新の deposit = false のアイテムのインデックスを取得
     final firstDepositFalseIndex = userSaveLog.indexWhere((item) => !item.deposit);
 
-    // 「割り当て済み」ラベルが挿入されたかどうかを追跡
-    bool assignedLabelInserted = false;
-    bool inAssignedLabelInserted = false;
+    // A: 割り当て済みのアイテム、B: 割り当て済みでないアイテムのリスト
+    List<int> assignedIndexes = [];
+    List<int> unassignedIndexes = [];
+    List<int> inUseIndexes = [];
+
+    for (int index = 0; index < userSaveLog.length; index++) {
+      final item = userSaveLog[index];
+
+      // unassignedIndexes に追加: deposit == false または status != SaveStatus.used のもの
+      if (item.status == SaveStatus.unUsed) {
+        unassignedIndexes.add(index);
+      }
+
+      // assignedIndexes に追加: deposit == true かつ status == SaveStatus.used のもの
+      if (item.status == SaveStatus.used) {
+        assignedIndexes.add(index);
+      }
+
+      //
+      if (item.status == SaveStatus.inUse) {
+        inUseIndexes.add(index);
+      }
+    }
+
+    final itemCount = unassignedIndexes.length +
+                      (inUseIndexes.isNotEmpty ? 1 : 0) + // 使用中ラベル
+                      inUseIndexes.length +
+                      (assignedIndexes.isNotEmpty ? 1 : 0) + // 割り当て済みラベル
+                      assignedIndexes.length;
 
     return ListView.builder(
       padding: const EdgeInsets.only(top: 0),
-      itemCount: userSaveLog.length,
+      itemCount: itemCount,
       itemBuilder: (context, index) {
-        final item = userSaveLog[index];
 
-        // Dismissibleで囲む条件: 最新の deposit = false のアイテム以前のもの、または deposit = false がない場合
-        final shouldWrapWithDismissible = firstDepositFalseIndex == -1 || index <= firstDepositFalseIndex;
+        // 使用中ラベルの前に未使用アイテムを表示
+        if (index < unassignedIndexes.length) {
+          final itemIndex = unassignedIndexes[index];
+          final item = userSaveLog[itemIndex];
 
-        // 「割り当て済み」ラベルを挿入する条件
-        final assignLabel = item.deposit && item.status == SaveStatus.used && !assignedLabelInserted;
+          // Dismissibleで囲む条件
+          final shouldWrapWithDismissible = firstDepositFalseIndex == -1 || itemIndex <= firstDepositFalseIndex;
 
-        final inAssignLabel = item.deposit && item.status == SaveStatus.inUse && !inAssignedLabelInserted;
+          Widget listTile = buildListTile(context, ref, itemIndex);
 
-        // ウィジェットリストを作成
-        List<Widget> widgets = [];
-
-        // 「割り当て済み」ラベルを挿入
-        if (assignLabel) {
-          assignedLabelInserted = true; // ラベルが挿入されたことを記録
-          widgets.add(
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Text(
-                '割り当て済み',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
+          if (shouldWrapWithDismissible) {
+            listTile = Dismissible(
+              key: Key(item.toString()),
+              onDismissed: (direction) {
+                ref.read(userLogNotifierProvider.notifier).deleteLog(itemIndex);
+                ref.read(allPriceNotifierProvider.notifier).deletePrice(item.deposit, item.price);
+              },
+              background: Container(
+                color: Colors.red,
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                  size: 40,
                 ),
+              ),
+              child: listTile,
+            );
+          }
+          return listTile;
+        }
+
+        // 「n%割り当て中」ラベル　
+        if (index == unassignedIndexes.length && inUseIndexes.isNotEmpty) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Text(
+              '使用中',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
               ),
             ),
           );
         }
 
-        if (inAssignLabel) {
-          inAssignedLabelInserted = true; // ラベルが挿入されたことを記録
-          // remainingPercentageを100分率に変換して整数にする
-          int percentage = (100 - (item.remainingPercentage * 100)).round();
-          widgets.add(
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Text(
-                '${percentage}%割り当て中',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
+        // 割り当て中のアイテムを表示
+        if (index < unassignedIndexes.length + inUseIndexes.length + (inUseIndexes.isNotEmpty ? 1 : 0)) {
+          final inUseIndex = index - unassignedIndexes.length - (inUseIndexes.isNotEmpty ? 1 : 0); // ラベル分の補正
+          final itemIndex = inUseIndexes[inUseIndex];
+          final item = userSaveLog[itemIndex];
+
+          // Dismissibleで囲む条件
+          final shouldWrapWithDismissible = firstDepositFalseIndex == -1 || itemIndex <= firstDepositFalseIndex;
+
+          Widget listTile = buildListTile(context, ref, itemIndex);
+
+          if (shouldWrapWithDismissible) {
+            listTile = Dismissible(
+              key: Key(item.toString()),
+              onDismissed: (direction) {
+                ref.read(userLogNotifierProvider.notifier).deleteLog(itemIndex);
+                ref.read(allPriceNotifierProvider.notifier).deletePrice(item.deposit, item.price);
+              },
+              background: Container(
+                color: Colors.red,
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                  size: 40,
                 ),
+              ),
+              child: listTile,
+            );
+          }
+          return listTile;
+        }
+
+        // 4. 割り当て済みラベルを表示（assignedIndexesが空でない場合のみ）
+        if (index == unassignedIndexes.length + inUseIndexes.length + (inUseIndexes.isNotEmpty ? 1 : 0) &&
+            assignedIndexes.isNotEmpty) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Text(
+              '割り当て済み',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
               ),
             ),
           );
         }
+        
+        // 5. 割り当て済みのアイテムを表示
+        final assignedIndex = index - unassignedIndexes.length - inUseIndexes.length - 
+                              (inUseIndexes.isNotEmpty ? 2 : 1); // ラベル分の補正
+        final itemIndex = assignedIndexes[assignedIndex];
+        final item = userSaveLog[itemIndex];
 
-        // Dismissibleで囲むかどうかの条件に従い、リストアイテムを追加
-        Widget listTile = buildListTile(context, ref, index);
+        // Dismissibleで囲む条件
+        final shouldWrapWithDismissible = firstDepositFalseIndex == -1 || itemIndex <= firstDepositFalseIndex;
+
+        Widget listTile = buildListTile(context, ref, itemIndex);
+
         if (shouldWrapWithDismissible) {
           listTile = Dismissible(
             key: Key(item.toString()),
             onDismissed: (direction) {
-              ref.read(userLogNotifierProvider.notifier).deleteLog(index);
+              ref.read(userLogNotifierProvider.notifier).deleteLog(itemIndex);
               ref.read(allPriceNotifierProvider.notifier).deletePrice(item.deposit, item.price);
             },
             background: Container(
@@ -98,17 +178,11 @@ class MoneyHistoryList extends ConsumerWidget {
             child: listTile,
           );
         }
-
-        // リストアイテムを追加
-        widgets.add(listTile);
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: widgets,
-        );
+        return listTile;
       },
     );
   }
+}
 
   // 共通のListTile
   Widget buildListTile(BuildContext context, WidgetRef ref, int index) {
@@ -126,8 +200,6 @@ class MoneyHistoryList extends ConsumerWidget {
 
     // 用途に応じて色を変更
     final Color priceColor = deposit ? Colors.black : Color(0xFFE82929);
-
-    log('Item: $categoryName, Remaining Percentage: $remainingPercentage');
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
@@ -239,4 +311,3 @@ class MoneyHistoryList extends ConsumerWidget {
       ),
     );
   }
-}

@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'save.dart';
@@ -15,9 +15,9 @@ class UserLogNotifier extends _$UserLogNotifier {
   @override
   List<Save> build() {
     // このプロバイダーがDisposeされた時に出力される
-    ref.onDispose(() {
-      log('Dispose');
-    });
+    // ref.onDispose(() {
+    //   log('Dispose');
+    // });
     _loadFromPreferences();
     return [];
   }
@@ -40,7 +40,7 @@ class UserLogNotifier extends _$UserLogNotifier {
     if (!newData.deposit) {
     newData = newData.copyWith(linkedDepositId: uuid.v4());
     }
-    log('Adding new log: ${newData.name}, Price: ${newData.price}, id: ${newData.linkedDepositId}, Deposit: ${newData.deposit}');
+    // log('Adding new log: ${newData.name}, Price: ${newData.price}, id: ${newData.linkedDepositId}, Deposit: ${newData.deposit}');
     state = [newData, ...state];
     _saveToPreferences();
   }
@@ -59,8 +59,6 @@ class UserLogNotifier extends _$UserLogNotifier {
       state = newState;
       _saveToPreferences(); // 更新された状態を反映
     } else {
-      // 範囲外のインデックスに対する処理（エラーハンドリング）
-      print('Invalid index: $index');
       _saveToPreferences();
     }
   }
@@ -89,7 +87,6 @@ class UserLogNotifier extends _$UserLogNotifier {
     // `state`を正しく更新し、リビルドを促す
     state = updatedLogs;
     _saveToPreferences();
-    print('Final state after reset: ${updatedLogs.map((log) => 'Name: ${log.name}, Remaining: ${log.remainingPercentage}')}');
   }
 
   // データを元に戻す関数

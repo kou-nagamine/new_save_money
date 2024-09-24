@@ -6,7 +6,7 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:intl/intl.dart';
-import 'dart:developer';
+// import 'dart:developer';
 import '../home/providers/save.dart';
 
 // components
@@ -287,7 +287,7 @@ Widget buildListTile(BuildContext context, WidgetRef ref, Save item, String? lin
   // amount を item.price で割って割合を計算
   final double adjustedPercentage = price > 0 ? linkedWithdrawalAmount / price : 0.0;
 
-  log('Item: $categoryName, Remaining Percentage: $remainingPercentage, Adjusted Percentage: $adjustedPercentage');
+  // log('Item: $categoryName, Remaining Percentage: $remainingPercentage, Adjusted Percentage: $adjustedPercentage');
 
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 5),
