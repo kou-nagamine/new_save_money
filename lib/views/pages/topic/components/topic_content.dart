@@ -38,7 +38,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
     final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
 
     // ボタンを押せるかどうかを判定
-    final isButtonEnabled = temporaryTopicList[0] != null && temporaryTopicList[1] != null && temporaryTopicList[4] == true && temporaryTopicList[5] == true;
+    final isButtonEnabled = [temporaryTopicList[4], temporaryTopicList[5], temporaryTopicList[6]].every((item) => item == true);// ここではタイトル/金額/メモのバリデーション結果が全てtrueであるかを判定
 
     //
     final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
