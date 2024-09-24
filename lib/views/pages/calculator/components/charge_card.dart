@@ -56,7 +56,7 @@ class ChargeCard extends ConsumerWidget {
                 children: [
                   //我慢した金額の表示
                   Text(
-                    '我慢した金額は ？',
+                    'ついで収入はいくら？',
                       style:TextStyle(
                         fontSize: size.width * 0.045,
                         color: Colors.white

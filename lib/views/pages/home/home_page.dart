@@ -49,10 +49,7 @@ class HomePage extends ConsumerWidget {
                 color: Colors.black,
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingPage()),
-                );
+                Navigator.pushNamed(context, '/settingPage');
               },
             ),
           ),
@@ -72,7 +69,7 @@ class HomePage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'あなたのついで残高',
+                      'あなたの口座残高',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
@@ -94,7 +91,7 @@ class HomePage extends ConsumerWidget {
                         //SizedBox(width: 50),
                         Container(
                           padding: EdgeInsets.only(right: 30),
-                          height: 30,
+                          height: 26,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -108,7 +105,7 @@ class HomePage extends ConsumerWidget {
                               ),
                               Icon(
                                 Icons.chevron_right,
-                                size: 40,
+                                size: 30,
                                 color: Colors.blue,
                               ),
                             ],
@@ -123,7 +120,7 @@ class HomePage extends ConsumerWidget {
                       children: [
                         RichText(
                           text: TextSpan(
-                            text: 'これまでの累計ついで額   ',
+                            text: '今までのついで合計額   ',
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,

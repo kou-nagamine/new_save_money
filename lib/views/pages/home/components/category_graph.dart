@@ -99,7 +99,7 @@ class CategoryBarChart extends ConsumerWidget {
             )
             else
               Text(
-                '.',
+                ' ',
                 style: TextStyle(
                   fontSize: 10,
                   color: Color(0xff5B5B5B),
@@ -134,7 +134,7 @@ class CategoryBarChart extends ConsumerWidget {
             )
             else
               Text(
-                '.',
+                ' ',
                 style: TextStyle(
                   fontSize: 10,
                   color: Color(0xff5B5B5B),
@@ -169,7 +169,7 @@ class CategoryBarChart extends ConsumerWidget {
             )
             else
               Text(
-                '.',
+                ' ',
                 style: TextStyle(
                   fontSize: 10,
                   color: Color(0xff5B5B5B),
@@ -204,7 +204,7 @@ class CategoryBarChart extends ConsumerWidget {
             )
             else
               Text(
-                '.',
+                ' ',
                 style: TextStyle(
                   fontSize: 10,
                   color: Color(0xff5B5B5B),

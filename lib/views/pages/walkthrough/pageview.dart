@@ -67,7 +67,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 150, 20, 150),
+                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 150),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -76,7 +76,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                         width: 300,
                         color: Colors.grey,
                       ),
-                      SizedBox(height: 130),                   
+                      SizedBox(height: 100),                   
                       Text('日々のついで出費を記録', 
                         style: TextStyle(
                           fontSize: 24, 
@@ -88,7 +88,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                       RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: '生活するうえでどちらかといえば必要じゃないものや、節約のために妥協したものなど...', 
+                          text: '生活するうえでどちらかといえば必要じゃない出費を', 
                           style: TextStyle(
                             fontSize: 16, 
                             fontWeight: FontWeight.bold,
@@ -110,7 +110,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                   ),
                 ),
                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 150, 20, 150),
+                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 150),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -119,7 +119,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                         width: 300,
                         color: Colors.grey,
                       ),
-                      SizedBox(height: 130),                   
+                      SizedBox(height: 100),                   
                       Text('グラフで見える化', 
                         style: TextStyle(
                           fontSize: 24, 
@@ -153,7 +153,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 150, 20, 150),
+                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 150),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -162,7 +162,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                         width: 300,
                         color: Colors.grey,
                       ),
-                      SizedBox(height: 130),                   
+                      SizedBox(height: 100),                   
                       Text('貯めた残高で出費に割り当てよう', 
                         style: TextStyle(
                           fontSize: 24, 

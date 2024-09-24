@@ -100,19 +100,19 @@ void _onItemTapped(int index) {
                       BottomNavigationBarItem(
                         icon: Wallet(width: 30),
                         activeIcon: Wallet(width: 30, color: Colors.blue),
-                        label: 'おかね',
+                        label: 'こうざ',
                         tooltip: "This is a Home Page",
                       ),
                       BottomNavigationBarItem(
                         icon: PlusCircle(width: 30),
                         activeIcon: PlusCircle(width: 30, color: Colors.blue),
-                        label: '記録',
+                        label: 'ついで',
                         tooltip: "This is a History Page",
                       ),
                       BottomNavigationBarItem(
                         icon: FavouriteBook(width: 30),
                         activeIcon: FavouriteBook(width: 30, color: Colors.blue),
-                        label: 'トピック',
+                        label: 'つかう',
                         tooltip: "This is a Catalog Page",
                       ),
                     ],
