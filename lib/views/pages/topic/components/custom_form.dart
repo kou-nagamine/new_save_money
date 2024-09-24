@@ -101,7 +101,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   void _validateTitle(String value) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
     setState(() {
-      if(value.length == 0){
+      if(value.length == 0 || value.isEmpty) {
         _titleErrorMessage = 'タイトルを入力してください';
         temporaryTopicList.updateTitleValidate(false);
       }
@@ -118,12 +118,12 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   void _validatePrice(String value) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
     setState(() {
-      if (value.length == 0) {
+      if (value.length == 0 || value.isEmpty) {
         _priceErrorMessage = '金額を入力してください';
-        temporaryTopicList.updateMemoValidate(false);
+        temporaryTopicList.updatePriceValidate(false);
       } else {
-        _memoErrorMessage = null;
-        temporaryTopicList.updateMemoValidate(true);
+        _priceErrorMessage = null;
+        temporaryTopicList.updatePriceValidate(true);
       }
     });
   }
@@ -274,8 +274,8 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           FocusScope.of(context).unfocus(); // フォーカスを外してキーボードを閉じる
                         },
                         onChanged: (value) {
-                          _getEnteredPrice(allPrice); // 入力された金額を取得して処理する
                           _validatePrice(value);// 金額の文字数をチェック
+                          _getEnteredPrice(allPrice); // 入力された金額を取得して処理する
                           int price = int.tryParse(value) ?? 0;
                           temporaryTopicList.updatePrice(price);
                         },
