@@ -92,7 +92,7 @@ class PaymentContet extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft, 
               child: Text(
-                '割り当てられたついで出費',
+                '記録されたついで収入',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

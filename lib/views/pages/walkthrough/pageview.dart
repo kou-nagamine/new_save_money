@@ -50,7 +50,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('ついで銀行',
+                      Text('ついで口座',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
