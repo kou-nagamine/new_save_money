@@ -34,6 +34,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   // エラーメッセージを保持する変数
   String? _titleErrorMessage;
   String? _memoErrorMessage;
+  String? _priceErrorMessage;
 
   @override
   void initState() {
@@ -96,12 +97,15 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   }
 
   // バリデーションメソッド
-
   //タイトルのバリデーション
   void _validateTitle(String value) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
     setState(() {
-      if (value.length > 2) {
+      if(value.length == 0){
+        _titleErrorMessage = 'タイトルを入力してください';
+        temporaryTopicList.updateTitleValidate(false);
+      }
+      else if (value.length > 2) {
         _titleErrorMessage = 'タイトルは10文字以内で入力してください';
         temporaryTopicList.updateTitleValidate(false);
       } else {
@@ -110,6 +114,20 @@ class _CustomFormState extends ConsumerState<CustomForm> {
       }
     });
   }
+  //金額のバリデーション
+  void _validatePrice(String value) {
+    final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
+    setState(() {
+      if (value.length == 0) {
+        _priceErrorMessage = '金額を入力してください';
+        temporaryTopicList.updateMemoValidate(false);
+      } else {
+        _memoErrorMessage = null;
+        temporaryTopicList.updateMemoValidate(true);
+      }
+    });
+  }
+
   //メモのバリデーション
   void _validateMemo(String value) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
@@ -243,6 +261,8 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           ),
                           hintText: '700',
                           border: InputBorder.none, // 下線を消す
+                          errorText: _priceErrorMessage, // エラーメッセージ
+                          errorStyle: TextStyle(color: Colors.red),
                         ),
                         style: TextStyle(
                           fontSize: 20,
@@ -255,6 +275,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                         },
                         onChanged: (value) {
                           _getEnteredPrice(allPrice); // 入力された金額を取得して処理する
+                          _validatePrice(value);// 金額の文字数をチェック
                           int price = int.tryParse(value) ?? 0;
                           temporaryTopicList.updatePrice(price);
                         },
