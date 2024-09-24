@@ -7,7 +7,7 @@ part of 'temporary_topic_list.dart';
 // **************************************************************************
 
 String _$temporaryTopicListNotifierHash() =>
-    r'cbf490ea5f94983747aab00beee8bb7c2ad64dab';
+    r'ca599840f3c51917726b10e0942d73a23324bc98';
 
 /// See also [TemporaryTopicListNotifier].
 @ProviderFor(TemporaryTopicListNotifier)
