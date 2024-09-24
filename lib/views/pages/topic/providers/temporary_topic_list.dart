@@ -7,11 +7,11 @@ class TemporaryTopicListNotifier extends _$TemporaryTopicListNotifier {
   // 初期状態として空のリストを返す
   @override
   List<dynamic> build() {
-    return [null, null, DateTime.now(), '', true, true, true];
+    return [null, null, DateTime.now(), '', false, false, true];
   }
 
   void resetState() {
-    state = [null, null, DateTime.now(), '', true, true, true];
+    state = [null, null, DateTime.now(), '', false, false, true];
   }
 
   // データを追加する関数（新しいリストを作成してstateに再代入）
