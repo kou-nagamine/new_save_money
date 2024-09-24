@@ -8,6 +8,9 @@ import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 import 'package:figma_squircle/figma_squircle.dart';
 import '../setting/components/danger_dialog.dart';
 
+
+import 'package:new_save_money/views/pages/walkthrough/pageview.dart';
+
 //MaterialWithModalsPageRoute
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -122,18 +125,11 @@ void _launchURL(String url) async {
                 Container(
                   height: 50,
                   child:  InkWell(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Scaffold(
-                          body:Builder(
-                            builder: (context) => CupertinoPageScaffold(
-                              child: Center(
-                                child: Text('プライバシーポリシー'),
-                              ),
-                            ),  
-                          ),
-                        ),
-                      ),
+                    onTap: () => showCupertinoModalBottomSheet(
+                      expand: true,
+                      context: context,
+                      //backgroundColor: Colors.transparent,
+                      builder: (context) => PageViewWidget(),
                     ),
                     child: Row(
                       children: [
@@ -219,7 +215,7 @@ void _launchURL(String url) async {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Version 0.2.0(240912)',
+                      'Version 0.1.0(240924)',
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
