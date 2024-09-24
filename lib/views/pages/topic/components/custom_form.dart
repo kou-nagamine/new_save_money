@@ -24,9 +24,16 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
   final TextEditingController _priceController = TextEditingController(); 
+  final TextEditingController _memoController = TextEditingController(); 
+  final TextEditingController _titleController = TextEditingController(); 
+
   int calculatedPrice = 0;
   String _EnteredPrice = ''; // 入力された金額を保持する変数
   double _calculatedPercent = 0.0; // 計算結果を保持する変数
+
+  // エラーメッセージを保持する変数
+  String? _titleErrorMessage;
+  String? _memoErrorMessage;
 
   @override
   void initState() {
@@ -80,10 +87,39 @@ class _CustomFormState extends ConsumerState<CustomForm> {
         calculatedPrice = 0; // 0未満の場合は0にする
       }
       //割合表示用
-      double calculatedPercent = (allPrice[1]/ enteredPriceInt.toDouble() * 100); //　所持金/入力金額 = 割り当て率
+      double calculatedPercent = (allPrice[1] / enteredPriceInt.toDouble() * 100); //　所持金/入力金額 = 割り当て率
       _calculatedPercent = double.parse(calculatedPercent.toStringAsFixed(1)); // 少数第1位に丸める
       if (_calculatedPercent > 100) {
         _calculatedPercent = 100; // 100%を超えた場合は100%にする
+      }
+    });
+  }
+
+  // バリデーションメソッド
+
+  //タイトルのバリデーション
+  void _validateTitle(String value) {
+    final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
+    setState(() {
+      if (value.length > 2) {
+        _titleErrorMessage = 'タイトルは10文字以内で入力してください';
+        temporaryTopicList.updateTitleValidate(false);
+      } else {
+        _titleErrorMessage = null;
+        temporaryTopicList.updateTitleValidate(true);
+      }
+    });
+  }
+  //メモのバリデーション
+  void _validateMemo(String value) {
+    final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
+    setState(() {
+      if (value.length > 3) {
+        _memoErrorMessage = 'メモは30文字以内で入力してください';
+        temporaryTopicList.updateMemoValidate(false);
+      } else {
+        _memoErrorMessage = null;
+        temporaryTopicList.updateMemoValidate(true);
       }
     });
   }
@@ -95,6 +131,8 @@ class _CustomFormState extends ConsumerState<CustomForm> {
     _focusNode3.dispose();
     _scrollController.dispose();
     _priceController.dispose();
+    _titleController.dispose();
+    _memoController.dispose();
     super.dispose();
   }
 
@@ -115,6 +153,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 15),
+              // タイトル入力フィールド
               Container(
                 height: 50,
                 child: Row(
@@ -133,6 +172,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                     ),
                     Expanded(
                       child: TextField(
+                        controller: _titleController,
                         focusNode: _focusNode1, // フォーカスノードを設定
                         textAlign: TextAlign.end, // テキストを右揃えにする
                         decoration: InputDecoration(
@@ -144,6 +184,8 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           ),
                           hintText: 'サークルの会食',
                           border: InputBorder.none, // 下線を消す
+                          errorText: _titleErrorMessage, // エラーメッセージ
+                          errorStyle: TextStyle(color: Colors.red),
                         ),
                         style: TextStyle(
                           fontSize: 20,
@@ -157,6 +199,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           FocusScope.of(context).unfocus();
                         },
                         onChanged: (value) {
+                          _validateTitle(value); // タイトル文字数をチェック
                           temporaryTopicList.updateTitle(value);
                         },
                       ),
@@ -349,6 +392,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                 ),
               ),
               SizedBox(height: 10),
+              // メモ入力フィールド
               Container(
                 height: 110,
                 child: Column(
@@ -367,33 +411,37 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           width: 1.0, // 枠線の太さ
                           ),
                         ),
-                      child: TextField(
-                        focusNode: _focusNode3, // フォーカスノードを設定
-                        maxLines: null, // 行数を制限しない
-                        textAlignVertical: TextAlignVertical.top, // テキストをボックス内の上部に揃える
-                        decoration: InputDecoration(
-                          hintStyle: TextStyle(
-                            color: Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white.withOpacity(0.3)
-                                : Colors.black.withOpacity(0.3),
-                            fontWeight: FontWeight.bold,
+                        child: TextField(
+                          controller: _memoController,
+                          focusNode: _focusNode3, // フォーカスノードを設定
+                          maxLines: null, // 行数を制限しない
+                          textAlignVertical: TextAlignVertical.top, // テキストをボックス内の上部に揃える
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white.withOpacity(0.3)
+                                  : Colors.black.withOpacity(0.3),
+                              fontWeight: FontWeight.bold,
+                            ),
+                            hintText: 'メモをつける',
+                            border: InputBorder.none, // 下線を消す
+                            errorText: _memoErrorMessage, // エラーメッセージ
+                            errorStyle: TextStyle(color: Colors.red),
                           ),
-                          hintText: 'メモをつける',
-                          border: InputBorder.none, // 下線を消す
-                        ),
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                        textInputAction: TextInputAction.done,
-                        onSubmitted: (_) {
-                          FocusScope.of(context).unfocus();
-                        },
-                        onChanged: (value) {
-                          temporaryTopicList.updateMemo(value);
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: (_) {
+                            FocusScope.of(context).unfocus();
+                          },
+                          onChanged: (value) {
+                            _validateMemo(value); // メモの文字数をチェック
+                            temporaryTopicList.updateMemo(value);
                           },
                         ),  
                       ),
