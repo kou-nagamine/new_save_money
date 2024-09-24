@@ -20,7 +20,7 @@ class PaymentContet extends StatelessWidget {
   @override
   Widget build(BuildContext context) { 
     return Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -55,7 +55,7 @@ class PaymentContet extends StatelessWidget {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: 'この支払いはついでから',
+                          text: 'この支払いは',
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ class PaymentContet extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: '賄われています！',
+                              text: 'お得になりました!',
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
@@ -94,7 +94,7 @@ class PaymentContet extends StatelessWidget {
               child: Text(
                 '割り当てられたついで出費',
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Color(0xff5B5B5B),
                 ),

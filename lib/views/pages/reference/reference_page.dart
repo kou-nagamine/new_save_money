@@ -48,7 +48,7 @@ class ReferencePage extends ConsumerWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text("出費の履歴", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("支出の履歴", style: TextStyle(fontWeight: FontWeight.bold)),
         headerWidget: headerWidget(context, ref),
         headerExpandedHeight: 0.5,
         body: [
@@ -61,9 +61,9 @@ class ReferencePage extends ConsumerWidget {
                   compensatingRatio: formattedPercentage,
                   memo: memo,
                 ),
-                // ListViewにbuildListTileを使用
+                //ListViewにbuildListTileを使用
                 ListView.builder(
-                  padding: const EdgeInsets.only(top: 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   physics: const NeverScrollableScrollPhysics(), // スクロールを無効化
                   shrinkWrap: true, // ListViewが自身の高さを決定する
                   itemCount: filteredWithdrawals.length, // データの長さを指定
