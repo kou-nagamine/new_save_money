@@ -7,6 +7,7 @@ import "components/switch_item.dart";
 import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 import 'package:figma_squircle/figma_squircle.dart';
 import '../setting/components/danger_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //MaterialWithModalsPageRoute
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -22,20 +23,43 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  bool isNotificationOn = false; // 通知用のスイッチの初期値
+  bool isDefaultTransaction = false; // 入出金用のスイッチの初期値
 
-// URLを開く関数
-void _launchURL(String url) async {
-  try {
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      print('Could not launch $url');
+  // URLを開く関数
+  void _launchURL(String url) async {
+    try {
+      final Uri uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        print('Could not launch $url');
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
     }
-  } catch (e) {
-    print('Error launching URL: $e');
   }
-}
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSwitchValues(); // SharedPreferencesから値をロード
+  }
+
+  // SharedPreferencesからスイッチの状態を読み込む
+  Future<void> _loadSwitchValues() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isNotificationOn = prefs.getBool('NotificationSwitch') ?? false; // 通知スイッチのデフォルトはfalse
+      isDefaultTransaction = prefs.getBool('DefaultTransactionSwitch') ?? false; // 入出金スイッチのデフォルトはfalse
+    });
+  }
+
+  // SharedPreferencesにスイッチの状態を保存
+  Future<void> _saveSwitchValue(String key, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(key, value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +111,15 @@ void _launchURL(String url) async {
                           ),
                         ],
                       ),
-                      SwitchItem(),
+                      SwitchItem(
+                        value: isNotificationOn,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isNotificationOn = value;
+                          });
+                          _saveSwitchValue('NotificationSwitch', value); // 通知スイッチの状態を保存
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -115,7 +147,15 @@ void _launchURL(String url) async {
                           padding: EdgeInsets.only(left: 20)),
                         ],
                       ),
-                      SwitchItem(),
+                      SwitchItem(
+                        value: isDefaultTransaction,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isDefaultTransaction = value;
+                          });
+                          _saveSwitchValue('DefaultTransactionSwitch', value); // 入出金スイッチの状態を保存
+                        },
+                      ),
                     ],
                   ),
                 ),
