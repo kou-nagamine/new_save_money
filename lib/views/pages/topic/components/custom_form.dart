@@ -121,7 +121,10 @@ class _CustomFormState extends ConsumerState<CustomForm> {
       if (value.length == 0 || value.isEmpty || int.parse(value) == 0) {
         _priceErrorMessage = '金額を入力してください';
         temporaryTopicList.updatePriceValidate(false);
-      } else {
+      } else if (value.length > 7){
+        _priceErrorMessage = '金額は桁数が大きすぎます';
+        temporaryTopicList.updatePriceValidate(false);
+      }else {
         _priceErrorMessage = null;
         temporaryTopicList.updatePriceValidate(true);
       }
