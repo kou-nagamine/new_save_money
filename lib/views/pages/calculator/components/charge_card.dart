@@ -31,24 +31,6 @@ class ChargeCard extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            //矢印のアイコン
-            // Container(
-            //   transform: Matrix4.rotationZ(270 * pi / 180),
-            //   transformAlignment: Alignment.center,
-            //   child: IconButton(
-            //     onPressed: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => CommonNavigationBar()),
-            //       );
-            //     },
-            //     icon: Icon(
-            //       Icons.arrow_upward,
-            //       color:Colors.white,
-            //       size: size.width * 0.12,
-            //     )
-            //   ),
-            // ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center, // 縦方向に中央揃え
