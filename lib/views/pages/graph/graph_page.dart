@@ -272,28 +272,28 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                       Icons.local_drink, 
                       Colors.blue, 
                       '${categoryData['飲み物']?['count'] ?? 0}回', 
-                      '¥${categoryData['飲み物']?['totalPrice'] ?? 0}'
+                      '¥${NumberFormat("#,###").format(categoryData['飲み物']?['totalPrice'] ?? 0)}'
                     ),
                     // 食事のデータを表示
                     _buildGridItem(
                       Icons.fastfood, 
                       Colors.orange, 
                       '${categoryData['食事']?['count'] ?? 0}回', 
-                      '¥${categoryData['食事']?['totalPrice'] ?? 0}'
+                      '¥${NumberFormat("#,###").format(categoryData['食事']?['totalPrice'] ?? 0)}'
                     ),
                     // 菓子類のデータを表示
                     _buildGridItem(
                       Icons.icecream, 
                       Colors.lightGreen, 
                       '${categoryData['菓子類']?['count'] ?? 0}回', 
-                      '¥${categoryData['菓子類']?['totalPrice'] ?? 0}'
+                      '¥${NumberFormat("#,###").format(categoryData['菓子類']?['totalPrice'] ?? 0)}'
                     ),
                     // その他のデータを表示
                     _buildGridItem(
                       Icons.star, 
                       Colors.green, 
                       '${categoryData['その他']?['count'] ?? 0}回', 
-                      '¥${categoryData['その他']?['totalPrice'] ?? 0}'
+                      '¥${NumberFormat("#,###").format(categoryData['その他']?['totalPrice'] ?? 0)}'
                     ),
                   ],
                 ),
