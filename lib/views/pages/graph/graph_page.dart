@@ -64,17 +64,16 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
     // 最初の点 (0, 0) を追加
     flSpots.add(FlSpot(0, 0));
 
-    for (var i = 0; i < userData.length; i++) {
-      cumulativeTotal += userData[i].price;
-      flSpots.add(FlSpot((i + 1).toDouble(), cumulativeTotal));
-      
+    // 支出こみのグラフロジック
+    for (var i = userData.length - 1; i >= 0; i--) {
+      int priceChange = userData[i].deposit == false ? -userData[i].price : userData[i].price;
+      cumulativeTotal += priceChange;
+      flSpots.add(FlSpot((userData.length - i).toDouble(), cumulativeTotal));
       try {
-        final dateFormat = DateFormat('yyyy-MM-dd'); // 実際のフォーマットに合わせて調整
         DateTime parsedDate;
         parsedDate = userData[i].dataTime;
         dates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
       } catch (e) {
-        print('Invalid date format: ${userData[i].dataTime}');
         dates.add('Invalid date'); // エラーハンドリング
       }
     }
