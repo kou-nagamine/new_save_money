@@ -118,7 +118,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   void _validatePrice(String value) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
     setState(() {
-      if (value.length == 0 || value.isEmpty) {
+      if (value.length == 0 || value.isEmpty || int.parse(value) == 0) {
         _priceErrorMessage = '金額を入力してください';
         temporaryTopicList.updatePriceValidate(false);
       } else {
