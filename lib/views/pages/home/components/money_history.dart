@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/user_log.dart';
 import 'package:new_save_money/views/pages/calculator/providers/all_price.dart';
 import 'package:intl/intl.dart';
-import "/views/pages/reference/reference_page.dart";
+import "../../detail/detail_page.dart";
 
 class MoneyHistoryList extends ConsumerWidget {
   const MoneyHistoryList({super.key});

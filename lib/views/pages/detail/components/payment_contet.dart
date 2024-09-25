@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../components/memo_field.dart';
+import 'memo_field.dart';
 import 'package:intl/intl.dart';
 
 
