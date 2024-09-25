@@ -141,7 +141,7 @@ class _SettingPageState extends State<SettingPage> {
                               : Colors.black,
                           ),
                           Padding(child: Text(
-                            '入出金をデフォルトにする',
+                            '起動時についでを表示する',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,

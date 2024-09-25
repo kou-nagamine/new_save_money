@@ -20,8 +20,8 @@ class SwitchItem extends StatelessWidget {
           value: value,
           activeColor: Colors.white,
           activeTrackColor: Colors.green,
-          inactiveThumbColor: Colors.grey,
-          inactiveTrackColor: Colors.white,
+          inactiveThumbColor: Colors.white,
+          inactiveTrackColor: Colors.black12,
           onChanged: onChanged, // 外部から渡されたコールバックを使用
         ),
       ],
