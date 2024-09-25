@@ -21,7 +21,7 @@ class GraphPage extends ConsumerStatefulWidget {
 }
 
 class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProviderStateMixin {
-  String selectedOption = '貯蓄額';
+  String selectedOption = 'ついで収入';
   late AnimationController _chartanimationController;
   late Animation<double> _chartanimation;
 
@@ -109,7 +109,7 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'グラフ',
+          '',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -135,7 +135,7 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  selectedOption == '推移' 
+                  selectedOption == '全体' 
                     ? '¥ ${NumberFormat("#,###").format(allPrice[1])}'
                     : '¥ ${NumberFormat("#,###").format(allPrice[0])}',
                   style: const TextStyle(
@@ -182,7 +182,7 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                   ),
                   child:LineChart(
                     animatedChart(chartData, _chartanimation.value),
-                    // selectedOption == '推移'
+                    // selectedOption == '全体'
                     // ? animatedChart(savedData(), _chartanimation.value)
                     // : animatedChart(allData(), _chartanimation.value),
                   )
@@ -194,18 +194,18 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
             mainAxisAlignment: MainAxisAlignment.center,
             children:[
                ChoiceChip(
-                label: Text('貯蓄額'), 
-                selected: selectedOption == '貯蓄額',
+                label: Text('ついで収入'), 
+                selected: selectedOption == 'ついで収入',
                 onSelected: (bool selected) {
                   setState(() {
-                    selectedOption = '貯蓄額';
+                    selectedOption = 'ついで収入';
                   });
                 },
                 selectedColor: Colors.black,
                 labelStyle: TextStyle(
-                  color: selectedOption == '貯蓄額' ? Colors.white : Colors.black,
+                  color: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
                 ),
-                checkmarkColor: selectedOption == '貯蓄額' ? Colors.white : Colors.black,
+                checkmarkColor: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
                 chipAnimationStyle: ChipAnimationStyle(
                   avatarDrawerAnimation: AnimationStyle(
                     duration: Duration(milliseconds: 500),
@@ -221,18 +221,18 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                ),
               const SizedBox(width: 40),
               ChoiceChip(
-                label: Text('推移'), 
-                selected: selectedOption == '推移',
+                label: Text('全体'), 
+                selected: selectedOption == '全体',
                 onSelected: (bool selected) {
                   setState(() {
-                    selectedOption = '推移';
+                    selectedOption = '全体';
                   });
                 },
                 selectedColor: Colors.black,
                 labelStyle: TextStyle(
-                  color: selectedOption == '推移' ? Colors.white : Colors.black,
+                  color: selectedOption == '全体' ? Colors.white : Colors.black,
                 ),
-                checkmarkColor: selectedOption == '推移' ? Colors.white : Colors.black,
+                checkmarkColor: selectedOption == '全体' ? Colors.white : Colors.black,
                 chipAnimationStyle: ChipAnimationStyle(
                   avatarDrawerAnimation: AnimationStyle(
                     duration: Duration(milliseconds: 500),

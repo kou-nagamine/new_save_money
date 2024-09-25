@@ -12,7 +12,9 @@ import 'firebase_insert.dart';
 
 import '/views/pages/topic/components/topic_content.dart';
 
+//pages
 import '../views/pages/walkthrough/pageview.dart';
+import '../views/pages/setting/setting_page.dart';
 
 //commons
 import 'views/pages/commons/navigation_bar/navigation_bar.dart';
@@ -62,10 +64,35 @@ class MyApp extends StatelessWidget{
       //   colorScheme: ColorScheme.dark(),
       //   useMaterial3: true
       // ),
-      //home:PageViewWidget(),
-       home: finTutorial
-          ? CommonNavigationBar(initialIndex: 0)
-          : PageViewWidget(),
+      // home: finTutorial
+      //   ? CommonNavigationBar(initialIndex: 0)
+      //   : PageViewWidget(),
+      onGenerateRoute: (RouteSettings settings) {
+        switch (settings.name) {
+          case '/':
+          return MaterialWithModalsPageRoute(
+            builder: (_) => finTutorial 
+                ? CommonNavigationBar(initialIndex: 0) 
+                : PageViewWidget(),
+            settings: settings,
+          );
+          case '/settingPage':
+          return MaterialWithModalsPageRoute(
+            builder: (_) => SettingPage(), // あなたの設定ページ
+            settings: settings,
+          );
+          case '/aboutApp':
+          return MaterialWithModalsPageRoute(
+            builder: (_) => PageViewWidget(), // 'このアプリについて'のページ
+            settings: settings,
+          );
+          default:
+            return MaterialWithModalsPageRoute(
+              builder: (_) => CommonNavigationBar(initialIndex: 0),
+              settings: settings,
+            );
+        }
+      },
 
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

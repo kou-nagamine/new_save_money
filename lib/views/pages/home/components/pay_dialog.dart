@@ -67,7 +67,7 @@ class _PayDialogState extends ConsumerState<PayDialog> with SingleTickerProvider
                 padding: const EdgeInsets.only(top: 10),
                 child: Column(
                   children: [
-                    Text('今回の$latestPrice円のお買い物では下記の我慢によって節約できました!',
+                    Text('今回の$latestPrice円の支出は下記のついで収入\nでお得になりました!',
                     style: const TextStyle(
                       fontSize: 13, fontWeight: FontWeight.bold
                       ),

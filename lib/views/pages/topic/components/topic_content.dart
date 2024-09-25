@@ -58,7 +58,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
           },
         ),
         curvedBodyRadius: 0,
-        title: Text("出費の記録", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("支出の記録", style: TextStyle(fontWeight: FontWeight.bold)),
         headerWidget: headerWidget(context,widget.imageUrl,widget.title,widget.description ), // Custom header
         headerExpandedHeight: 0.5,
         body: [
@@ -112,7 +112,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   },
                 );
               } : null,
-              child: Text('割り当てる', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              child: Text('記録する', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               backgroundColor: isButtonEnabled ? Color(0xff005BEA) : Colors.grey,
               elevation: 10,
             ),

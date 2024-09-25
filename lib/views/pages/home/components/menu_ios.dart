@@ -10,7 +10,7 @@ class PaymentMenu extends StatefulWidget {
 
 class _PaymentMenuState extends State<PaymentMenu> {
   // 現在選択されているメニューアイテム
-  String selectedItem = '全て';
+  String selectedItem = '全体';
 
   @override
   Widget build(BuildContext context) {
@@ -53,24 +53,24 @@ class MenuItem extends StatelessWidget {
     itemBuilder: (context) => [
       PullDownMenuItem.selectable(
         onTap: () {
-          onItemSelected('全て'); // 項目が選択されたらコールバックを呼び出す
+          onItemSelected('全体'); // 項目が選択されたらコールバックを呼び出す
         },
-        title: '全て',
-        selected: selectedItem == '全て',
+        title: '全体',
+        selected: selectedItem == '全体',
       ),
       PullDownMenuItem.selectable(
         onTap: () {
-          onItemSelected('ついで');
+          onItemSelected('ついで収入');
         },
-        title: 'ついで',
-        selected: selectedItem == 'ついで',
+        title: 'ついで収入',
+        selected: selectedItem == 'ついで収入収入',
       ),
       PullDownMenuItem.selectable(
         onTap: () {
-          onItemSelected('割当て');
+          onItemSelected('支出');
         },
-        title: '割当て',
-        selected: selectedItem == '割当て',
+        title: '支出',
+        selected: selectedItem == '支出',
       ),
     ],
     animationBuilder: null,

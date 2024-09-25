@@ -46,7 +46,7 @@ class TopicPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            "出費を割り当てる",  // タイトルを追加
+                            "おかねを使う",  // タイトルを追加
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w900,
@@ -55,7 +55,7 @@ class TopicPage extends StatelessWidget {
                           ),
                           SizedBox(height: 2),  
                           Text(
-                            "大きな出費やちょっとしたご褒美を今まで我慢したお金で割り当てよう!",  // サブタイトル
+                            "好きなことや必要なことに今までのついで収入を\n使って記録しよう！",  // サブタイトル
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.black54,

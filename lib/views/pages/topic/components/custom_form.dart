@@ -265,7 +265,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: '分割り当てます。',
+                                        text: 'お得になります!',
                                         style: TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.bold,
@@ -408,7 +408,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('割り当て後の合計金額',
+                    Text('支出後の合計金額',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

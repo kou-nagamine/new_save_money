@@ -68,16 +68,18 @@ class MoneyHistoryList extends ConsumerWidget {
           if (shouldWrapWithDismissible) {
             listTile = Dismissible(
               key: Key(item.toString()),
+              direction: DismissDirection.endToStart,
               onDismissed: (direction) {
                 ref.read(userLogNotifierProvider.notifier).deleteLog(itemIndex);
                 ref.read(allPriceNotifierProvider.notifier).deletePrice(item.deposit, item.price);
               },
               background: Container(
-                color: Colors.red,
+                
+                alignment: Alignment.centerRight, // アイコンを右側に配置
                 child: Icon(
                   Icons.delete,
-                  color: Colors.white,
-                  size: 40,
+                  color: Colors.red,
+                  size: 30,
                 ),
               ),
               child: listTile,
