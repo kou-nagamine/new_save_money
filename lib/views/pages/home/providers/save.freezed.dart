@@ -37,7 +37,8 @@ mixin _$Save {
       throw _privateConstructorUsedError; // 使用された金額を追跡するプロパティを追加
   double get remainingPercentage =>
       throw _privateConstructorUsedError; // 残りの割合を追跡するプロパティを追加
-  String? get linkedDepositId => throw _privateConstructorUsedError;
+  String? get linkedDepositId =>
+      throw _privateConstructorUsedError; //入金と出金を紐づけられるための出金につけられるID
   List<Withdrawal> get linkedWithdrawals => throw _privateConstructorUsedError;
   double? get salePercentage => throw _privateConstructorUsedError;
 
@@ -336,7 +337,9 @@ class _$SaveImpl implements _Save {
 // 残りの割合を追跡するプロパティを追加
   @override
   final String? linkedDepositId;
+//入金と出金を紐づけられるための出金につけられるID
   final List<Withdrawal> _linkedWithdrawals;
+//入金と出金を紐づけられるための出金につけられるID
   @override
   @JsonKey()
   List<Withdrawal> get linkedWithdrawals {
@@ -463,7 +466,7 @@ abstract class _Save implements Save {
   @override
   double get remainingPercentage; // 残りの割合を追跡するプロパティを追加
   @override
-  String? get linkedDepositId;
+  String? get linkedDepositId; //入金と出金を紐づけられるための出金につけられるID
   @override
   List<Withdrawal> get linkedWithdrawals;
   @override
@@ -483,7 +486,7 @@ Withdrawal _$WithdrawalFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Withdrawal {
-  String get id => throw _privateConstructorUsedError; // 出金の一意なID
+  String get id => throw _privateConstructorUsedError; //　ある出金で使われた入金につけられるID
   int get amount => throw _privateConstructorUsedError;
 
   /// Serializes this Withdrawal to a JSON map.
@@ -586,7 +589,7 @@ class _$WithdrawalImpl implements _Withdrawal {
 
   @override
   final String id;
-// 出金の一意なID
+//　ある出金で使われた入金につけられるID
   @override
   final int amount;
 
@@ -632,7 +635,7 @@ abstract class _Withdrawal implements Withdrawal {
       _$WithdrawalImpl.fromJson;
 
   @override
-  String get id; // 出金の一意なID
+  String get id; //　ある出金で使われた入金につけられるID
   @override
   int get amount;
 
