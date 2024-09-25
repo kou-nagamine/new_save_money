@@ -37,24 +37,30 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   late int selectedIndex;
   bool isBottomNavVisible = true; // BottomNavigationBar の表示状態を管理
+  static bool _isFirstLaunch = true;
 
   @override
   void initState() {
     super.initState();
     selectedIndex = widget.initialIndex;
     isBottomNavVisible = selectedIndex != 1; // 初期化時に記録ページでなければ表示
-    _loadPreferences();
+     _loadPreferences();
   }
 
-  // SharedPreferences から初期データを読み込み
+    // SharedPreferences から初期データを読み込み
   Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final defaultTransaction = prefs.getBool('DefaultTransactionSwitch') ?? false;
-    // デフォルト設定にしているのかどうかを判定
-    if (defaultTransaction == true && mounted) {
-      setState(() {
-        // 初回起動でホーム画面なら記録ページに移動
-        _onItemTapped(1);
+    if (_isFirstLaunch && selectedIndex == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _isFirstLaunch = false;
+      // デフォルト設定にしているのかどうかを判定
+      if (defaultTransaction == true && mounted) {
+        setState(() {
+          // 初回起動でホーム画面なら記録ページに移動
+          _onItemTapped(1);
+        });
+      }
       });
     }
   }
@@ -65,11 +71,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     TopicPage(),
   ];
 
-  // BottomNavigationBarのタップ時の処理
+  // BottomNavigationBar cululatorのタップ時の処理
   void _onItemTapped(int index) {
     if (index == 1) {
-      // モーダルシートでCalculatorPageを表示
-      showCupertinoModalBottomSheet(
+      showCupertinoModalBottomSheet( // モーダルシートで表示
         context: context,
         expand: true,
         backgroundColor: Colors.transparent,
@@ -78,7 +83,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     } else {
       setState(() {
         selectedIndex = index;
-        isBottomNavVisible = index != 1; // 記録ページなら非表示
       });
     }
   }
