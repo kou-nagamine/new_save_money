@@ -105,6 +105,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
 
                 await showDialog(
                   context: context,
+                  barrierDismissible: false,
                   builder: (BuildContext context) {
                     return PayDialog(
                     );

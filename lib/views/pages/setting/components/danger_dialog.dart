@@ -34,102 +34,106 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      contentPadding: const EdgeInsets.all(15),
-      content:  SizedBox(
-        height: MediaQuery.of(context).size.height * 0.2,
-        width: 300,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset(
-              'assets/animations/error.json',
-              controller: _controller, // アニメーションコントローラーを渡す
-              onLoaded: (composition) {
-                // アニメーションがロードされたら再生を開始する
-                _controller
-                  ..duration = composition.duration
-                  ..forward(); // アニメーションを1回再生
-              },
-              width: 100,
-              height: 100,
-              fit: BoxFit.contain,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Center(
-                child:  Text('この操作は２度と元にもどせません。',
-                  style: const TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold
+    return PopScope(
+      canPop: false,
+      child:AlertDialog(
+        contentPadding: const EdgeInsets.all(15),
+        content:  SizedBox(
+          height: MediaQuery.of(context).size.height * 0.2,
+          width: 300,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(
+                'assets/animations/error.json',
+                controller: _controller, // アニメーションコントローラーを渡す
+                onLoaded: (composition) {
+                  // アニメーションがロードされたら再生を開始する
+                  _controller
+                    ..duration = composition.duration
+                    ..forward(); // アニメーションを1回再生
+                },
+                width: 100,
+                height: 100,
+                fit: BoxFit.contain,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Center(
+                  child:  Text('この操作は２度と元にもどせません。',
+                    style: const TextStyle(
+                    fontSize: 16, fontWeight: FontWeight.bold
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      actions: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly, // ボタン間にスペースを均等に配置
-          children: [
-            TextButton(
-              onPressed: () async{
-                try {
-                  ref.read(userLogNotifierProvider.notifier).resetLogs();
-                  ref.read(allPriceNotifierProvider.notifier).resetPreferences();
-                  final prefs = await SharedPreferences.getInstance(); // チュートリアルを削除する
-                  await prefs.remove('tutorial');
-                  if (mounted) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CommonNavigationBar(initialIndex: 0),
-                      ),
-                    );
+        actions: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // ボタン間にスペースを均等に配置
+            children: [
+              TextButton(
+                onPressed: () async{
+                  try {
+                    ref.read(userLogNotifierProvider.notifier).resetLogs();
+                    ref.read(allPriceNotifierProvider.notifier).resetPreferences();
+                    final prefs = await SharedPreferences.getInstance(); // チュートリアルを削除する
+                    await prefs.remove('tutorial');
+                    await prefs.remove('DefaultTransactionSwitch');
+                    if (mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CommonNavigationBar(initialIndex: 0),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    // エラーハンドリング（例えば、ダイアログを表示するなど）
+                    print('Error: $e');
                   }
-                } catch (e) {
-                  // エラーハンドリング（例えば、ダイアログを表示するなど）
-                  print('Error: $e');
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                height: 40,
-                width: 70,
-                decoration: ShapeDecoration(
-                  color: Color(0xffd1242f),
-                  shape: SmoothRectangleBorder(
-                    borderRadius: SmoothBorderRadius(
-                      cornerRadius: 10,
-                      cornerSmoothing: 0.6),
-                  )),
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 40,
+                  width: 70,
+                  decoration: ShapeDecoration(
+                    color: Color(0xffd1242f),
+                    shape: SmoothRectangleBorder(
+                      borderRadius: SmoothBorderRadius(
+                        cornerRadius: 10,
+                        cornerSmoothing: 0.6),
+                    )),
+                  child: const Text(
+                    '削除',
+                    style: TextStyle(
+                      fontSize: 16, 
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // "いいえ" ボタンを押したらポップアップを閉じる
+                },
                 child: const Text(
-                  '削除',
+                  'やめる',
                   style: TextStyle(
                     fontSize: 16, 
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
-              )
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // "いいえ" ボタンを押したらポップアップを閉じる
-              },
-              child: const Text(
-                'やめる',
-                style: TextStyle(
-                  fontSize: 16, 
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      )
     );
   }
 }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class SwitchItem extends StatefulWidget {
-  const SwitchItem({super.key});
+class SwitchItem extends StatelessWidget {
+  final bool value;
+  final ValueChanged<bool> onChanged;
 
-  @override
-  State<SwitchItem> createState() => _SwitchItemState();
-}
-
-class _SwitchItemState extends State<SwitchItem> {
-  bool light = true;
+  const SwitchItem({
+    super.key,
+    required this.value,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +17,12 @@ class _SwitchItemState extends State<SwitchItem> {
       children: <Widget>[
         Switch.adaptive(
           applyCupertinoTheme: false,
-          value: light,
-          activeColor: Colors.white, // スイッチがオンのときの色
-          activeTrackColor: Colors.green, // スイッチがオンのときのトラックの色
-          inactiveThumbColor: Colors.grey, // スイッチがオフのときの色
-          inactiveTrackColor: Colors.white, // スイッチがオフのときのトラックの色
-          onChanged: (bool value) {
-            setState(() {
-              light = value;
-            });
-          },
+          value: value,
+          activeColor: Colors.white,
+          activeTrackColor: Colors.green,
+          inactiveThumbColor: Colors.grey,
+          inactiveTrackColor: Colors.white,
+          onChanged: onChanged, // 外部から渡されたコールバックを使用
         ),
       ],
     );

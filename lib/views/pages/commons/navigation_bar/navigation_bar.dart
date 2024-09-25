@@ -12,7 +12,8 @@ import '/views/pages/home/home_page.dart';
 import '/views/pages/calculator/calculator_page.dart';
 import '/views/pages/topic/topic_page.dart';
 
-
+//shared_preferences
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CommonNavigationBar extends StatelessWidget {
   final int initialIndex;
@@ -24,7 +25,6 @@ class CommonNavigationBar extends StatelessWidget {
     return MyStatefulWidget(initialIndex: initialIndex);
   }
 }
-
 class MyStatefulWidget extends StatefulWidget {
   final int initialIndex;
 
@@ -33,48 +33,55 @@ class MyStatefulWidget extends StatefulWidget {
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
+
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   late int selectedIndex;
   bool isBottomNavVisible = true; // BottomNavigationBar の表示状態を管理
-  static bool _isFirstLaunch = true; // アプリ全体の初回起動かどうかを判定するフラグ
 
   @override
   void initState() {
     super.initState();
     selectedIndex = widget.initialIndex;
     isBottomNavVisible = selectedIndex != 1; // 初期化時に記録ページでなければ表示
+    _loadPreferences();
+  }
 
-   if (_isFirstLaunch && selectedIndex == 0) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          _isFirstLaunch = false; // フラグをfalseに設定
-          _onItemTapped(1); // インデックスを1に変更
-        });
+  // SharedPreferences から初期データを読み込み
+  Future<void> _loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final defaultTransaction = prefs.getBool('DefaultTransactionSwitch') ?? false;
+    // デフォルト設定にしているのかどうかを判定
+    if (defaultTransaction == true && mounted) {
+      setState(() {
+        // 初回起動でホーム画面なら記録ページに移動
+        _onItemTapped(1);
       });
     }
   }
 
   final _screens = [
     HomePage(),
-    null,
+    null, // CalculatorPage はモーダルで表示されるのでnull
     TopicPage(),
   ];
 
-// BottomNavigationBar cululatorのタップ時の処理
-void _onItemTapped(int index) {
-  if (index == 1) {
-    showCupertinoModalBottomSheet( // モーダルシートで表示
-      context: context,
-      expand: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CalculatorPage(),
-    );
-  } else {
-    setState(() {
-      selectedIndex = index;
-    });
+  // BottomNavigationBarのタップ時の処理
+  void _onItemTapped(int index) {
+    if (index == 1) {
+      // モーダルシートでCalculatorPageを表示
+      showCupertinoModalBottomSheet(
+        context: context,
+        expand: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => CalculatorPage(),
+      );
+    } else {
+      setState(() {
+        selectedIndex = index;
+        isBottomNavVisible = index != 1; // 記録ページなら非表示
+      });
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
