@@ -85,9 +85,9 @@ class TopicPage extends StatelessWidget {
 //TopicPageのスライドショー
 class HeaderWidget extends StatefulWidget {
   final List<String> images;
-  final double height;
+  final double height = 200;
 
-  HeaderWidget({required this.images, this.height = 200});
+  HeaderWidget({required this.images});
 
   @override
   _HeaderWidgetState createState() => _HeaderWidgetState();
@@ -97,19 +97,21 @@ class HeaderWidget extends StatefulWidget {
     late PageController _controller;
     late Timer _timer;
     int _currentPage = 0;
+    static const int _initialPage = 1000; // 初期ページを非常に大きな数に設定
 
     @override
     void initState() {
       super.initState();
-      _controller = PageController(viewportFraction: 1.0, keepPage: true);
+      _controller = PageController(
+        viewportFraction: 1.0,
+        keepPage: true,
+        initialPage: _initialPage, // 初期ページを指定
+      );
+      _currentPage = _initialPage;
 
       // 自動スライドのタイマーを設定
       _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
-        if (_currentPage < widget.images.length - 1) {
-          _currentPage++;
-        } else {
-          _currentPage = 0;
-        }
+        _currentPage++;
         _controller.animateToPage(
           _currentPage,
           duration: Duration(milliseconds: 300),
@@ -127,27 +129,24 @@ class HeaderWidget extends StatefulWidget {
 
     @override
     Widget build(BuildContext context) {
-      final double screenWidth = MediaQuery.of(context).size.width;
-
-      final pages = List.generate(
-        widget.images.length,
-        (index) => AspectRatio(
-          aspectRatio: 16 / 9,
-          child: Image.asset(
-            widget.images[index],
-            fit: BoxFit.cover,
-            width: screenWidth,
-          ),
-        ),
-      );
       return SliverToBoxAdapter(
         child: Container(
-          height: widget.height,
+          height: MediaQuery.of(context).size.width * 3 / 7, // 16:9のアスペクト比に基づいて高さを指定
           child: PageView.builder(
             controller: _controller,
-            itemCount: widget.images.length,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPage = index;
+              });
+            },
             itemBuilder: (_, index) {
-              return pages[index];
+              // インデックスをwidget.imagesの範囲に収めるための処理
+              final imageIndex = index % widget.images.length;
+              return Image.asset(
+                widget.images[imageIndex],
+                fit: BoxFit.cover,
+                width: double.infinity,
+              );
             },
           ),
         ),

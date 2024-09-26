@@ -63,7 +63,7 @@ class RecordCard extends ConsumerWidget {
                 ),
               ),
               Text(
-                '我慢しました！',
+                'お得になりました！',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               ),
             ],

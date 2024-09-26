@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../components/topic_content.dart';
-import '../../home/components/pay_dialog.dart';
 
 //firebase
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
