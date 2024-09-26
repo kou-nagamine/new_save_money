@@ -194,7 +194,7 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                 aspectRatio: 1.5,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                    right: 10,
+                    right: 0,
                     left: 10,
                     top: 15,
                     bottom: 12,
@@ -326,10 +326,19 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
   }
 
   LineChartData animatedChart(LineChartData data, double t){
-  return LineChartData(
-    borderData: data.borderData,
-    titlesData: data.titlesData,
-    gridData: data.gridData,
+    return LineChartData(
+      borderData: data.borderData,
+      titlesData: data.titlesData,
+      gridData: data.gridData,
+      minY: 0, 
+      extraLinesData: ExtraLinesData(
+      horizontalLines: [
+        HorizontalLine(
+          y: 0,  // 最小値を超える水平線を描画しないように設定
+          color: Colors.transparent,
+        ),
+      ],
+    ),
     lineBarsData: data.lineBarsData.map((barData) {
       final List<FlSpot> animatedSpots = [];
       // スポットの間をアニメーションで描画する
