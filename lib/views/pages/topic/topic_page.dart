@@ -131,7 +131,7 @@ class HeaderWidget extends StatefulWidget {
     Widget build(BuildContext context) {
       return SliverToBoxAdapter(
         child: Container(
-          height: MediaQuery.of(context).size.width * 3 / 7, // 16:9のアスペクト比に基づいて高さを指定
+          height: MediaQuery.of(context).size.width * 9 / 16, // 16:9のアスペクト比に基づいて高さを指定
           child: PageView.builder(
             controller: _controller,
             onPageChanged: (index) {
