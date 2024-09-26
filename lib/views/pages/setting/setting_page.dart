@@ -1,6 +1,7 @@
 //packages
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import "./components/record_card.dart";
 import "components/custom_header.dart";
 import "components/switch_item.dart";
@@ -20,6 +21,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
+  
 
   @override
   State<SettingPage> createState() => _SettingPageState();
@@ -28,6 +30,7 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   bool isNotificationOn = false; // 通知用のスイッチの初期値
   bool isDefaultTransaction = false; // 入出金用のスイッチの初期値
+  bool isLight = true;
 
   // URLを開く関数
   void _launchURL(String url) async {
@@ -70,7 +73,13 @@ class _SettingPageState extends State<SettingPage> {
     //final containerHeight = screenHeight / 3;
     return Scaffold(
       appBar: AppBar(
-        title: Text('あなたについて',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),),
+        title: Text('あなたについて',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,
+          ),
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarBrightness: isLight ? Brightness.light : Brightness.dark,
+          statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
+        ),
       ),
       body: Container(
         child: Column(
@@ -165,12 +174,21 @@ class _SettingPageState extends State<SettingPage> {
                 Container(
                   height: 50,
                   child:  InkWell(
-                    onTap: () => showCupertinoModalBottomSheet(
+                    onTap: () async{
+                      // モーダル表示前に文字色変更
+                      setState(() {
+                        isLight = !isLight;
+                      });
+                      await showCupertinoModalBottomSheet(
                       expand: true,
                       context: context,
                       //backgroundColor: Colors.transparent,
-                      builder: (context) => PageViewWidget(),
-                    ),
+                      builder: (context) => PageViewWidget(), 
+                      );
+                      setState(() {
+                        isLight = !isLight;
+                      });
+                    },
                     child: Row(
                       children: [
                         iconoir.InfoCircle(

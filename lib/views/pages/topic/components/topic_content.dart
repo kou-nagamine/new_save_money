@@ -62,7 +62,9 @@ class _TopicContentState extends ConsumerState<TopicContent> {
         headerWidget: headerWidget(context,widget.imageUrl,widget.title,widget.description ), // Custom header
         headerExpandedHeight: 0.5,
         body: [
-          CustomForm(),
+          CustomForm(
+            hinttitle: widget.title,
+          ),
         ],
         floatingActionButton: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),

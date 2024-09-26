@@ -31,7 +31,13 @@ class LengthLimitingUnicodeTextInputFormatter extends TextInputFormatter {
 }
 
 class CustomForm extends ConsumerStatefulWidget {
-  const CustomForm({super.key});
+  final String hinttitle;
+
+  const CustomForm({
+    super.key,
+    required this.hinttitle
+    });
+
 
   @override
   _CustomFormState createState() => _CustomFormState();
@@ -46,6 +52,8 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   final TextEditingController _priceController = TextEditingController(); 
   final TextEditingController _memoController = TextEditingController(); 
   final TextEditingController _titleController = TextEditingController(); 
+
+
 
   int calculatedPrice = 0;
   String _EnteredPrice = ''; // 入力された金額を保持する変数
@@ -179,21 +187,14 @@ class _CustomFormState extends ConsumerState<CustomForm> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
             decoration: BoxDecoration(
-              color: const Color(0xFF333333).withOpacity(0.8),
+              color: const Color(0xffFF3B30),
               borderRadius: BorderRadius.circular(5),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.red,
-                  offset: Offset(0, 5),
-                  blurRadius: 5,
-                  spreadRadius: 1,
-                ),
-              ],
             ),
             child: Text(
               message,
               style: TextStyle(
                 color: Colors.white,
+                fontWeight: FontWeight.w800,
                 fontSize: 16,
               ),
             ),
@@ -285,7 +286,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                                 : Colors.black.withOpacity(0.3),
                             fontWeight: FontWeight.bold,
                           ),
-                          hintText: 'デバイス',
+                          hintText: widget.hinttitle,
                           border: InputBorder.none, // 下線を消す
                           // errorText: _titleErrorMessage, // エラーメッセージ
                           errorStyle: TextStyle(color: Colors.red),
