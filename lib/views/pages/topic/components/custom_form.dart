@@ -10,6 +10,7 @@ import 'package:lottie/lottie.dart';
 import '/views/pages/calculator/providers/all_price.dart';
 import "../providers/temporary_topic_list.dart";
 
+// ひらがな漢字対応文字制限用Formatter
 class LengthLimitingUnicodeTextInputFormatter extends TextInputFormatter {
   final int maxLength;
 
@@ -51,15 +52,12 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   double _calculatedPercent = 0.0; // 計算結果を保持する変数
 
   // エラーメッセージを保持する変数
-  String? _titleErrorMessage;
   String? _memoErrorMessage;
-  String? _priceErrorMessage;
 
   @override
   void initState() {
     super.initState();
-  
-    // Initialize calculatedPrice with allPraice[1]
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final allPrice = ref.read(allPriceNotifierProvider);
       setState(() {
@@ -97,6 +95,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
     });
   }
 
+  // 
   void _getEnteredPrice(allPrice) {
     setState(() {
       _EnteredPrice = _priceController.text; // 入力された金額を取得して変数に保存
@@ -134,6 +133,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
       }
     });
   }
+  
   //金額のバリデーション
   void _validatePrice(String value) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
