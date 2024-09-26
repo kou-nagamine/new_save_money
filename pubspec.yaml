@@ -50,6 +50,7 @@ dependencies:
   url_launcher: ^6.3.0
   freezed_annotation:
   json_annotation: ^4.9.0
+  top_snackbar_flutter: ^3.1.0
   
   flutter_localizations:
     sdk: flutter
