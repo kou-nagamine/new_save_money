@@ -2,7 +2,7 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:new_save_money/views/pages/commons/navigation_bar/navigation_bar.dart';
+import 'package:new_save_money/views/pages/walkthrough/pageview.dart';
 
 import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 import 'package:new_save_money/views/pages/calculator/providers/all_price.dart';
@@ -87,7 +87,7 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CommonNavigationBar(initialIndex: 0),
+                          builder: (context) => PageViewWidget(),
                         ),
                       );
                     }
