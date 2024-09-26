@@ -7,50 +7,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cloud_firestore;
 
 //Storageに保存した画像のURLを取得する際のコード
-class NetworkImageBuilder extends FutureBuilder {
-  NetworkImageBuilder(Future<String> item)
-  :item = item,
-  super(
-    future: item,
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-          ),
-          child: const Center(child: CircularProgressIndicator()),
-        );
-      } else if (snapshot.hasError) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-          ),
-          child: const Center(child: Icon(Icons.error, color: Colors.red)),
-        );
-      } else if (snapshot.hasData) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.zero,
-            image: DecorationImage(
-              image: NetworkImage(snapshot.data!),
-              fit: BoxFit.fitHeight,
-            ),
-          ),
-        );
-      } else {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-          ),
-          child: const Center(child: Icon(Icons.error)),
-        );
-      }
-    },
-  );
-  final Future<String> item;
+class NetworkImageBuilder extends StatelessWidget {
+  final String imageUrl;
+
+  NetworkImageBuilder(this.imageUrl);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(imageUrl), // CachedNetworkImageProviderを使用
+          fit: BoxFit.fitHeight, // 画像をフィットさせる
+        ),
+      ),
+    );
+  }
 }
-
-
 
 class NomalCard extends StatelessWidget {
   final int index;  // インデックスを保持
@@ -73,8 +46,10 @@ class NomalCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,  // Materialの背景色を透明に設定
         child: InkWell(
-          onTap: () {
-            navigateWithCustomTransition(context);
+         onTap: () async {
+            // Firebase Storageから画像URLを取得
+            final fetchedImageUrl = await firebase_storage.FirebaseStorage.instance.ref(imageUrl).getDownloadURL();
+            navigateWithCustomTransition(context, fetchedImageUrl);
           },
           child: Hero(
             tag: 'card-hero-$index',
@@ -95,10 +70,36 @@ class NomalCard extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               child: Stack(
                 children: [
-                  NetworkImageBuilder(
-                    firebase_storage.FirebaseStorage.instance
-                        .ref(imageUrl)
-                        .getDownloadURL(),
+                  FutureBuilder<String>(
+                    future: firebase_storage.FirebaseStorage.instance.ref(imageUrl).getDownloadURL(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                          ),
+                          child: const Center(child: CircularProgressIndicator()),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                          ),
+                          child: const Center(child: Icon(Icons.error, color: Colors.red)),
+                        );
+                      } else if (snapshot.hasData) {
+                        // 取得したURLをCachedNetworkImageでキャッシュ表示
+                        return NetworkImageBuilder(snapshot.data!);
+                        
+                      } else {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                          ),
+                          child: const Center(child: Icon(Icons.error)),
+                        );
+                      }
+                    },
                   ),
                   Positioned(
                     bottom: 0,
@@ -159,10 +160,10 @@ class NomalCard extends StatelessWidget {
     );
   }
   // カスタムページ遷移アニメーション
-  void navigateWithCustomTransition(BuildContext context){
+  void navigateWithCustomTransition(BuildContext context, String fetchedImageUrl) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => TopicContent(index: index, imageUrl: imageUrl, description: description, title: title),
+        pageBuilder: (context, animation, secondaryAnimation) => TopicContent(index: index, imageUrl: fetchedImageUrl, description: description, title: title),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);  // 下から上にスライド
           const end = Offset.zero;
@@ -179,12 +180,5 @@ class NomalCard extends StatelessWidget {
         transitionDuration: Duration(milliseconds: 700),  // アニメーションの長さ
       ),
     );
-    // await showDialog(
-    //   context: context,
-    //   builder: (BuildContext context) {
-    //     return PayDialog(
-    //     );
-    //   },
-    // );
   }
 }
