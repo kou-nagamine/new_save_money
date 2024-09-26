@@ -37,8 +37,8 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   Widget build(BuildContext context) {
     final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
 
-    // ボタンを押せるかどうかを判定
-    final isButtonEnabled = [temporaryTopicList[4], temporaryTopicList[5], temporaryTopicList[6]].every((item) => item == true);// ここではタイトル/金額/メモのバリデーション結果が全てtrueであるかを判定
+    // ボタンを押せるかどうかの判定
+    final isButtonEnabled = [temporaryTopicList[4], temporaryTopicList[5], temporaryTopicList[6]].every((item) => item == true);
 
     //
     final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
@@ -73,6 +73,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50),
               ),
+              // buttonを押した時の処理
               onPressed: isButtonEnabled ? () async {
                 final currentDateTime = temporaryTopicList[2] ?? DateTime.now();
                 int price = temporaryTopicList[1] ?? 1500;
@@ -85,7 +86,6 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 if (price > allPrice[1]) {  // ここでtemporaryTopicList[1]とallPrice[1]を比較
                   price = allPrice[1];  // priceがallPriceより大きい場合、allPriceに変更
                 }
-                
                 // Saveクラスのインスタンスを作成
                 final save = Save(
                   name: temporaryTopicList[0] ?? widget.title, // カテゴリ名
@@ -102,7 +102,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 temporaryTopicListNotifier.resetState();
                 allPriceNotifier.subtractPrice(price);
                 userLogNotifier.updateLogsBasedOnPrice(price);
-
+                // dialogを表示
                 await showDialog(
                   context: context,
                   barrierDismissible: false,
@@ -128,6 +128,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
     );
   }
 
+  // 上記の画像スライドショー
   Widget headerWidget(BuildContext context,  String imageUrl, String title, String description) {
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
     return Hero(

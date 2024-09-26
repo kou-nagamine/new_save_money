@@ -10,6 +10,25 @@ import 'package:lottie/lottie.dart';
 import '/views/pages/calculator/providers/all_price.dart';
 import "../providers/temporary_topic_list.dart";
 
+class LengthLimitingUnicodeTextInputFormatter extends TextInputFormatter {
+  final int maxLength;
+
+  LengthLimitingUnicodeTextInputFormatter(this.maxLength);
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    // 入力された文字列の長さがmaxLengthを超えた場合、文字を切り捨てる
+    if (newValue.text.characters.length > maxLength) {
+      final truncated = newValue.text.characters.take(maxLength).toString();
+      return TextEditingValue(
+        text: truncated,
+        selection: TextSelection.collapsed(offset: truncated.length),
+      );
+    }
+    return newValue;
+  }
+}
+
 class CustomForm extends ConsumerStatefulWidget {
   const CustomForm({super.key});
 
@@ -39,7 +58,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   @override
   void initState() {
     super.initState();
-
+  
     // Initialize calculatedPrice with allPraice[1]
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final allPrice = ref.read(allPriceNotifierProvider);
@@ -95,21 +114,22 @@ class _CustomFormState extends ConsumerState<CustomForm> {
       }
     });
   }
-
-  // バリデーションメソッド
-  //タイトルのバリデーション
+  
+  //タイトルの値が0または15以外のときはupdateTitleValidateはtrue
   void _validateTitle(String value) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
     setState(() {
       if(value.length == 0 || value.isEmpty) {
-        _titleErrorMessage = 'タイトルを入力してください';
         temporaryTopicList.updateTitleValidate(false);
       }
-      else if (value.length > 2) {
-        _titleErrorMessage = 'タイトルは10文字以内で入力してください';
+      else if (value.length == 7) {
         temporaryTopicList.updateTitleValidate(false);
-      } else {
-        _titleErrorMessage = null;
+        showSnackBar(
+          context: context,
+          message: 'これ以上は入力できません',
+        );
+      }
+      else {
         temporaryTopicList.updateTitleValidate(true);
       }
     });
@@ -119,17 +139,79 @@ class _CustomFormState extends ConsumerState<CustomForm> {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
     setState(() {
       if (value.length == 0 || value.isEmpty || int.parse(value) == 0) {
-        _priceErrorMessage = '金額を入力してください';
         temporaryTopicList.updatePriceValidate(false);
-      } else if (value.length > 7){
-        _priceErrorMessage = '金額は桁数が大きすぎます';
+      } else if (value.length == 7){
         temporaryTopicList.updatePriceValidate(false);
+        showSnackBar(
+          context: context,
+          message: 'これ以上は入力できません',
+        );
       }else {
-        _priceErrorMessage = null;
         temporaryTopicList.updatePriceValidate(true);
       }
     });
   }
+
+  void showSnackBar({
+  required BuildContext context,
+  required String message,
+  Duration duration = const Duration(seconds: 3),
+}) {
+  final overlay = Overlay.of(context);
+
+  late OverlayEntry overlayEntry;
+  overlayEntry = OverlayEntry(
+    builder: (context) => Positioned(
+      top: 70,
+      left: 16,
+      right: 16,
+      child: Material(
+        color: Colors.transparent,
+        child: Dismissible(
+          direction: DismissDirection.up,
+          onDismissed: (direction) {
+            // スナックバーを削除する処理
+            if (overlayEntry.mounted) {
+              overlayEntry.remove();
+            }
+          },
+          key: ValueKey(message),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+            decoration: BoxDecoration(
+              color: const Color(0xFF333333).withOpacity(0.8),
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.red,
+                  offset: Offset(0, 5),
+                  blurRadius: 5,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: Text(
+              message,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+  
+  overlay.insert(overlayEntry);
+
+  Future.delayed(duration, () {
+    // スナックバーを安全に削除
+    if (overlayEntry.mounted) {
+      overlayEntry.remove();
+    }
+  });
+}
 
   //メモのバリデーション
   void _validateMemo(String value) {
@@ -182,7 +264,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'タイトル',
+                      '支出の用途',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -203,9 +285,9 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                                 : Colors.black.withOpacity(0.3),
                             fontWeight: FontWeight.bold,
                           ),
-                          hintText: 'サークルの会食',
+                          hintText: 'デバイス',
                           border: InputBorder.none, // 下線を消す
-                          errorText: _titleErrorMessage, // エラーメッセージ
+                          // errorText: _titleErrorMessage, // エラーメッセージ
                           errorStyle: TextStyle(color: Colors.red),
                         ),
                         style: TextStyle(
@@ -216,6 +298,9 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                               : Colors.black,
                         ),
                         textInputAction: TextInputAction.done,
+                        inputFormatters: [
+                          LengthLimitingUnicodeTextInputFormatter(15), // ひらがな・漢字を含めて文字数を15文字に制限
+                        ],
                         onEditingComplete: () {
                           FocusScope.of(context).unfocus();
                         },
@@ -228,6 +313,24 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   ],
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    '${_titleController.text.length}/10', // タイトルの長さを表示
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: _titleController.text.length == 0
+                          ? Colors.grey // 0文字の時はグレー
+                          : _titleController.text.length <= 10
+                              ? Colors.black // 1文字以上10文字以内は黒
+                              : Colors.red, // 11文字以上は赤
+                    ),
+                  ),
+                ]    
+              ),
+              SizedBox(height: 5),
               // 金額入力フィールド
               Container(
                 height: 50,
@@ -236,7 +339,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '￥',
+                      '値段',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -251,6 +354,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                         keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly, // 数字のみ入力可能にする
+                          LengthLimitingTextInputFormatter(7),
                         ],
                         focusNode: _focusNode2, // フォーカスノードを設定
                         textAlign: TextAlign.end, // テキストを右揃えにする
@@ -262,9 +366,8 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                             fontFamily: 'NotoSansJP',
                             fontWeight: FontWeight.bold,
                           ),
-                          hintText: '700',
+                          hintText: '5000',
                           border: InputBorder.none, // 下線を消す
-                          errorText: _priceErrorMessage, // エラーメッセージ
                           errorStyle: TextStyle(color: Colors.red),
                         ),
                         style: TextStyle(
@@ -286,6 +389,25 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                     ),
                   ],
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    '${_priceController.text.isEmpty ? '0' : _priceController.text}/1000000', // 空またはnullの時は0を表示
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: _priceController.text.isEmpty
+                          ? Colors.grey // タイトルが空ならグレー
+                          : (int.tryParse(_priceController.text) == null)
+                              ? Colors.black // 数値でない場合は黒
+                              : (int.parse(_priceController.text) < 1000001)
+                                  ? Colors.black // 1000001未満は黒
+                                  : Colors.red, // 1000001以上は赤
+                    ),
+                  ),
+                ],
               ),
               (int.tryParse(_EnteredPrice) ?? 0) > allPrice[1]
                 ? Container(
