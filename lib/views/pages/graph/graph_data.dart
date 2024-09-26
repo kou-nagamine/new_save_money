@@ -6,6 +6,7 @@ final numberFormat = NumberFormat("#,##0"); // 3桁ごとにカンマをつけ�
 
 // LineChartDataを生成する関数
 LineChartData createLineChartData(List<FlSpot> flSpots, List<String> dates) {
+  bool showDates = dates.length <= 10; // データが10個以上かどうかを判定するお
   return LineChartData(
     borderData: FlBorderData(
       border: const Border(
@@ -25,7 +26,7 @@ LineChartData createLineChartData(List<FlSpot> flSpots, List<String> dates) {
       ),
       bottomTitles: AxisTitles(
         sideTitles: SideTitles(
-          showTitles: true,
+          showTitles: showDates, // データが10個以上の場合のみ日付を表示するお
           reservedSize: 30,
           interval: 1,
           getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, dates),
@@ -70,10 +71,20 @@ LineChartData createLineChartData(List<FlSpot> flSpots, List<String> dates) {
               fontSize: 14,
             );
             String formattedValue = numberFormat.format(touchedSpot.y);
-            return LineTooltipItem(
-              '￥$formattedValue',
-              textStyle,
-            );
+            if (showDates) {
+              // データ数が10個以下の場合は数値のみ表示だお
+              return LineTooltipItem(
+                '￥$formattedValue',
+                textStyle,
+              );
+            } else {
+              // データ数が10個以上の場合は日付も表示
+              String date = dates[touchedSpot.x.toInt()];// x値に基づいて対応する日付を取得するお
+              return LineTooltipItem(
+                '$date\n￥$formattedValue',
+                textStyle,
+              );
+            }
           }).toList();
         },
         tooltipPadding: const EdgeInsets.all(10),
@@ -97,7 +108,7 @@ Widget bottomTitleWidgets(double value, TitleMeta meta, List<String> dates) {
   const style = TextStyle(
     color: Colors.black38,
     fontWeight: FontWeight.w300,
-    fontSize: 10,
+    fontSize: 8,
   );
 
   String text = '';
@@ -108,7 +119,10 @@ Widget bottomTitleWidgets(double value, TitleMeta meta, List<String> dates) {
 
   return SideTitleWidget(
     axisSide: meta.axisSide,
-    child: Text(text, style: style),
+    child: Padding(
+      padding: const EdgeInsets.only(left: 20), // 余白を追加 (右側にテキストを表示するため)　
+      //ここのPaddingで無理やり調整しているので、棒とテキストの位置がずれてます。
+      child:Text(text, style: style)),
   );
 }
 // LineChartData savedData(){

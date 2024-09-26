@@ -55,31 +55,51 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
     final userData = ref.watch(userLogNotifierProvider);
     final Map<String, Map<String, dynamic>> categoryData = {};
 
-    List<FlSpot> flSpots = [];
+    List<FlSpot> allSpots = [];
+    List<FlSpot> inComeSpots = [];
     double cumulativeTotal = 0;
+    double cumulativeIncome = 0;
 
     // 日付リストを作成
-    List<String> dates = [];
+    List<String> incomedates = [];
+    List<String> alldates = [];
 
     // 最初の点 (0, 0) を追加
-    flSpots.add(FlSpot(0, 0));
+    allSpots.add(FlSpot(0, 0));
+    inComeSpots.add(FlSpot(0, 0));
 
     // 支出こみのグラフロジック
     for (var i = userData.length - 1; i >= 0; i--) {
       int priceChange = userData[i].deposit == false ? -userData[i].price : userData[i].price;
-      cumulativeTotal += priceChange;
-      flSpots.add(FlSpot((userData.length - i).toDouble(), cumulativeTotal));
+      cumulativeIncome += priceChange;
+      allSpots.add(FlSpot((userData.length - i).toDouble(), cumulativeIncome));
       try {
         DateTime parsedDate;
         parsedDate = userData[i].dataTime;
-        dates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
+        alldates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
       } catch (e) {
-        dates.add('Invalid date'); // エラーハンドリング
+        alldates.add('Invalid date'); // エラーハンドリング
+      }
+    }
+
+    // 支出を除いたグラフロジック
+    for (var i = userData.length - 1; i >= 0; i--) {
+      if (userData[i].deposit == true) {
+        // 支出を除外し、収入データのみ処理する
+        cumulativeTotal += userData[i].price;
+        inComeSpots.add(FlSpot((userData.length - i).toDouble(), cumulativeTotal));
+        try {
+          DateTime parsedDate = userData[i].dataTime;
+          incomedates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
+        } catch (e) {
+          incomedates.add('Invalid date'); // エラーハンドリング
+        }
       }
     }
 
     // LineChartDataをgraph_dataから呼び出す
-    LineChartData chartData = createLineChartData(flSpots, dates);
+    LineChartData allChartData = createLineChartData(allSpots, alldates);
+    LineChartData inComeDates = createLineChartData(inComeSpots, incomedates);
 
     // userData の各要素に対して処理を行う
     for (var save in userData) {
@@ -174,16 +194,16 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                 aspectRatio: 1.5,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                    right: 0,
-                    left: 0,
+                    right: 10,
+                    left: 10,
                     top: 15,
                     bottom: 12,
                   ),
                   child:LineChart(
-                    animatedChart(chartData, _chartanimation.value),
-                    // selectedOption == '全体'
-                    // ? animatedChart(savedData(), _chartanimation.value)
-                    // : animatedChart(allData(), _chartanimation.value),
+                    //animatedChart(allChartData, _chartanimation.value),
+                    selectedOption == '全体'
+                    ? animatedChart(allChartData, _chartanimation.value)
+                    : animatedChart(inComeDates, _chartanimation.value)
                   )
                 ),
               ),
