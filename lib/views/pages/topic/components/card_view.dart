@@ -3,8 +3,6 @@ import 'package:new_save_money/views/pages/topic/components/nomal_card.dart';
 import 'package:new_save_money/views/pages/topic/components/recomend_card.dart';
 
 //firebase
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cloud_firestore;
 
 //RecomendCardのPageView

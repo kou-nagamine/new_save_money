@@ -40,12 +40,10 @@ class _TopicContentState extends ConsumerState<TopicContent> {
 
     // ボタンを押せるかどうかの判定
     final isButtonEnabled = [temporaryTopicList[4], temporaryTopicList[5], temporaryTopicList[6]].every((item) => item == true);
-
     //
     final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
     final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
-
     //
     final allPrice = ref.watch(allPriceNotifierProvider);
 
@@ -78,6 +76,9 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               ),
               // buttonを押した時の処理
               onPressed: isButtonEnabled ? () async {
+                //イメージのパスを取得
+                print(widget.imageUrl);
+                
                 final currentDateTime = temporaryTopicList[2] ?? DateTime.now();
                 int price = temporaryTopicList[1] ?? 1500;
                 String memo = temporaryTopicList[3] ?? "メモがありません";
@@ -183,7 +184,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                     ),
                   ],
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 15),
               ],
             ),
           ),

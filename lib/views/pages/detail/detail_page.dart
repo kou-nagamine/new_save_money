@@ -6,6 +6,7 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:new_save_money/views/pages/home/providers/user_log.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:intl/intl.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 // import 'dart:developer';
 import '../home/providers/save.dart';
 
@@ -85,180 +86,86 @@ class ReferencePage extends ConsumerWidget {
     final userSaveLog = ref.watch(userLogNotifierProvider);
     final item = userSaveLog[itemIndex];
     final String imageUrl = item.imageUrl;
-
-    return FutureBuilder<String>(
-      future: firebase_storage.FirebaseStorage.instance
-          .ref(imageUrl)
-          .getDownloadURL(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            width: MediaQuery.of(context).size.width * 1.0,
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: const Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
-          return Stack(
+    return Stack(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 1.0,
+          height: MediaQuery.of(context).size.height * 0.6,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: CachedNetworkImageProvider(imageUrl),
+              fit: BoxFit.cover, // 画像を全体にカバー
+            ),
+          ),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 1.0,
+          height: MediaQuery.of(context).size.height * 0.6,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+                Colors.black.withOpacity(0.9), // 90%の不透明度の黒
+                Colors.white.withOpacity(0), // 白
+              ],
+              stops: [0.1, 1], // 黒が85%の位置で終了し、残りは白
+            ),
+          ),
+          child: Column(
             children: [
-              Container(
-              width: MediaQuery.of(context).size.width * 1.0,
-              height: MediaQuery.of(context).size.height * 0.6,
-              color: Colors.grey,
-              child: const Center(child: Icon(Icons.error, color: Colors.red)),
-              ),
-              Positioned(
-                top: 50,
-                left: 10,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context); // 前のページに戻る
-                      },
-                      icon: Icon(
-                        Icons.arrow_circle_left_rounded,
-                        color: Colors.black,
-                        weight: 700,
-                        size: 50,
-                      ),
-                    ),
-                  ],
-                )
-              ),
-            ]
-          );
-        } else if (snapshot.hasData) {
-          return Stack(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 1.0,
-                height: MediaQuery.of(context).size.height * 0.6,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image:  NetworkImage(snapshot.data!),
-                    fit: BoxFit.cover, // 画像を全体にカバー
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 1.0,
-                height: MediaQuery.of(context).size.height * 0.6,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      Colors.black.withOpacity(0.9), // 90%の不透明度の黒
-                      Colors.white.withOpacity(0), // 白
-                    ],
-                    stops: [0.1, 1], // 黒が85%の位置で終了し、残りは白
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Spacer(),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 10),
-                            Text(
-                              title,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+              Spacer(),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 10),
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 35,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 30),
-                  ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 30),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 50,
+          left: 10,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
                 ),
               ),
-              Positioned(
-                top: 50,
-                left: 10,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context); // 前のページに戻る
-                      },
-                      icon: Icon(
-                        Icons.arrow_circle_left_rounded,
-                        color: Colors.black,
-                        weight: 700,
-                        size: 50,
-                      ),
-                    ),
-                  ],
-                )
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context); // 前のページに戻る
+                },
+                icon: Icon(
+                  Icons.arrow_circle_left_rounded,
+                  color: Colors.black,
+                  weight: 700,
+                  size: 50,
+                ),
               ),
             ],
-          );
-        } else {
-          return Stack(
-            children: [
-              Container(
-              width: MediaQuery.of(context).size.width * 1.0,
-              height: MediaQuery.of(context).size.height * 0.6,
-              color: Colors.grey,
-              child: const Center(child: Icon(Icons.error, color: Colors.red)),
-              ),
-              Positioned(
-                top: 50,
-                left: 10,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context); // 前のページに戻る
-                      },
-                      icon: Icon(
-                        Icons.arrow_circle_left_rounded,
-                        color: Colors.black,
-                        weight: 700,
-                        size: 50,
-                      ),
-                    ),
-                  ],
-                )
-              ),
-            ]
-          );
-        }
-      },
+          )
+        ),
+      ],
     );
   }
 }

@@ -1,10 +1,11 @@
 //packages
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:iconoir_flutter/iconoir_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 //dart
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 //pages
 //import '/views/pages/setting/setting_page.dart';
@@ -17,7 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CommonNavigationBar extends StatelessWidget {
   final int initialIndex;
-
   const CommonNavigationBar({super.key, this.initialIndex = 0});//初期値を設定  0:home 1:calculator 2:setting　0以外を設定する場合は、各自で設定してください　by H 
 
   @override
@@ -27,7 +27,6 @@ class CommonNavigationBar extends StatelessWidget {
 }
 class MyStatefulWidget extends StatefulWidget {
   final int initialIndex;
-
   const MyStatefulWidget({super.key, required this.initialIndex});
 
   @override
@@ -47,7 +46,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
      _loadPreferences();
   }
 
-    // SharedPreferences から初期データを読み込み
+  // SharedPreferences から初期データを読み込み
   Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final defaultTransaction = prefs.getBool('DefaultTransactionSwitch') ?? false;
@@ -74,18 +73,40 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // BottomNavigationBar cululatorのタップ時の処理
   void _onItemTapped(int index) {
     if (index == 1) {
-      showCupertinoModalBottomSheet( // モーダルシートで表示
+      showBarModalBottomSheet( // モーダルシートで表示
         context: context,
         expand: true,
         backgroundColor: Colors.transparent,
         builder: (context) => CalculatorPage(),
+     ).then((_) {
+      // モーダルが閉じられたときにステータスバーの色をリセット
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: ui.Brightness.light,  // iOS用
+          statusBarIconBrightness: ui.Brightness.dark,  // Android用
+        ),
       );
-    } else {
-      setState(() {
-        selectedIndex = index;
-      });
-    }
+    });
+    // モーダルが表示される時のステータスバー設定
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarBrightness: ui.Brightness.dark,  // モーダルが表示されたときのiOS用
+        statusBarIconBrightness: ui.Brightness.light,  // Android用
+      ),
+    );
+  } else {
+    setState(() {
+      selectedIndex = index;
+    });
+    // ナビゲーション変更時にステータスバーの色をリセット
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarBrightness: ui.Brightness.light,  // iOS用
+        statusBarIconBrightness: ui.Brightness.dark,  // Android用
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +116,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       bottomNavigationBar: isBottomNavVisible
           ? ClipRect(
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
