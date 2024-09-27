@@ -1,5 +1,4 @@
 //package
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,11 +7,9 @@ import 'package:intl/intl.dart'; // NumberFormatを使用するためにイン�
 
 //components
 import 'components/money_history.dart';
-
 //pages
 //import '../calculator/calculator_page.dart';
 import '../graph/graph_page.dart';
-import '../setting/setting_page.dart';
 import 'components/menu_ios.dart';
 import 'components/category_graph.dart';
 
@@ -20,9 +17,11 @@ import 'components/category_graph.dart';
 import '../calculator/providers/all_price.dart';
 import "./providers/user_log.dart";
 
+
+
 class HomePage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context , WidgetRef ref) {
+  Widget build(BuildContext context , WidgetRef ref) { 
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
     return PopScope(
