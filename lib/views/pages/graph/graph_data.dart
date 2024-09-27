@@ -43,7 +43,8 @@ LineChartData createLineChartData(List<FlSpot> flSpots, List<String> dates) {
       LineChartBarData(
         spots: flSpots,
         isCurved: true, // カーブを使用する
-        curveSmoothness: 0.1, // 0.0 ～ 1.0 の値を指定（0.2 は軽く曲線になる）
+        curveSmoothness: 0.01, // 0.0 ～ 1.0 の値を指定（0.2 は軽く曲線になる）
+        preventCurveOverShooting: true,
         color: const Color(0xff0092FB),
         barWidth: 5,
         belowBarData: BarAreaData(

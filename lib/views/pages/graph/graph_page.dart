@@ -81,22 +81,27 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
         alldates.add('Invalid date'); // エラーハンドリング
       }
     }
+    int incomeIndex = 1; // 収入データ専用のインデックスを作成 0の場合はエラーが発生するため1からスタート
 
     // 支出を除いたグラフロジック
     for (var i = userData.length - 1; i >= 0; i--) {
       if (userData[i].deposit == true) {
         // 支出を除外し、収入データのみ処理する
         cumulativeTotal += userData[i].price;
-        inComeSpots.add(FlSpot((userData.length - i).toDouble(), cumulativeTotal));
+
+        // 収入専用のインデックスを使って X 座標を設定
+        inComeSpots.add(FlSpot(incomeIndex.toDouble(), cumulativeTotal));
+
         try {
           DateTime parsedDate = userData[i].dataTime;
           incomedates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
         } catch (e) {
           incomedates.add('Invalid date'); // エラーハンドリング
         }
+
+        incomeIndex++; // 収入があるたびにインデックスを進める
       }
     }
-
     // LineChartDataをgraph_dataから呼び出す
     LineChartData allChartData = createLineChartData(allSpots, alldates);
     LineChartData inComeDates = createLineChartData(inComeSpots, incomedates);
