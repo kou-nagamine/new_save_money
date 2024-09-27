@@ -9,6 +9,7 @@ import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 import 'package:figma_squircle/figma_squircle.dart';
 import '../setting/components/danger_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 
 import 'package:new_save_money/views/pages/walkthrough/pageview.dart';
@@ -81,7 +82,7 @@ class _SettingPageState extends State<SettingPage> {
           statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
         ),
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -111,26 +112,46 @@ class _SettingPageState extends State<SettingPage> {
                             width: 25,
                             color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
-                              : Colors.black,
+                              : Colors.grey[500],
                           ),
-                          Padding(child: Text(
-                              '通知をONにする',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ) , padding: EdgeInsets.only(left: 20),
+                          Padding(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '通知をONにする',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[500]
+                                  ),
+                                ),
+                                Text('現在このオプションは利用できません。',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            padding: EdgeInsets.only(left: 20),
                           ),
                         ],
                       ),
+                      //通知機能が実装されるまで無効化
                       SwitchItem(
                         value: isNotificationOn,
                         onChanged: (bool value) {
-                          setState(() {
-                            isNotificationOn = value;
-                          });
-                          _saveSwitchValue('NotificationSwitch', value); // 通知スイッチの状態を保存
+                          null;
                         },
+                        // onChanged: (bool value) {
+                        //   setState(() {
+                        //     isNotificationOn = value;
+                        //   });
+                        //   _saveSwitchValue('NotificationSwitch', value); // 通知スイッチの状態を保存
+                        // },
                       ),
                     ],
                   ),
@@ -233,15 +254,59 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                    ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
                   Text(
-                  'Danger Zone',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff5B5B5B),
+                    'Danger Zone',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff5B5B5B),
+                    ),
                   ),
-                ),
+                  Container(
+                  height: 50,
+                  child: InkWell( 
+                     onTap: () {
+                      DefaultCacheManager().emptyCache();
+                      // キャッシュがクリアされたことをユーザーに通知
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('全てのキャッシュをクリアしました')),
+                      );
+                     }, // リンクに飛ばす
+                    child:  Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        iconoir.Trash(
+                          width: 25,
+                          color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                        ),
+                        Padding(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('キャッシュを削除する',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text('この動作によってデータが消えることはありません',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ) ,
+                        padding: EdgeInsets.only(left: 20)),
+                        ],
+                      ),
+                   ),
+                  ),
                   Container(
                   height: 50,
                   child: InkWell( 
