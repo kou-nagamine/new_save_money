@@ -184,7 +184,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                     ),
                   ],
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 15),
               ],
             ),
           ),

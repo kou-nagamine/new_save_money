@@ -44,6 +44,7 @@ class NomalCard extends StatefulWidget {
 
   class _NomalCardState extends State<NomalCard> {
     String? fetchedImageUrl;
+    bool _isFetching = false; 
 
     @override
     void initState() {
@@ -52,14 +53,26 @@ class NomalCard extends StatefulWidget {
     }
 
     Future<void> _fetchImageUrl() async {
+      if (fetchedImageUrl != null || _isFetching) return;
+    
+      setState(() {
+        _isFetching = true;
+      });
+
       try {
-        final url = await firebase_storage.FirebaseStorage.instance.ref(widget.imageUrl).getDownloadURL();
+        final url = await firebase_storage.FirebaseStorage.instance
+          .ref(widget.imageUrl)
+          .getDownloadURL();
+
         setState(() {
           fetchedImageUrl = url;
         });
       } catch (e) {
         // エラーハンドリング
         print('Error fetching image URL: $e');
+         setState(() {
+          _isFetching = false;
+        });
       }
     }
 
@@ -96,38 +109,74 @@ class NomalCard extends StatefulWidget {
               clipBehavior: Clip.hardEdge,
               child: Stack(
                 children: [
-                  FutureBuilder<String>(
-                    future: firebase_storage.FirebaseStorage.instance.ref(widget.imageUrl).getDownloadURL(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: Center(child: CircularProgressIndicator(
-                            color: Colors.grey[500],
-                          )),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: const Center(child: Icon(Icons.error, color: Colors.red)),
-                        );
-                      } else if (snapshot.hasData) {
-                        // 取得したURLをCachedNetworkImageでキャッシュ表示
-                        return NetworkImageBuilder(snapshot.data!);
-                      } else {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: const Center(child: Icon(Icons.error)),
-                        );
-                      }
-                    },
+                   fetchedImageUrl == null
+                      ? Center(child: CircularProgressIndicator()) // 画像取得中のプレースホルダー
+                      : CachedNetworkImage(
+                          imageUrl: fetchedImageUrl!, // 取得したURLを使用
+                          placeholder: (context, url) => Center(child: CircularProgressIndicator()), // ローディング中のプレースホルダー
+                          errorWidget: (context, url, error) => Icon(Icons.error), // エラー時のアイコン
+                          fit: BoxFit.cover, // 画像のフィット方法
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                  Container(
+                    width: double.infinity, // 横幅を親に合わせる
+                    height: double.infinity, // 高さを親に合わせる
+                    child: fetchedImageUrl != null // すでに取得済みのURLがあるかどうかを確認
+                    ? CachedNetworkImage(
+                      imageUrl: fetchedImageUrl!,
+                      fadeInDuration: Duration.zero, // アニメーションを無効化
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        color: Colors.white,
+                        child: Center(
+                          child: CircularProgressIndicator(color: Colors.grey[500]),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        color: Colors.white,
+                        child: const Center(child: Icon(Icons.error, color: Colors.red)),
+                      ),
+                    )
+                  : Container( // 初回ロード中の表示
+                      color: Colors.white,
+                      child: Center(
+                        child: CircularProgressIndicator(color: Colors.grey[500]),
+                      ),
+                    ),
                   ),
+                  // FutureBuilder<String>(
+                  //   future: firebase_storage.FirebaseStorage.instance.ref(widget.imageUrl).getDownloadURL(),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.waiting) {
+                  //       return Container(
+                  //         decoration: BoxDecoration(
+                  //           color: Colors.white,
+                  //         ),
+                  //         child: Center(child: CircularProgressIndicator(
+                  //           color: Colors.grey[500],
+                  //         )),
+                  //       );
+                  //     } else if (snapshot.hasError) {
+                  //       return Container(
+                  //         decoration: BoxDecoration(
+                  //           color: Colors.white,
+                  //         ),
+                  //         child: const Center(child: Icon(Icons.error, color: Colors.red)),
+                  //       );
+                  //     } else if (snapshot.hasData) {
+                  //       // 取得したURLをCachedNetworkImageでキャッシュ表示
+                  //       return NetworkImageBuilder(snapshot.data!);
+                  //     } else {
+                  //       return Container(
+                  //         decoration: BoxDecoration(
+                  //           color: Colors.white,
+                  //         ),
+                  //         child: const Center(child: Icon(Icons.error)),
+                  //       );
+                  //     }
+                  //   },
+                  // ),
                   Positioned(
                     bottom: 0,
                     left: 0,
