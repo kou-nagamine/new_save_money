@@ -99,42 +99,42 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 SizedBox(height: 10), // タイトルと最初の項目の間に余白を追加
-                Container(
-                  height: 50,
-                  child:  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          iconoir.BellNotification(
-                            width: 25,
-                            color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                          ),
-                          Padding(child: Text(
-                              '通知をONにする',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ) , padding: EdgeInsets.only(left: 20),
-                          ),
-                        ],
-                      ),
-                      SwitchItem(
-                        value: isNotificationOn,
-                        onChanged: (bool value) {
-                          setState(() {
-                            isNotificationOn = value;
-                          });
-                          _saveSwitchValue('NotificationSwitch', value); // 通知スイッチの状態を保存
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   height: 50,
+                //   child:  Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       Row(
+                //         children: [
+                //           iconoir.BellNotification(
+                //             width: 25,
+                //             color: Theme.of(context).brightness == Brightness.dark
+                //               ? Colors.white
+                //               : Colors.black,
+                //           ),
+                //           Padding(child: Text(
+                //               '通知をONにする',
+                //               style: TextStyle(
+                //                 fontSize: 15,
+                //                 fontWeight: FontWeight.bold,
+                //               ),
+                //             ) , padding: EdgeInsets.only(left: 20),
+                //           ),
+                //         ],
+                //       ),
+                //       SwitchItem(
+                //         value: isNotificationOn,
+                //         onChanged: (bool value) {
+                //           setState(() {
+                //             isNotificationOn = value;
+                //           });
+                //           _saveSwitchValue('NotificationSwitch', value); // 通知スイッチの状態を保存
+                //         },
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Container(
                   height: 50,
                   child:  Row(

@@ -167,28 +167,28 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '先週比：',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      TextSpan(
-                        text: '￥521(9.4%)',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF00BB16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // RichText(
+                //   text: TextSpan(
+                //     children: [
+                //       TextSpan(
+                //         text: '先週比：',
+                //         style: TextStyle(
+                //           fontSize: 16,
+                //           fontWeight: FontWeight.bold,
+                //           color: Colors.black,
+                //         ),
+                //       ),
+                //       TextSpan(
+                //         text: '￥521(9.4%)',
+                //         style: TextStyle(
+                //           fontSize: 16,
+                //           fontWeight: FontWeight.bold,
+                //           color: Color(0xFF00BB16),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ]
             ),
           ),
