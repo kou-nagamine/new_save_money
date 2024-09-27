@@ -68,30 +68,28 @@ LineChartData createLineChartData(List<FlSpot> flSpots, List<String> dates) {
           return Colors.black.withOpacity(0.8);
         },
         getTooltipItems: (List<LineBarSpot> touchedSpots) {
-        return touchedSpots.map((LineBarSpot touchedSpot) {
-          const textStyle = TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          );
-          String formattedValue = numberFormat.format(touchedSpot.y);
-          int index = touchedSpot.x.toInt();
-          
-          // インデックスが有効かどうかをチェック
-          if (index < 0 || index >= dates.length) {
+          return touchedSpots.map((LineBarSpot touchedSpot) {
+            const textStyle = TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            );
+            String formattedValue = numberFormat.format(touchedSpot.y);
+            int index = touchedSpot.x.toInt();
+            
+            // インデックスが有効かどうかをチェック
+            if (index < 0 || index >= dates.length) {
+              return LineTooltipItem(
+                '￥$formattedValue', // 値のみ表示
+                textStyle,
+              );
+            } 
+            String date = dates[index]; // x値に基づいて日付を取得
             return LineTooltipItem(
-              '￥$formattedValue', // 値のみ表示
+              '$date\n￥$formattedValue',
               textStyle,
             );
-          } 
-          String date = dates[index]; // x値に基づいて日付を取得
-          return LineTooltipItem(
-            '$date\n￥$formattedValue',
-            textStyle,
-          );
-        
-        }).toList();
-
+          }).toList();
         },
         tooltipPadding: const EdgeInsets.all(10),
         tooltipMargin: 200,
