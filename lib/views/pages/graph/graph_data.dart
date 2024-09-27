@@ -4,9 +4,10 @@ import 'package:intl/intl.dart';
 
 final numberFormat = NumberFormat("#,##0"); // 3桁ごとにカンマをつけるフォーマット
 
+
 // LineChartDataを生成する関数
 LineChartData createLineChartData(List<FlSpot> flSpots, List<String> dates) {
-  bool showDates = dates.length <= 10; // データが10個以上かどうかを判定するお
+  //bool showDates = dates.length <= 10; // データが10個以上かどうかを判定する
   return LineChartData(
     borderData: FlBorderData(
       border: const Border(
@@ -26,7 +27,8 @@ LineChartData createLineChartData(List<FlSpot> flSpots, List<String> dates) {
       ),
       bottomTitles: AxisTitles(
         sideTitles: SideTitles(
-          showTitles: showDates, // データが10個以上の場合のみ日付を表示するお
+          //showTitles: showDates, // データが10個以上の場合のみ日付を表示する
+          showTitles: false,
           reservedSize: 30,
           interval: 1,
           getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, dates),
@@ -40,7 +42,9 @@ LineChartData createLineChartData(List<FlSpot> flSpots, List<String> dates) {
     lineBarsData: [
       LineChartBarData(
         spots: flSpots,
-        isCurved: true,
+        isCurved: true, // カーブを使用する
+        curveSmoothness: 0.01, // 0.0 ～ 1.0 の値を指定（0.2 は軽く曲線になる）
+        preventCurveOverShooting: true,
         color: const Color(0xff0092FB),
         barWidth: 5,
         belowBarData: BarAreaData(
@@ -71,20 +75,20 @@ LineChartData createLineChartData(List<FlSpot> flSpots, List<String> dates) {
               fontSize: 14,
             );
             String formattedValue = numberFormat.format(touchedSpot.y);
-            if (showDates) {
-              // データ数が10個以下の場合は数値のみ表示だお
+            int index = touchedSpot.x.toInt();
+            
+            // インデックスが有効かどうかをチェック
+            if (index < 0 || index >= dates.length) {
               return LineTooltipItem(
-                '￥$formattedValue',
+                '￥$formattedValue', // 値のみ表示
                 textStyle,
               );
-            } else {
-              // データ数が10個以上の場合は日付も表示
-              String date = dates[touchedSpot.x.toInt()];// x値に基づいて対応する日付を取得するお
-              return LineTooltipItem(
-                '$date\n￥$formattedValue',
-                textStyle,
-              );
-            }
+            } 
+            String date = dates[index]; // x値に基づいて日付を取得
+            return LineTooltipItem(
+              '$date\n￥$formattedValue',
+              textStyle,
+            );
           }).toList();
         },
         tooltipPadding: const EdgeInsets.all(10),
@@ -120,11 +124,12 @@ Widget bottomTitleWidgets(double value, TitleMeta meta, List<String> dates) {
   return SideTitleWidget(
     axisSide: meta.axisSide,
     child: Padding(
-      padding: const EdgeInsets.only(left: 20), // 余白を追加 (右側にテキストを表示するため)　
-      //ここのPaddingで無理やり調整しているので、棒とテキストの位置がずれてます。
-      child:Text(text, style: style)),
+      padding: const EdgeInsets.only(left: 20), // 余白を追加 (右側にテキストを表示するため)
+      child: Text(text, style: style),
+    ),
   );
 }
+
 // LineChartData savedData(){
 //   return LineChartData(
 //     borderData: FlBorderData(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:new_save_money/views/pages/home/providers/log_type.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 
 class PaymentMenu extends StatefulWidget {
@@ -36,7 +38,7 @@ class _PaymentMenuState extends State<PaymentMenu> {
 }
 
 
-class MenuItem extends StatelessWidget {
+class MenuItem extends ConsumerWidget {
   const MenuItem({
     super.key,
     required this.builder,
@@ -49,11 +51,14 @@ class MenuItem extends StatelessWidget {
   final ValueChanged<String> onItemSelected; // 選択が変更されたときのコールバック
 
   @override
-  Widget build(BuildContext context) => PullDownButton(
+  Widget build(BuildContext context, WidgetRef ref) => PullDownButton(
     itemBuilder: (context) => [
       PullDownMenuItem.selectable(
         onTap: () {
           onItemSelected('全体'); // 項目が選択されたらコールバックを呼び出す
+          ref.watch(logTypeNotifierProvider);
+          final chngeType = ref.read(logTypeNotifierProvider.notifier);
+          chngeType.selectAllType();
         },
         title: '全体',
         selected: selectedItem == '全体',
@@ -61,6 +66,9 @@ class MenuItem extends StatelessWidget {
       PullDownMenuItem.selectable(
         onTap: () {
           onItemSelected('ついで収入');
+          ref.watch(logTypeNotifierProvider);
+          final chngeType = ref.read(logTypeNotifierProvider.notifier);
+          chngeType.selectDepositType();
         },
         title: 'ついで収入',
         selected: selectedItem == 'ついで収入収入',
@@ -68,6 +76,9 @@ class MenuItem extends StatelessWidget {
       PullDownMenuItem.selectable(
         onTap: () {
           onItemSelected('支出');
+          ref.watch(logTypeNotifierProvider);
+          final chngeType = ref.read(logTypeNotifierProvider.notifier);
+          chngeType.selectExpenseType();
         },
         title: '支出',
         selected: selectedItem == '支出',

@@ -419,8 +419,10 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   ),
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child:  _calculatedPercent >= 10.0 
-                      ? Column(
+                    child:  
+                    // _calculatedPercent >= 10.0 
+                    //   ? 
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.center, 
                         children: [
                             Row(
@@ -469,16 +471,16 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                             ),
                          ],
                        )
-                       : Center(
-                         child: Text(
-                           '最低10%以上の残高が必要です。',
-                           style: TextStyle(
-                             fontSize: 16,
-                             fontWeight: FontWeight.bold,
-                             color: Color(0xffE82929),
-                           ),
-                         ),
-                       )
+                      //  : Center(
+                      //    child: Text(
+                      //      '最低10%以上の残高が必要です。',
+                      //      style: TextStyle(
+                      //        fontSize: 16,
+                      //        fontWeight: FontWeight.bold,
+                      //        color: Color(0xffE82929),
+                      //      ),
+                      //    ),
+                      //  )
                      ),
                   )
                 : Container(),

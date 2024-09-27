@@ -16,6 +16,7 @@ import 'components/category_graph.dart';
 //riverpods
 import '../calculator/providers/all_price.dart';
 import "./providers/user_log.dart";
+import '../home/providers/log_type.dart';
 
 
 
@@ -24,6 +25,8 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context , WidgetRef ref) { 
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
+    final selectType = ref.watch(logTypeNotifierProvider);
+
     return PopScope(
       canPop: false,
       child:Scaffold(
@@ -175,10 +178,27 @@ class HomePage extends ConsumerWidget {
                     ),
                     Expanded(
                       child: historyData.isEmpty
-                      ? const Padding(
-                        padding:  EdgeInsets.only(top: 50),
-                        child: Text('ついで出費を記録しよう！'))
-                      : MoneyHistoryList(),
+                          ? const Padding(
+                              padding: EdgeInsets.only(top: 50),
+                              child: Text('ついで出費を記録しよう！'),
+                            )
+                          : Builder(
+                              builder: (context) {
+                                // 条件に基づいて異なるウィジェットを表示
+                                if (selectType[0] == true) {
+                                  return MoneyHistoryList(); // 全体
+                                } else if (selectType[1] == true) {
+                                  return DepositList(); // ついで収入
+                                } else if (selectType[2] == true) {
+                                  return ExpencesList(); // 支出
+                                } else {
+                                  return const Padding(
+                                    padding: EdgeInsets.only(top: 50),
+                                    child: Text('ついで出費を記録しよう！'),
+                                  );
+                                }
+                              },
+                            ),
                     )
                   ],
                 ),

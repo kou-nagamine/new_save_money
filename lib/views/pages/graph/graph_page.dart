@@ -81,22 +81,27 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
         alldates.add('Invalid date'); // エラーハンドリング
       }
     }
+    int incomeIndex = 1; // 収入データ専用のインデックスを作成 0の場合はエラーが発生するため1からスタート
 
     // 支出を除いたグラフロジック
     for (var i = userData.length - 1; i >= 0; i--) {
       if (userData[i].deposit == true) {
         // 支出を除外し、収入データのみ処理する
         cumulativeTotal += userData[i].price;
-        inComeSpots.add(FlSpot((userData.length - i).toDouble(), cumulativeTotal));
+
+        // 収入専用のインデックスを使って X 座標を設定
+        inComeSpots.add(FlSpot(incomeIndex.toDouble(), cumulativeTotal));
+
         try {
           DateTime parsedDate = userData[i].dataTime;
           incomedates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
         } catch (e) {
           incomedates.add('Invalid date'); // エラーハンドリング
         }
+
+        incomeIndex++; // 収入があるたびにインデックスを進める
       }
     }
-
     // LineChartDataをgraph_dataから呼び出す
     LineChartData allChartData = createLineChartData(allSpots, alldates);
     LineChartData inComeDates = createLineChartData(inComeSpots, incomedates);
@@ -162,28 +167,28 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '先週比：',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      TextSpan(
-                        text: '￥521(9.4%)',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF00BB16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // RichText(
+                //   text: TextSpan(
+                //     children: [
+                //       TextSpan(
+                //         text: '先週比：',
+                //         style: TextStyle(
+                //           fontSize: 16,
+                //           fontWeight: FontWeight.bold,
+                //           color: Colors.black,
+                //         ),
+                //       ),
+                //       TextSpan(
+                //         text: '￥521(9.4%)',
+                //         style: TextStyle(
+                //           fontSize: 16,
+                //           fontWeight: FontWeight.bold,
+                //           color: Color(0xFF00BB16),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ]
             ),
           ),
@@ -194,7 +199,7 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
                 aspectRatio: 1.5,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                    right: 10,
+                    right: 0,
                     left: 10,
                     top: 15,
                     bottom: 12,
@@ -326,10 +331,19 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
   }
 
   LineChartData animatedChart(LineChartData data, double t){
-  return LineChartData(
-    borderData: data.borderData,
-    titlesData: data.titlesData,
-    gridData: data.gridData,
+    return LineChartData(
+      borderData: data.borderData,
+      titlesData: data.titlesData,
+      gridData: data.gridData,
+      minY: 0, 
+      extraLinesData: ExtraLinesData(
+      horizontalLines: [
+        HorizontalLine(
+          y: 0,  // 最小値を超える水平線を描画しないように設定
+          color: Colors.transparent,
+        ),
+      ],
+    ),
     lineBarsData: data.lineBarsData.map((barData) {
       final List<FlSpot> animatedSpots = [];
       // スポットの間をアニメーションで描画する
