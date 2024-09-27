@@ -293,7 +293,7 @@ class _SettingPageState extends State<SettingPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text('この動作によってデータが消えることはありません',
+                            Text('この動作によってデータが消えることはありません。',
                               style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.grey[600],
