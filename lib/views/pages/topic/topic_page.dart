@@ -95,7 +95,7 @@ class HeaderWidget extends StatefulWidget {
 
   class _HeaderWidgetState extends State<HeaderWidget> {
     late PageController _controller;
-    late Timer _timer;
+    Timer? _timer;
     int _currentPage = 0;
     static const int _initialPage = 1000; // 初期ページを非常に大きな数に設定
 
@@ -108,8 +108,13 @@ class HeaderWidget extends StatefulWidget {
         initialPage: _initialPage, // 初期ページを指定
       );
       _currentPage = _initialPage;
+      // 自動スライドのタイマーを開始
+      _startAutoSlideTimer();
+    }
 
-      // 自動スライドのタイマーを設定
+    // 自動スライドを開始するタイマーを設定
+    void _startAutoSlideTimer() {
+      _timer?.cancel(); // 既存のタイマーをキャンセル
       _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
         _currentPage++;
         _controller.animateToPage(
@@ -119,11 +124,17 @@ class HeaderWidget extends StatefulWidget {
         );
       });
     }
+    void _resetAutoSlideTimer() {
+      _timer?.cancel(); // 既存のタイマーをキャンセル
+      _timer = Timer(Duration(seconds: 2), () {
+        _startAutoSlideTimer(); // 3秒後に自動スライドを再開
+      });
+    }
 
     @override
     void dispose() {
       _controller.dispose();
-      _timer.cancel();
+      _timer?.cancel();
       super.dispose();
     }
 
@@ -132,22 +143,27 @@ class HeaderWidget extends StatefulWidget {
       return SliverToBoxAdapter(
         child: Container(
           height: MediaQuery.of(context).size.width * 9 / 16, // 16:9のアスペクト比に基づいて高さを指定
-          child: PageView.builder(
-            controller: _controller,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
+          child: GestureDetector(
+            onPanDown: (_) {
+              _resetAutoSlideTimer(); // 3秒後に自動スライドを再開するためにタイマーをリセット
             },
-            itemBuilder: (_, index) {
-              // インデックスをwidget.imagesの範囲に収めるための処理
-              final imageIndex = index % widget.images.length;
-              return Image.asset(
-                widget.images[imageIndex],
-                fit: BoxFit.cover,
-                width: double.infinity,
-              );
-            },
+            child: PageView.builder(
+              controller: _controller,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
+              itemBuilder: (_, index) {
+                // インデックスをwidget.imagesの範囲に収めるための処理
+                final imageIndex = index % widget.images.length;
+                return Image.asset(
+                  widget.images[imageIndex],
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                );
+              },
+            ),
           ),
         ),
       );
