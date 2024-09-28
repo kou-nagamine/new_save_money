@@ -1,4 +1,4 @@
-package com.example.new_save_money
+package com.Yarukibutton.SaveMoney
 
 import io.flutter.embedding.android.FlutterActivity
 
