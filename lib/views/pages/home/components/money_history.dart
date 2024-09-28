@@ -61,7 +61,7 @@ class MoneyHistoryList extends ConsumerWidget {
           final item = userSaveLog[itemIndex];
 
           // Dismissibleで囲む条件
-          final shouldWrapWithDismissible = firstDepositFalseIndex == -1 || itemIndex <= firstDepositFalseIndex;
+          final shouldWrapWithDismissible = !userSaveLog[itemIndex].deposit || (firstDepositFalseIndex != -1 && itemIndex > firstDepositFalseIndex);
 
           Widget listTile = buildListTile(context, ref, itemIndex);
 
@@ -110,7 +110,7 @@ class MoneyHistoryList extends ConsumerWidget {
           final item = userSaveLog[itemIndex];
 
           // Dismissibleで囲む条件
-          final shouldWrapWithDismissible = firstDepositFalseIndex == -1 || itemIndex <= firstDepositFalseIndex;
+          final shouldWrapWithDismissible = !userSaveLog[itemIndex].deposit || (firstDepositFalseIndex != -1 && itemIndex > firstDepositFalseIndex);
 
           Widget listTile = buildListTile(context, ref, itemIndex); 
 
@@ -158,7 +158,7 @@ class MoneyHistoryList extends ConsumerWidget {
         final item = userSaveLog[itemIndex];
 
         // Dismissibleで囲む条件
-        final shouldWrapWithDismissible = firstDepositFalseIndex == -1 || itemIndex <= firstDepositFalseIndex;
+        final shouldWrapWithDismissible = !userSaveLog[itemIndex].deposit || (firstDepositFalseIndex != -1 && itemIndex > firstDepositFalseIndex);
 
         Widget listTile = buildListTile(context, ref, itemIndex);
 

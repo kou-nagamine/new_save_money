@@ -55,7 +55,7 @@ class PaymentContet extends StatelessWidget {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: 'この支払いは',
+                          text: 'ついで収入から',
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ class PaymentContet extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: 'お得になりました!',
+                              text: '支払われました!',
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class PaymentContet extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft, 
               child: Text(
-                '記録されたついで収入',
+                '使用されたついで収入',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

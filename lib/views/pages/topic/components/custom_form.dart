@@ -391,25 +391,6 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   ],
                 ),
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.end,
-              //   children: [
-              //     Text(
-              //       '${_priceController.text.isEmpty ? '0' : _priceController.text}/1000000', // 空またはnullの時は0を表示
-              //       style: TextStyle(
-              //         fontSize: 14,
-              //         fontWeight: FontWeight.bold,
-              //         color: _priceController.text.isEmpty
-              //             ? Colors.grey // タイトルが空ならグレー
-              //             : (int.tryParse(_priceController.text) == null)
-              //                 ? Colors.black // 数値でない場合は黒
-              //                 : (int.parse(_priceController.text) < 1000001)
-              //                     ? Colors.black // 1000001未満は黒
-              //                     : Colors.red, // 1000001以上は赤
-              //       ),
-              //     ),
-              //   ],
-              // ),
               (int.tryParse(_EnteredPrice) ?? 0) > allPrice[1]
                 ? Container(
                   height: 70,
@@ -420,8 +401,8 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child:  
-                    // _calculatedPercent >= 10.0 
-                    //   ? 
+                    _calculatedPercent == 0.0 
+                       ? 
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center, 
                         children: [
@@ -457,7 +438,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: 'お得になります!',
+                                        text: 'ついで収入から支払う',
                                         style: TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.bold,
@@ -471,16 +452,16 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                             ),
                          ],
                        )
-                      //  : Center(
-                      //    child: Text(
-                      //      '最低10%以上の残高が必要です。',
-                      //      style: TextStyle(
-                      //        fontSize: 16,
-                      //        fontWeight: FontWeight.bold,
-                      //        color: Color(0xffE82929),
-                      //      ),
-                      //    ),
-                      //  )
+                       : Center(
+                         child: Text(
+                           '残高がありません',
+                           style: TextStyle(
+                             fontSize: 16,
+                             fontWeight: FontWeight.bold,
+                             color: Color(0xffE82929),
+                           ),
+                         ),
+                       )
                      ),
                   )
                 : Container(),
