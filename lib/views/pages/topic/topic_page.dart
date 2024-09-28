@@ -6,9 +6,8 @@ import 'dart:async';
 //スライドショーの画像
 final images = [
       "assets/images/lounas.png",
-      "assets/images/cashless.jpeg",
       "assets/images/zenn.png",
-      "assets/images/moneyimage.jpeg",
+      "assets/images/tuide-tester-poster.png",
       ];
 
 final labels = [
