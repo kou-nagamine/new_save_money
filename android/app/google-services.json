@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:688402751846:android:4f548dc07db323e6df28a7",
+        "mobilesdk_app_id": "1:688402751846:android:b4df4869c4af4251df28a7",
         "android_client_info": {
-          "package_name": "com.example.new_save_money"
+          "package_name": "com.Yarukibutton.SaveMoney"
         }
       },
       "oauth_client": [],
