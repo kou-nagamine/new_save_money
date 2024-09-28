@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '688402751846',
     projectId: 'save-money-61226',
     storageBucket: 'save-money-61226.appspot.com',
-    iosBundleId: 'com.example.newSaveMoney',
+    iosBundleId: 'com.Yarukibutton.SaveMoney',
   );
 }
