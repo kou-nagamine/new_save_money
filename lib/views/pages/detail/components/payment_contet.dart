@@ -53,31 +53,42 @@ class PaymentContet extends StatelessWidget {
                   child:  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          text: 'ついで収入から',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff5B5B5B),
+                      compensatingRatio == "100.0" 
+                      ? RichText(
+                          text: TextSpan(
+                            text: '全額支払われました！',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff2CB13C),
+                            ),
                           ),
-                          children: [
-                            TextSpan(
-                              text: '$compensatingRatio%',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffE82929),
-                              ),
+                        )
+                      : RichText(
+                          text: TextSpan(
+                            text: 'ついで収入から',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff5B5B5B),
                             ),
-                            TextSpan(
-                              text: '支払われました!',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff5B5B5B),
+                            children: [
+                              TextSpan(
+                                text: '$compensatingRatio%',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffE82929),
+                                ),
                               ),
-                            ),
+                              TextSpan(
+                                text: '支払われました!',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff5B5B5B),
+                                ),
+                              ),
                           ]
                         )
                       ),

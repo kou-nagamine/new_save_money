@@ -92,70 +92,60 @@ class _SettingPageState extends State<SettingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '設定',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 10), // タイトルと最初の項目の間に余白を追加
-                Container(
-                  height: 50,
-                  child:  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          iconoir.BellNotification(
-                            width: 25,
-                            color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.grey[500],
-                          ),
-                          Padding(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '通知をONにする',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[500]
-                                  ),
-                                ),
-                                Text('現在このオプションは利用できません。',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            padding: EdgeInsets.only(left: 20),
-                          ),
-                        ],
-                      ),
-                      //通知機能が実装されるまで無効化
-                      SwitchItem(
-                        value: isNotificationOn,
-                        onChanged: (bool value) {
-                          null;
-                        },
-                        // onChanged: (bool value) {
-                        //   setState(() {
-                        //     isNotificationOn = value;
-                        //   });
-                        //   _saveSwitchValue('NotificationSwitch', value); // 通知スイッチの状態を保存
-                        // },
-                      ),
-                    ],
-                  ),
-                ),
+                // Text(
+                //   '設定',
+                //   style: TextStyle(
+                //     fontSize: 20,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                // SizedBox(height: 10), // タイトルと最初の項目の間に余白を追加
+                // Container(
+                //   height: 50,
+                //   child:  Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       Row(
+                //         children: [
+                //           iconoir.BellNotification(
+                //             width: 25,
+                //             color: Theme.of(context).brightness == Brightness.dark
+                //               ? Colors.white
+                //               : Colors.grey[500],
+                //           ),
+                //           Padding(
+                //             child: Column(
+                //               mainAxisAlignment: MainAxisAlignment.end,
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: [
+                //                 Text(
+                //                   '通知をONにする',
+                //                   style: TextStyle(
+                //                     fontSize: 15,
+                //                     fontWeight: FontWeight.bold,
+                //                     color: Colors.grey[500]
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //             padding: EdgeInsets.only(left: 20),
+                //           ),
+                //         ],
+                //       ),
+                //       //通知機能が実装されるまで無効化
+                //       SwitchItem(
+                //         value: isNotificationOn,
+                //         onChanged: (bool value) {
+                //           setState(() {
+                //             isNotificationOn = value;
+                //           });
+                //           _saveSwitchValue('NotificationSwitch', value); // 通知スイッチの状態を保存
+                //         },
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Container(
                   height: 50,
                   child:  Row(
