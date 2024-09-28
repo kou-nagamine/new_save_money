@@ -40,14 +40,13 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
     final screenHeight = MediaQuery.of(context).size.height;
 
     // 画面の高さに基づいてパディングを設定
-    final topPadding = screenHeight * 0.1;  // 高さの10%
     final bottomPadding = screenHeight * 0.1;  // 高さの20%
     return PopScope(
       canPop: false,
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
-          padding: EdgeInsets.fromLTRB(20, topPadding, 20, bottomPadding),
+          padding: EdgeInsets.fromLTRB(20, 10, 20, bottomPadding),
           child:  Column(
             children: [
               Expanded(
@@ -74,15 +73,15 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                       ],
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
                           'assets/images/kiroku.png', 
                           width: MediaQuery.of(context).size.width * 0.8, 
                           fit: BoxFit.cover, 
                         ),
-                        SizedBox(height: 100),                   
-                        Text('日々のついで出費を記録', 
+                        SizedBox(height: 50),                   
+                        Text('日々のついで収入を記録', 
                           style: TextStyle(
                             fontSize: 24, 
                             fontWeight: FontWeight.bold,
@@ -93,7 +92,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                            text: '生活するうえでどちらかといえば必要じゃない出費を日々の我慢した金額をアプリに記録しよう！', 
+                            text: '水を買うついでに買うお菓子オンラインショッピングついでに買うセール品などのついで出費をせずに「ついで収入」として記録しよう！', 
                             style: TextStyle(
                               fontSize: 16, 
                               fontWeight: FontWeight.bold,
@@ -114,15 +113,15 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                       ],
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
                           'assets/images/payment.png', 
                           width: MediaQuery.of(context).size.width * 0.8, 
                           fit: BoxFit.cover, 
                         ),
-                        SizedBox(height: 100),                   
-                        Text('ついで収入で支出をお得に', 
+                        SizedBox(height: 50),                   
+                        Text('ついで収入を利用して\n生活を豊かにしよう！', 
                           style: TextStyle(
                             fontSize: 24, 
                             fontWeight: FontWeight.bold,
@@ -133,35 +132,35 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                            text: '今までのついで出費で必要な出費がお得に！', 
+                            text: 'いままでしたことない経験や好きなこと・スキルアップに必要な勉強道具などについで収入を利用しよう！', 
                             style: TextStyle(
                               fontSize: 16, 
                               fontWeight: FontWeight.bold,
                               color: Color(0xff5B5B5B)
                             ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: '\nコツコツ記録して貯金をはじめよう!', 
-                                style: TextStyle(
-                                  fontSize: 16, 
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff5B5B5B)
-                                )
-                              ),
-                            ],
+                            // children: <TextSpan>[
+                            //   TextSpan(
+                            //     text: '\nコツコツ記録して貯金をはじめよう!', 
+                            //     style: TextStyle(
+                            //       fontSize: 16, 
+                            //       fontWeight: FontWeight.bold,
+                            //       color: Color(0xff5B5B5B)
+                            //     )
+                            //   ),
+                            // ],
                           ),
                         ),
                       ],
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
                           'assets/images/graph.png', 
                           width: MediaQuery.of(context).size.width * 0.8, 
                           fit: BoxFit.cover, 
                         ),
-                        SizedBox(height: 100),                   
+                        SizedBox(height: 50),                   
                         Text('グラフで見える化', 
                           style: TextStyle(
                             fontSize: 24, 
@@ -173,7 +172,7 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                            text: 'グラフや履歴で、自分のついで残高の進捗を確認しよう！', 
+                            text: 'グラフや履歴で、自分のついで残高の\n進捗を確認しよう！', 
                             style: TextStyle(
                               fontSize: 16, 
                               fontWeight: FontWeight.bold,
