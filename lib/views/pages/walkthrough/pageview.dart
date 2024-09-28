@@ -92,22 +92,78 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                            text: '水を買うついでに買うお菓子オンラインショッピングついでに買うセール品などのついで出費をせずに「ついで収入」として記録しよう！', 
-                            style: TextStyle(
+                            text: 'ついでに買う', 
+                            style: const TextStyle(
                               fontSize: 16, 
                               fontWeight: FontWeight.bold,
-                              color: Color(0xff5B5B5B)
+                              color: Color(0xff5B5B5B),
                             ),
-                            // children: <TextSpan>[
-                            //   TextSpan(
-                            //     text: '\n日々の我慢した金額をアプリに記録しよう！', 
-                            //     style: TextStyle(
-                            //       fontSize: 16, 
-                            //       fontWeight: FontWeight.bold,
-                            //       color: Color(0xff5B5B5B)
-                            //     )
-                            //   ),
-                            // ],
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'お菓子', // お菓子部分を赤色に設定
+                                style: const TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: 'や', 
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff5B5B5B),
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'セール品', // セール品部分を赤色に設定
+                                style: const TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: 'など', 
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff5B5B5B),
+                                ),
+                              ),
+                              const TextSpan(
+                                text: '\nついで出費', 
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: 'を控えて', 
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff5B5B5B),
+                                ),
+                              ),
+                              TextSpan(
+                                text: '\n「ついで収入」', // ついで収入部分を緑色に設定
+                                style: const TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff5B5B5B),
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'として記録しよう！', // ついで収入部分を緑色に設定
+                                style: const TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff5B5B5B),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -132,22 +188,62 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                            text: 'いままでしたことない経験や好きなこと・スキルアップに必要な勉強道具などについで収入を利用しよう！', 
-                            style: TextStyle(
+                            text: '', 
+                            style: const TextStyle(
                               fontSize: 16, 
                               fontWeight: FontWeight.bold,
-                              color: Color(0xff5B5B5B)
+                              color: Color(0xff5B5B5B),
                             ),
-                            // children: <TextSpan>[
-                            //   TextSpan(
-                            //     text: '\nコツコツ記録して貯金をはじめよう!', 
-                            //     style: TextStyle(
-                            //       fontSize: 16, 
-                            //       fontWeight: FontWeight.bold,
-                            //       color: Color(0xff5B5B5B)
-                            //     )
-                            //   ),
-                            // ],
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: '好きなこと', // "好きなこと" を緑色に設定
+                                style: const TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: 'や', 
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff5B5B5B),
+                                ),
+                              ),
+                              TextSpan(
+                                text: '勉強道具', // "勉強道具" を緑色に設定
+                                style: const TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: 'など\n生活を', 
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff5B5B5B),
+                                ),
+                              ),
+                              TextSpan(
+                                text: '豊かにするもの', // "豊かにするもの" を緑色に設定
+                                style: const TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: 'に\n「ついで収入」を利用しよう！', 
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff5B5B5B),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
