@@ -37,15 +37,16 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   @override
   Widget build(BuildContext context) {
     final temporaryTopicList = ref.watch(temporaryTopicListNotifierProvider);
+    //
+    final allPrice = ref.watch(allPriceNotifierProvider);
 
-    // ボタンを押せるかどうかの判定
-    final isButtonEnabled = [temporaryTopicList[4], temporaryTopicList[5], temporaryTopicList[6]].every((item) => item == true);
+    // ボタンを押せるかどうかの判定a
+    final isButtonEnabled = [temporaryTopicList[4], temporaryTopicList[5], temporaryTopicList[6]].every((item) => item == true) && allPrice[1] != 0;
     //
     final allPriceNotifier = ref.read(allPriceNotifierProvider.notifier);
     final userLogNotifier = ref.read(userLogNotifierProvider.notifier);
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
-    //
-    final allPrice = ref.watch(allPriceNotifierProvider);
+    
 
     return Scaffold(
       body: DraggableHome(

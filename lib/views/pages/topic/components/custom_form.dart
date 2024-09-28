@@ -401,7 +401,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child:  
-                    _calculatedPercent == 0.0 
+                    allPrice[1] != 0 
                        ? 
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center, 
