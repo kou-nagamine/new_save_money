@@ -25,7 +25,6 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context , WidgetRef ref) { 
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
-    final selectType = ref.watch(logTypeNotifierProvider);
 
     return PopScope(
       canPop: false,
@@ -178,18 +177,23 @@ class HomePage extends ConsumerWidget {
                     ),
                     Expanded(
                       child: historyData.isEmpty
-                          ? const Padding(
-                              padding: EdgeInsets.only(top: 50),
-                              child: Text('ついで出費を記録しよう！'),
-                            )
-                          : Builder(
-                              builder: (context) {
-                                // 条件に基づいて異なるウィジェットを表示
-                                if (selectType[0] == true) {
+                      ? const Padding(
+                          padding: EdgeInsets.only(top: 50),
+                          child: Text('ついで出費を記録しよう！'),
+                        )
+                      : Consumer(
+                          builder: (context, ref, _) {
+                            // AsyncValue<List<bool>>のデータを取得
+                            final selectType = ref.watch(logTypeNotifierProvider);
+
+                            return selectType.when(
+                              data: (types) {
+                                // データが正常に取得された場合
+                                if (types[0] == true) {
                                   return MoneyHistoryList(); // 全体
-                                } else if (selectType[1] == true) {
+                                } else if (types[1] == true) {
                                   return DepositList(); // ついで収入
-                                } else if (selectType[2] == true) {
+                                } else if (types[2] == true) {
                                   return ExpencesList(); // 支出
                                 } else {
                                   return const Padding(
@@ -198,7 +202,15 @@ class HomePage extends ConsumerWidget {
                                   );
                                 }
                               },
-                            ),
+                              loading: () => const Center(
+                                child: CircularProgressIndicator(), // データがロード中の場合
+                              ),
+                              error: (error, stack) => Center(
+                                child: Text('エラーが発生しました: $error'), // エラーが発生した場合
+                              ),
+                            );
+                          },
+                        ),
                     )
                   ],
                 ),

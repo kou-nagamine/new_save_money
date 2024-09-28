@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:new_save_money/views/pages/home/providers/log_type.dart';
 import 'package:pull_down_button/pull_down_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentMenu extends StatefulWidget {
   const PaymentMenu({super.key});
 
-    @override
+  @override
   _PaymentMenuState createState() => _PaymentMenuState();
 }
 
@@ -15,21 +16,40 @@ class _PaymentMenuState extends State<PaymentMenu> {
   String selectedItem = '全体';
 
   @override
+  void initState() {
+    super.initState();
+    _loadSelectedItem(); // 保存された項目を読み込み
+  }
+
+  Future<void> _loadSelectedItem() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      selectedItem = prefs.getString('selectedItem') ?? '全体'; // 以前の状態を読み込むか、デフォルトで「全体」
+    });
+  }
+
+  Future<void> _saveSelectedItem(String item) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedItem', item); // 選択された項目を保存
+  }
+
+  @override
   Widget build(BuildContext context) {
-  return MenuItem(
-    selectedItem: selectedItem, // 選択された項目を渡す
-    onItemSelected: (String item) {
-      setState(() {
-        selectedItem = item; // 新しい選択項目に更新
-      });
-    },
-    builder: (_, showMenu) => TextButton(
-      onPressed: showMenu,
-      child: Text(
-        selectedItem,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 16,
+    return MenuItem(
+      selectedItem: selectedItem, // 選択された項目を渡す
+      onItemSelected: (String item) {
+        setState(() {
+          selectedItem = item; // 新しい選択項目に更新
+        });
+        _saveSelectedItem(item); // 項目が変更されたら保存
+      },
+      builder: (_, showMenu) => TextButton(
+        onPressed: showMenu,
+        child: Text(
+          selectedItem,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 16,
           ),
         ), // 選択された項目を表示
       ),

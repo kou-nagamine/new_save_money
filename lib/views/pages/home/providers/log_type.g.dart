@@ -6,12 +6,12 @@ part of 'log_type.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$logTypeNotifierHash() => r'0da161c8f5edf3a4d03674fdadd71500a3a15b3f';
+String _$logTypeNotifierHash() => r'5687c61d8ec7d41b6b988a28553122c5f532b6f4';
 
 /// See also [LogTypeNotifier].
 @ProviderFor(LogTypeNotifier)
 final logTypeNotifierProvider =
-    AutoDisposeNotifierProvider<LogTypeNotifier, List<bool>>.internal(
+    AutoDisposeAsyncNotifierProvider<LogTypeNotifier, List<bool>>.internal(
   LogTypeNotifier.new,
   name: r'logTypeNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final logTypeNotifierProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$LogTypeNotifier = AutoDisposeNotifier<List<bool>>;
+typedef _$LogTypeNotifier = AutoDisposeAsyncNotifier<List<bool>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
