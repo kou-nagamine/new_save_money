@@ -19,6 +19,8 @@ class MoneyHistoryList extends ConsumerWidget {
 
     // 最新の deposit = false のアイテムのインデックスを取得
     final firstDepositFalseIndex = userSaveLog.indexWhere((item) => !item.deposit);
+    final hasDepositFalse = userSaveLog.any((item) => !item.deposit);
+
 
     // A: 割り当て済みのアイテム、B: 割り当て済みでないアイテムのリスト
     List<int> assignedIndexes = [];
@@ -61,7 +63,9 @@ class MoneyHistoryList extends ConsumerWidget {
           final item = userSaveLog[itemIndex];
 
           // Dismissibleで囲む条件
-          final shouldWrapWithDismissible = !userSaveLog[itemIndex].deposit || (firstDepositFalseIndex != -1 && itemIndex > firstDepositFalseIndex);
+          final shouldWrapWithDismissible = !userSaveLog[itemIndex].deposit ||
+                                  (firstDepositFalseIndex != -1 && itemIndex < firstDepositFalseIndex) ||
+                                  !hasDepositFalse;
 
           Widget listTile = buildListTile(context, ref, itemIndex);
 
@@ -110,7 +114,9 @@ class MoneyHistoryList extends ConsumerWidget {
           final item = userSaveLog[itemIndex];
 
           // Dismissibleで囲む条件
-          final shouldWrapWithDismissible = !userSaveLog[itemIndex].deposit || (firstDepositFalseIndex != -1 && itemIndex > firstDepositFalseIndex);
+          final shouldWrapWithDismissible = !userSaveLog[itemIndex].deposit ||
+                                  (firstDepositFalseIndex != -1 && itemIndex < firstDepositFalseIndex) ||
+                                  !hasDepositFalse;
 
           Widget listTile = buildListTile(context, ref, itemIndex); 
 
@@ -158,7 +164,9 @@ class MoneyHistoryList extends ConsumerWidget {
         final item = userSaveLog[itemIndex];
 
         // Dismissibleで囲む条件
-        final shouldWrapWithDismissible = !userSaveLog[itemIndex].deposit || (firstDepositFalseIndex != -1 && itemIndex > firstDepositFalseIndex);
+        final shouldWrapWithDismissible = !userSaveLog[itemIndex].deposit ||
+                                  (firstDepositFalseIndex != -1 && itemIndex < firstDepositFalseIndex) ||
+                                  !hasDepositFalse;
 
         Widget listTile = buildListTile(context, ref, itemIndex);
 
