@@ -218,7 +218,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   void _validateMemo(String value) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
     setState(() {
-      if (value.length > 3) {
+      if (value.length > 30) {
         _memoErrorMessage = 'メモは30文字以内で入力してください';
         temporaryTopicList.updateMemoValidate(false);
       } else {

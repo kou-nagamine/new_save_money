@@ -111,6 +111,9 @@ flutter:
     - assets/images/cashless.jpeg
     - assets/images/moneyimage.jpeg
     - assets/images/walkthrough.png
+    - assets/images/kiroku.png
+    - assets/images/graph.png
+    - assets/images/payment.png
 
     - assets/animations/high_five.json
     - assets/animations/arrow.json
