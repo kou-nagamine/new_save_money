@@ -10,14 +10,14 @@ import 'firebase_options.dart';
 //databaseに追加
 import 'firebase_insert.dart';
 
-import '/views/pages/topic/components/topic_content.dart';
+import 'view/expense_record/expencse_record_page.dart';
 
 //pages
-import '../views/pages/walkthrough/pageview.dart';
-import '../views/pages/setting/setting_page.dart';
+import 'view/walkthrough/pageview.dart';
+import 'view/setting/setting_page.dart';
 
 //commons
-import 'views/pages/commons/navigation_bar/navigation_bar.dart';
+import 'commons/navigation_bar/navigation_bar.dart';
 
 //MaterialWithModalsPageRoute
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
