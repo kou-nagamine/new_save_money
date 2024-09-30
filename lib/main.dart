@@ -53,7 +53,13 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
-        colorScheme: ColorScheme.light(),
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.grey, // メインカラーをグレーに設定
+          backgroundColor: Colors.transparent, // 背景色を透明に設定
+        ).copyWith(
+          primary: Colors.grey[200], // プライマリカラーを薄いグレーに設定
+          secondary: Colors.grey[200], // セカンダリカラーも薄いグレーに設定
+        ),
         useMaterial3: true,
         textTheme: GoogleFonts.notoSansJpTextTheme(
           Theme.of(context).textTheme,
