@@ -220,7 +220,7 @@ class _SettingPageState extends State<SettingPage> {
                 Container(
                   height: 50,
                   child: InkWell( 
-                     onTap: () => _launchURL('https://testflight.apple.com/'), // リンクに飛ばす
+                     onTap: () => _launchURL('https://testflight.apple.com/v1/app/6727008177?build=151121270'), // リンクに飛ばす
                     child:  Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
