@@ -9,7 +9,9 @@ import 'package:new_save_money/commons/navigation_bar/navigation_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PageViewWidget extends StatefulWidget {
-  const PageViewWidget({Key? key}) : super(key: key);
+  final bool isFromSettings;
+  const PageViewWidget({Key? key, this.isFromSettings = false}) : super(key: key);
+  
 
   @override
   _PageViewWidgetState createState() => _PageViewWidgetState();
@@ -18,6 +20,7 @@ class PageViewWidget extends StatefulWidget {
 class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderStateMixin{
   late PageController _pageViewController;
   late TabController _tabController;
+  
   int _currentPageIndex = 0;
 
   @override
@@ -311,23 +314,27 @@ class _PageViewWidgetState extends State<PageViewWidget>  with TickerProviderSta
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     if (_currentPageIndex < 3) {
                       _updateCurrentPageIndex(_currentPageIndex + 1);
                     } else {
-                      prefs.setBool('tutorial', true);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CommonNavigationBar()
-                        ),
-                      );
+                      if (widget.isFromSettings) {
+                        Navigator.pop(context); // モーダルを閉じる
+                      } else {
+                        prefs.setBool('tutorial', true);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CommonNavigationBar(),
+                          ),
+                        );
+                      }
                     }
                   },
                   child: Text(
-                    _currentPageIndex < 3 ? '続ける' : 'はじめる',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    _currentPageIndex < 3 ? '続ける' : (widget.isFromSettings ? '閉じる' : 'はじめる'),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   backgroundColor: Color(0xff005BEA),
                 ),

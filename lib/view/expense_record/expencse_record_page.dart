@@ -117,7 +117,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   },
                 );
               } : null,
-              child: Text('記録する', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              child: Text('記録する', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
               backgroundColor: isButtonEnabled ? Color(0xff005BEA) : Colors.grey,
               elevation: 10,
             ),

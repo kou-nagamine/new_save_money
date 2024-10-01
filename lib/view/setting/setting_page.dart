@@ -192,7 +192,7 @@ class _SettingPageState extends State<SettingPage> {
                       expand: true,
                       context: context,
                       //backgroundColor: Colors.transparent,
-                      builder: (context) => PageViewWidget(), 
+                      builder: (context) => PageViewWidget(isFromSettings: true), 
                       );
                       setState(() {
                         isLight = !isLight;
@@ -326,7 +326,7 @@ class _SettingPageState extends State<SettingPage> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Version 0.1.0(240924)',
+                      'Version 0.1.2(241001)',
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
