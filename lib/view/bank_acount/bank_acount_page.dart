@@ -18,13 +18,15 @@ import '../../view_model/all_price.dart';
 import "../../view_model/user_log.dart";
 import '../../view_model/log_type.dart';
 
-
-
 class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context , WidgetRef ref) { 
     final allPrice = ref.watch(allPriceNotifierProvider);
     final historyData = ref.watch(userLogNotifierProvider);//sharedPrefarence導入前監視用
+
+    // デバイスの縦・横幅の取得
+    double deviceHeight = MediaQuery.of(context).size.height;
+    double deviceWidth = MediaQuery.of(context).size.width;
 
     return PopScope(
       canPop: false,
@@ -43,12 +45,12 @@ class HomePage extends ConsumerWidget {
               constraints: const BoxConstraints.expand(),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.08,
-              right: 30,
+              top: deviceHeight * 0.08,
+              right: deviceWidth * 0.07,  // 横幅調整
               child: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.menu,
-                  size: 35,
+                  size: deviceHeight * 0.038, // 大きさ調整
                   color: Colors.black,
                 ),
                 onPressed: () {
@@ -57,7 +59,7 @@ class HomePage extends ConsumerWidget {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.13,
+              top: deviceHeight * 0.13,
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -66,15 +68,15 @@ class HomePage extends ConsumerWidget {
                   );
                 },
                 child:  Container(
-                  width: MediaQuery.of(context).size.width * 1.0,
-                  padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                  width: deviceWidth * 1.0,
+                  padding: EdgeInsets.fromLTRB(deviceWidth * 0.07, 0, 0, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'あなたの口座残高',
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: deviceHeight * 0.014, // 大きさ調整
                           fontWeight: FontWeight.bold,
                           color: Color(0xff5B5B5B),
                         ),
@@ -86,29 +88,28 @@ class HomePage extends ConsumerWidget {
                           Text(
                             '¥ ${NumberFormat("#,###").format(allPrice[1])}',
                             style: TextStyle(
-                              fontSize: 40,
+                              fontSize: deviceHeight * 0.043,
                               fontWeight: FontWeight.w600,
                               color: Colors.black,
                             ),
                           ),
-                          //SizedBox(width: 50),
                           Container(
-                            padding: EdgeInsets.only(right: 30),
-                            height: 26,
+                            padding: EdgeInsets.only(right: deviceWidth * 0.07),
+                            height: deviceHeight * 0.028, // 高さ調整
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
                                   '詳細',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: deviceHeight * 0.017, // 大きさ調整
                                     fontWeight: FontWeight.bold,
                                     color: Colors.blue,
                                   ),
                                 ),
                                 Icon(
                                   Icons.chevron_right,
-                                  size: 30,
+                                  size: deviceWidth * 0.07, // 大きさ調整
                                   color: Colors.blue,
                                 ),
                               ],
@@ -116,16 +117,16 @@ class HomePage extends ConsumerWidget {
                           )
                         ]
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: deviceHeight * 0.011), // 高さ調整
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           RichText(
                             text: TextSpan(
-                              text: '今までのついで合計額   ',
+                              text: '今までのついで合計額',
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: deviceHeight * 0.014, // 大きさ調整
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff5B5B5B),
                               ),
@@ -133,7 +134,7 @@ class HomePage extends ConsumerWidget {
                                 TextSpan(
                                   text: '¥${NumberFormat("#,###").format(allPrice[0])}',
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: deviceHeight * 0.022,  // 大きさ調整
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
@@ -143,9 +144,11 @@ class HomePage extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: 5),
-                      SizedBox(height: 50,
-                      child: CategoryBarChart(),),
+                      SizedBox(height: deviceHeight * 0.005), //　高さ調整
+                      SizedBox(
+                        height: deviceHeight * 0.054,  // 高さ調整
+                        child: CategoryBarChart(),
+                      ),
                     ],
                   ),
                 )
@@ -154,9 +157,9 @@ class HomePage extends ConsumerWidget {
             Positioned(
               bottom: 0,
               child: Container(
-                width: MediaQuery.of(context).size.width * 1.0,
-                height: MediaQuery.of(context).size.height * 0.68,
-                padding: EdgeInsets.fromLTRB(25, 15, 25, 100),
+                width: deviceWidth * 1.0,
+                height: deviceHeight * 0.68,
+                padding: EdgeInsets.fromLTRB(deviceWidth * 0.058, deviceHeight * 0.016, deviceWidth * 0.058, deviceHeight * 0.107), // 調整
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -164,10 +167,10 @@ class HomePage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline, // ベースラインに揃える
                       textBaseline: TextBaseline.alphabetic, // テキストのベースラインを使う
                       children: [
-                        const Text(
+                        Text(
                           '履歴',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: deviceWidth * 0.046, // 大きさ調整
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -177,8 +180,8 @@ class HomePage extends ConsumerWidget {
                     ),
                     Expanded(
                       child: historyData.isEmpty
-                      ? const Padding(
-                          padding: EdgeInsets.only(top: 50),
+                      ? Padding(
+                          padding: EdgeInsets.only(top: deviceHeight * 0.054), // 
                           child: Text('ついで出費を記録しよう！'),
                         )
                       : Consumer(
@@ -196,8 +199,8 @@ class HomePage extends ConsumerWidget {
                                 } else if (types[2] == true) {
                                   return ExpencesList(); // 支出
                                 } else {
-                                  return const Padding(
-                                    padding: EdgeInsets.only(top: 50),
+                                  return Padding(
+                                    padding: EdgeInsets.only(top: deviceHeight * 0.054),
                                     child: Text('ついで出費を記録しよう！'),
                                   );
                                 }
