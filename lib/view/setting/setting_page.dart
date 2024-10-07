@@ -2,12 +2,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import "components/record_card.dart";
 import "components/switch_item.dart";
 import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
-import 'components/danger_dialog.dart';
+import '../../commons/components/danger_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
+import 'package:new_save_money/view/walkthrough/pageview.dart';
+
+import 'package:new_save_money/view_model/user_log.dart';
+import 'package:new_save_money/view_model/all_price.dart';
+
+//shared_preferences
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'package:new_save_money/view/walkthrough/pageview.dart';
@@ -18,15 +27,14 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 //URLランチャー
 import 'package:url_launcher/url_launcher.dart';
 
-class SettingPage extends StatefulWidget {
+class SettingPage extends ConsumerStatefulWidget {
   const SettingPage({super.key});
-  
 
   @override
-  State<SettingPage> createState() => _SettingPageState();
+   ConsumerState<SettingPage> createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingPageState extends ConsumerState<SettingPage> {
   bool isNotificationOn = false; // 通知用のスイッチの初期値
   bool isDefaultTransaction = false; // 入出金用のスイッチの初期値
   bool isLight = true;
@@ -299,10 +307,32 @@ class _SettingPageState extends State<SettingPage> {
                   height: 50,
                   child: InkWell( 
                     onTap: () => showDialog(
-                    context: context,
-                    builder: (context) => DangerDialog(),
+                      context: context,
+                      builder: (context) => DangerDialog(
+                        onConfirm: () async {
+                          // 設定ページ用の削除処理
+                          try {
+                            ref.read(userLogNotifierProvider.notifier).resetLogs();
+                            ref.read(allPriceNotifierProvider.notifier).resetPreferences();
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.remove('tutorial');
+                            await prefs.remove('DefaultTransactionSwitch');
+                            if (mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PageViewWidget(),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            // エラーハンドリング
+                            print('Error: $e');
+                          }
+                        },
+                      ),
                     ),
-                    child:  Row(
+                    child:  const Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         iconoir.WarningTriangleSolid(
@@ -323,7 +353,7 @@ class _SettingPageState extends State<SettingPage> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                     child: Text(
                       'Version 0.1.2(241001)',

@@ -2,17 +2,13 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:new_save_money/view/walkthrough/pageview.dart';
-
-import 'package:new_save_money/view_model/user_log.dart';
-import 'package:new_save_money/view_model/all_price.dart';
-
-//shared_preferences
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DangerDialog extends ConsumerStatefulWidget{
-
-  const DangerDialog({Key? key,}): super(key: key);
+  final VoidCallback onConfirm; // 確認ボタンを押したときの処理を外部から渡す
+  const DangerDialog({
+    Key? key,
+    required this.onConfirm,
+  }) : super(key: key);
 
     @override
   _DangerDialogState createState() => _DangerDialogState();
@@ -76,26 +72,7 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
             mainAxisAlignment: MainAxisAlignment.spaceEvenly, // ボタン間にスペースを均等に配置
             children: [
               TextButton(
-                onPressed: () async{
-                  try {
-                    ref.read(userLogNotifierProvider.notifier).resetLogs();
-                    ref.read(allPriceNotifierProvider.notifier).resetPreferences();
-                    final prefs = await SharedPreferences.getInstance(); // チュートリアルを削除する
-                    await prefs.remove('tutorial');
-                    await prefs.remove('DefaultTransactionSwitch');
-                    if (mounted) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PageViewWidget(),
-                        ),
-                      );
-                    }
-                  } catch (e) {
-                    // エラーハンドリング（例えば、ダイアログを表示するなど）
-                    print('Error: $e');
-                  }
-                },
+                onPressed: widget.onConfirm, // 確認ボタンが押された時の処理
                 child: Container(
                   alignment: Alignment.center,
                   height: 40,
@@ -106,7 +83,8 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
                       borderRadius: SmoothBorderRadius(
                         cornerRadius: 10,
                         cornerSmoothing: 0.6),
-                    )),
+                    )
+                  ),
                   child: const Text(
                     '削除',
                     style: TextStyle(
