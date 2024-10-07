@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../view_model/user_log.dart';
 import 'package:new_save_money/view_model/all_price.dart';
 import 'log_tile.dart';
+import 'package:new_save_money/commons/components/danger_dialog.dart';
 
 class MoneyHistoryList extends ConsumerWidget {
   const MoneyHistoryList({super.key});
@@ -70,12 +71,25 @@ class MoneyHistoryList extends ConsumerWidget {
             listTile = Dismissible(
               key: Key(item.toString()),
               direction: DismissDirection.endToStart,
+              confirmDismiss: (direction) async {
+                // DangerDialogを表示して、削除するかどうかを確認
+                final bool? confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => DangerDialog(
+                    onConfirm: () {
+                      // ユーザーが削除を確認した場合
+                      Navigator.of(context).pop(true); // ダイアログを閉じて、trueを返す
+                    },
+                  ),
+                );
+                return confirmed ?? false; // ユーザーがキャンセルした場合はfalseを返す
+              },
               onDismissed: (direction) {
+                // アイテムを削除する処理
                 ref.read(userLogNotifierProvider.notifier).deleteLog(itemIndex);
                 ref.read(allPriceNotifierProvider.notifier).deletePrice(item.deposit, item.price);
               },
               background: Container(
-                
                 alignment: Alignment.centerRight, // アイコンを右側に配置
                 child: Icon(
                   Icons.delete,
