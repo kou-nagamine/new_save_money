@@ -14,12 +14,7 @@ import 'package:new_save_money/view/walkthrough/pageview.dart';
 
 import 'package:new_save_money/view_model/user_log.dart';
 import 'package:new_save_money/view_model/all_price.dart';
-
-//shared_preferences
-import 'package:shared_preferences/shared_preferences.dart';
-
-
-import 'package:new_save_money/view/walkthrough/pageview.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 //MaterialWithModalsPageRoute
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -39,6 +34,18 @@ class _SettingPageState extends ConsumerState<SettingPage> {
   bool isDefaultTransaction = false; // 入出金用のスイッチの初期値
   bool isLight = true;
 
+  String _version = '';
+  String _buildNumber = '';
+
+   Future getVer() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = packageInfo.version;
+      _buildNumber = packageInfo.buildNumber;
+    });
+  }
+
+
   // URLを開く関数
   void _launchURL(String url) async {
     try {
@@ -57,6 +64,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
   void initState() {
     super.initState();
     _loadSwitchValues(); // SharedPreferencesから値をロード
+    getVer();
   }
 
   // SharedPreferencesからスイッチの状態を読み込む
@@ -353,11 +361,11 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  const Align(
+                  Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Version 0.1.2(241001)',
-                      style: TextStyle(
+                      'Version $_version ($_buildNumber)',
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                         color: Color(0xff5B5B5B),
