@@ -36,6 +36,7 @@ void main() async {
 
   // データ挿入処理
   //await DataInsert().insertData();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     ProviderScope(
       child: MyApp(finTutorial:finTutorial),

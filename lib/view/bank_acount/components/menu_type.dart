@@ -45,13 +45,18 @@ class _PaymentMenuState extends State<PaymentMenu> {
       },
       builder: (_, showMenu) => TextButton(
         onPressed: showMenu,
-        child: Text(
-          selectedItem,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-          ),
-        ), // 選択された項目を表示
+        child: Row(
+          children: [
+            Text(
+              selectedItem,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
+            ), // 選択された項目を表示
+            const Icon(Icons.arrow_drop_down, size: 20, color: Colors.black,),
+          ],
+        ),
       ),
     );
   }
