@@ -1,12 +1,11 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/nagamine/development/flutter
-FLUTTER_APPLICATION_PATH=/Users/nagamine/development/flutter_practice/products/new_save_money
+FLUTTER_ROOT=/Users/shvain/Documents/Flutter/flutter
+FLUTTER_APPLICATION_PATH=/Users/shvain/Documents/GitHub/new_save_money
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=/Users/nagamine/development/flutter_practice/products/new_save_money/lib/main.dart
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=0.1.2
 FLUTTER_BUILD_NUMBER=241001
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true
 TREE_SHAKE_ICONS=false
-PACKAGE_CONFIG=/Users/nagamine/development/flutter_practice/products/new_save_money/.dart_tool/package_config.json
+PACKAGE_CONFIG=.dart_tool/package_config.json

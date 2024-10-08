@@ -159,7 +159,7 @@ class HomePage extends ConsumerWidget {
               child: Container(
                 width: deviceWidth * 1.0,
                 height: deviceHeight * 0.68,
-                padding: EdgeInsets.fromLTRB(deviceWidth * 0.058, deviceHeight * 0.016, deviceWidth * 0.058, deviceHeight * 0.107), // 調整
+                padding: EdgeInsets.fromLTRB(deviceWidth * 0.058, deviceHeight * 0.006, deviceWidth * 0.058, deviceHeight * 0.107), // 調整
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
