@@ -43,7 +43,7 @@ class _MoneyHistoryListState extends ConsumerState<MoneyHistoryList> with Ticker
         begin: const Offset(-0.2, 0), // 左にスライドした位置から
         end: Offset.zero,             // 元の位置に戻る
       ).chain(CurveTween(curve: Curves.easeInQuad)), // 戻り動作を滑らかに
-      weight: 50, // 後半部分の重みを設定
+      weight: 100, // 後半部分の重みを設定
     ),
   ]).animate(_controller);
 
@@ -56,19 +56,6 @@ class _MoneyHistoryListState extends ConsumerState<MoneyHistoryList> with Ticker
     _controller.dispose();
     super.dispose();
   }
-//  @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   void dispose() {
-//     // 各AnimationControllerを適切に破棄
-//     for (var controller in _controllers) {
-//       controller.dispose();
-//     }
-//     super.dispose();
-//   }
 
   @override
   Widget build(BuildContext context) {
