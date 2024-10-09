@@ -25,7 +25,7 @@ class _MoneyHistoryListState extends ConsumerState<MoneyHistoryList> with Ticker
 
   // AnimationControllerの初期化
   _controller = AnimationController(
-    duration: const Duration(milliseconds: 1000), // 少し長めのアニメーションにします
+    duration: const Duration(milliseconds: 800), // 少し長めのアニメーションにします
     vsync: this,
   );
 
@@ -34,13 +34,13 @@ class _MoneyHistoryListState extends ConsumerState<MoneyHistoryList> with Ticker
     TweenSequenceItem(
       tween: Tween<Offset>(
         begin: Offset.zero,           // 元の位置にスタート
-        end: const Offset(-0.2, 0),   // 左に少しスライド
+        end: const Offset(-0.1, 0),   // 左に少しスライド
       ).chain(CurveTween(curve: Curves.easeOutQuad)), // スライド動作を滑らかに
       weight: 50, // 前半部分の重みを設定
     ),
     TweenSequenceItem(
       tween: Tween<Offset>(
-        begin: const Offset(-0.2, 0), // 左にスライドした位置から
+        begin: const Offset(-0.1, 0), // 左にスライドした位置から
         end: Offset.zero,             // 元の位置に戻る
       ).chain(CurveTween(curve: Curves.easeInQuad)), // 戻り動作を滑らかに
       weight: 100, // 後半部分の重みを設定
