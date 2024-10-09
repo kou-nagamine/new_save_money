@@ -4,14 +4,16 @@ import 'package:new_save_money/view_model/log_type.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PaymentMenu extends StatefulWidget {
+import 'dart:io' show Platform;
+
+class PaymentMenu extends ConsumerStatefulWidget {
   const PaymentMenu({super.key});
 
   @override
   _PaymentMenuState createState() => _PaymentMenuState();
 }
 
-class _PaymentMenuState extends State<PaymentMenu> {
+class _PaymentMenuState extends ConsumerState<PaymentMenu> {
   // 現在選択されているメニューアイテム
   String selectedItem = '全体';
 
@@ -33,8 +35,39 @@ class _PaymentMenuState extends State<PaymentMenu> {
     await prefs.setString('selectedItem', item); // 選択された項目を保存
   }
 
+
+  // 選択されたメニュー項目に基づいて処理を実行するメソッド
+  void _onMenuItemSelected(String newValue, WidgetRef ref) {
+    setState(() {
+      selectedItem = newValue;
+    });
+
+    _saveSelectedItem(newValue);
+
+    // 選択されたメニュー項目に基づいた処理を実行
+    switch (newValue) {
+      case '全体':
+        _handleSelectAll(ref);
+        break;
+      case 'ついで収入':
+        _handleSelectDeposit(ref);
+        break;
+      case '支出':
+        _handleSelectExpense(ref);
+        break;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    return Platform.isIOS
+        ? _buildIOSMenu()
+        : _buildAndroidMenu(ref); // ref を渡すように変更
+  }
+
+  // iOSのメニュー
+  Widget _buildIOSMenu() {
     return MenuItem(
       selectedItem: selectedItem, // 選択された項目を渡す
       onItemSelected: (String item) {
@@ -60,8 +93,36 @@ class _PaymentMenuState extends State<PaymentMenu> {
       ),
     );
   }
-}
 
+  // Androidのメニュー
+ Widget _buildAndroidMenu(WidgetRef ref) {
+    return IntrinsicWidth( // IntrinsicWidthで包んで最小限の幅に調整
+      child: DropdownButton<String>(
+        value: selectedItem,
+        icon: const Icon(Icons.arrow_drop_down),
+        iconSize: 20,
+        elevation: 16,
+        alignment: Alignment.center,
+        style: const TextStyle(
+          color: Colors.black, 
+          fontSize: 16, 
+          fontWeight: FontWeight.bold,
+        ),
+        underline: SizedBox(), // 下線を非表示
+        onChanged: (String? newValue) {
+          _onMenuItemSelected(newValue!, ref); // 選択処理を別メソッドに分離
+        },
+        items: <String>['全体', 'ついで収入', '支出']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
 
 class MenuItem extends ConsumerWidget {
   const MenuItem({
@@ -114,3 +175,22 @@ class MenuItem extends ConsumerWidget {
     buttonBuilder: builder, // builderを渡す
   );
 }
+
+ // 全体を選択した時の処理
+  void _handleSelectAll(WidgetRef ref) {
+    final chngeType = ref.read(logTypeNotifierProvider.notifier);
+    chngeType.selectAllType();
+  }
+
+  // ついで収入を選択した時の処理
+  void _handleSelectDeposit(WidgetRef ref) {
+    final chngeType = ref.read(logTypeNotifierProvider.notifier);
+    chngeType.selectDepositType();
+  }
+
+  // 支出を選択した時の処理
+  void _handleSelectExpense(WidgetRef ref) {
+    final chngeType = ref.read(logTypeNotifierProvider.notifier);
+    chngeType.selectExpenseType();
+  }
+
