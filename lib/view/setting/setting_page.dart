@@ -1,4 +1,5 @@
 //packages
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 //URLランチャー
 import 'package:url_launcher/url_launcher.dart';
 
+//firebase
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class SettingPage extends ConsumerStatefulWidget {
   const SettingPage({super.key});
 
@@ -33,6 +37,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
   bool isNotificationOn = false; // 通知用のスイッチの初期値
   bool isDefaultTransaction = false; // 入出金用のスイッチの初期値
   bool isLight = true;
+  String feedbackurl = '';
 
   String _version = '';
   String _buildNumber = '';
@@ -52,19 +57,46 @@ class _SettingPageState extends ConsumerState<SettingPage> {
       final Uri uri = Uri.parse(url);
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        print('Could not launch $url');
-      }
+      } 
     } catch (e) {
+      // エラーログを表示（開発用）もしくはCrashlyticsなどで送信
       print('Error launching URL: $e');
     }
   }
+
+   // FirestoreからOSに基づいたURLを取得する関数
+  Future<void> _getURL() async {
+    try {
+       // 現在のプラットフォームに基づいてOSを判定
+      String os = '';
+      if (Platform.isAndroid) {
+        os = 'Android';
+      } else if (Platform.isIOS) {
+        os = 'iOS';
+      }
+
+      final snapshot = await FirebaseFirestore.instance
+      .collection('setting_url')
+      .where('os', isEqualTo: os)
+      .get();
+
+      if (snapshot.docs.isNotEmpty) {
+          setState(() {
+            feedbackurl = snapshot.docs.first.get('url'); // URLを取得
+          });
+        }
+      } catch (e) {
+        print('Error fetching URL: $e');
+        // エラーハンドリング
+      }
+    }
 
   @override
   void initState() {
     super.initState();
     _loadSwitchValues(); // SharedPreferencesから値をロード
     getVer();
+    _getURL();
   }
 
   // SharedPreferencesからスイッチの状態を読み込む
@@ -233,10 +265,15 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                     ),
                   ),
                 ),
+                //https://testflight.apple.com/v1/app/6727008177?build=151121270
                 Container(
                   height: 50,
                   child: InkWell( 
-                     onTap: () => _launchURL('https://testflight.apple.com/v1/app/6727008177?build=151121270'), // リンクに飛ばす
+                    onTap: feedbackurl.isNotEmpty
+                          ? () => _launchURL(feedbackurl)
+                          :  () {
+                              print('URL is empty or not fetched yet'); // デバッグメッセージ
+                            }, // URLがまだ取得されていない場合は無効化
                     child:  Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -256,7 +293,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                         padding: EdgeInsets.only(left: 20)),
                         ],
                       ),
-                   ),
+                  ),
                   ),
                   SizedBox(height: 5),
                   Text(
@@ -270,13 +307,13 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                   Container(
                   height: 50,
                   child: InkWell( 
-                     onTap: () {
+                    onTap: () {
                       DefaultCacheManager().emptyCache();
                       // キャッシュがクリアされたことをユーザーに通知
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('全てのキャッシュをクリアしました')),
                       );
-                     }, // リンクに飛ばす
+                    }, // リンクに飛ばす
                     child:  Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -309,7 +346,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                         padding: EdgeInsets.only(left: 20)),
                         ],
                       ),
-                   ),
+                  ),
                   ),
                   Container(
                   height: 50,
@@ -375,7 +412,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                 ],
               ),
             ),  
-         ],
+        ],
         ),
       ),
     );
