@@ -37,22 +37,21 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Flexible(
-      child: SizedBox(
-        height: size.height * 0.07,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: choicesLists.asMap().entries.map((entry) {
-            int index = entry.key;
-            Map<String, dynamic> choice = entry.value;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-              child: ChoiceChip(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                label: Transform.translate(
-                  offset: const Offset(0, -1), // 文字の位置を少し上に調整
-                  child: Row(
+      child: Container(
+        color: Colors.transparent, // 親ウィジェットの背景を透明に設定
+        child: SizedBox(
+          height: 60,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: choicesLists.asMap().entries.map((entry) {
+              int index = entry.key;
+              Map<String, dynamic> choice = entry.value;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+                child: ChoiceChip(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  label: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
@@ -69,29 +68,29 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
                       ),
                     ],
                   ),
+                  selected: selectedIndex == index,
+                  selectedColor: choice['color'],
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50.0),
+                    side: BorderSide(color: choice['color']),
+                  ),
+                  showCheckmark: false,
+                  onSelected: (bool selected) {
+                    setState(() {
+                      selectedIndex = index;
+                      final temporaryList = ref.read(temporaryListNotifierProvider.notifier);
+                      temporaryList.updateState([
+                        choice['label'],
+                        choice['icon'],
+                        choice['color'],
+                      ]);
+                    });
+                  },
                 ),
-                selected: selectedIndex == index,
-                selectedColor: choice['color'],
-                backgroundColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50.0),
-                  side: BorderSide(color: choice['color']),
-                ),
-                showCheckmark: false, 
-                onSelected: (bool selected) {
-                  setState(() {
-                    selectedIndex = index;
-                    final temporaryList = ref.read(temporaryListNotifierProvider.notifier);
-                    temporaryList.updateState([
-                      choice['label'],
-                      choice['icon'],
-                      choice['color'],
-                    ]);
-                  });
-                },
-              ),
-            );
-          }).toList(),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );

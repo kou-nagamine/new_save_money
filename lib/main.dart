@@ -63,8 +63,8 @@ class MyApp extends StatelessWidget{
           primarySwatch: Colors.grey, // メインカラーをグレーに設定
           backgroundColor: Colors.transparent, // 背景色を透明に設定
         ).copyWith(
-          primary: Colors.white, // プライマリカラーを薄いグレーに設定
-          secondary: Colors.white // セカンダリカラーも薄いグレーに設定
+          primary: Colors.white, 
+          secondary: Colors.white 
         ),
         useMaterial3: true,
         textTheme: GoogleFonts.notoSansJpTextTheme(

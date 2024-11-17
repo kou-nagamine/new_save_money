@@ -17,42 +17,31 @@ class ChargeCard extends ConsumerWidget {
     // final a = ref.watch(userLogNotifierProvider);
     
     return Container(
-      margin: EdgeInsets.only(bottom: size.height * 0.1),
-      height: size.height * 0.23,
-      child: Card(
-        color: const Color(0xff0085FF),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, // 縦方向に中央揃え
-                crossAxisAlignment: CrossAxisAlignment.center, // 横方向に中央揃え
-                children: [
-                  //我慢した金額の表示
-                  Text(
-                    'ついで収入はいくら？',
-                      style:TextStyle(
-                        fontSize: size.width * 0.045,
-                        color: Colors.white
-                      ),
-                    ),
-                    //金額の表示(chargeProviderの表示)
-                  Text(
-                    NumberFormat("#,###").format(int.parse(charge)),
-                    style: TextStyle(
-                      fontSize: size.width * 0.15,
-                      color: Colors.white
-                    )
-                  ),
-                ],
-              ),
-            )
+      margin: EdgeInsets.only(bottom: size.height * 0.2),
+      height: size.height * 0.3,
+      width: size.height * 0.3, 
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle, // 円形にする
+        gradient: RadialGradient(
+          colors: [
+            Color(0xffFFFFFF), // 中心の色
+            Color(0x0047FF75), // 外側の色
           ],
-        )
-      )
+          stops: [0,0.6],
+          center: Alignment.center,
+          radius: 0.9, // グラデーションの広がり具合
+        ),
+      ),
+      child: Center(
+        child: Text(
+          '¥${NumberFormat("#,###").format(int.parse(charge))}',
+          style: TextStyle(
+            fontSize: size.width * 0.17,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ),
     );
   }
 }

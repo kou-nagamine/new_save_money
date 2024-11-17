@@ -49,21 +49,17 @@ class _CalculatorState extends ConsumerState<Calculator> {
     ];
 
     return Container(
-      decoration: const BoxDecoration(
-        // borderRadius: BorderRadius.only(
-        //   topLeft: Radius.circular(40.0),
-        //   topRight: Radius.circular(40.0),
-        // ),
-        color: Color(0xffF1F1F1),
-      ),
       width: size.width,
-      height: size.height * 0.55,
+      height: size.height * 0.6,
       child: Padding(
         padding: EdgeInsets.only(
-          bottom: size.height * 0.02, left: size.width * 0, right: size.width * 0, top: size.height * 0.01),
+          bottom: size.height * 0.02, left: size.width * 0, right: size.width * 0, top: size.height * 0),
         child: Column(
           children: <Widget>[
-            CalculatorCateGory(), // category
+            Container(
+              margin: EdgeInsets.only(bottom: size.height * 0.02), // 他の要素との間に余白
+              child: CalculatorCateGory(),
+            ),
             Table(
               columnWidths: const <int, TableColumnWidth>{
                 0: IntrinsicColumnWidth(),
