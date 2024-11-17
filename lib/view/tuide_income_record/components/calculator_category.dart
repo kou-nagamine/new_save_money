@@ -4,22 +4,22 @@ import 'package:new_save_money/view_model/temporary_list.dart';
 
 final List<Map<String, dynamic>> choicesLists = [
   {
-    'emoji': '💧',
+    'icon': Icons.local_drink,
     'color': Color(0xff0071FF),
     'label': '飲み物',
   },
   {
-    'emoji': '🍔',
+    'icon': Icons.lunch_dining,
     'color': Color(0xffFF9500),
     'label': '食事',
   },
   {
-    'emoji': '🍦',
+    'icon': Icons.icecream,
     'color': Color(0xff34C759),
     'label': '菓子類',
   },
   {
-    'emoji': '⭐',
+    'icon': Icons.star,
     'color': Color(0xffFF2D55),
     'label': 'その他',
   },
@@ -54,7 +54,7 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
                     final temporaryList = ref.read(temporaryListNotifierProvider.notifier);
                     temporaryList.updateState([
                       choice['label'],
-                      choice['emoji'], 
+                      choice['icon'],
                       choice['color'],
                     ]);
                   });
@@ -64,33 +64,25 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     color: selectedIndex == index
-                        ? choice['color'].withOpacity(0.1) // 薄い背景色
-                        : Colors.transparent,
+                        ? Color(0xffffffff)
+                        : choice['color'].withOpacity(0.1),
                     border: selectedIndex == index
-                        ? Border.all(color: Colors.white, width: 2) // 白い線
-                        : null, // 通常時は線なし
+                        ? null 
+                        : Border.all(color: Colors.white, width: 2),
                     borderRadius: BorderRadius.circular(50.0),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center, // 中央揃え
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 2.0), // 微調整
-                        child: Text(
-                          choice['emoji'],
-                          style: TextStyle(
-                            fontSize: 23,
-                            height: 1, 
-                            color: selectedIndex == index ? Colors.white : choice['color'],
-                          ),
-                        ),
+                      Icon(
+                        choice['icon'],
+                        color: selectedIndex == index ? choice['color'] : Colors.white,
                       ),
                       const SizedBox(width: 4.0),
                       Text(
                         choice['label'],
                         style: TextStyle(
-                          color: selectedIndex == index ? Colors.white : Colors.black,
+                          color: selectedIndex == index ? Colors.black : Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
