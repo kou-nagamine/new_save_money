@@ -50,14 +50,15 @@ class _CalculatorState extends ConsumerState<Calculator> {
 
     return Container(
       width: size.width,
-      height: size.height * 0.6,
+      height: 410,
       child: Padding(
         padding: EdgeInsets.only(
           bottom: size.height * 0.02, left: size.width * 0, right: size.width * 0, top: size.height * 0),
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(bottom: size.height * 0.02), // 他の要素との間に余白
+              margin: EdgeInsets.only(bottom: size.height * 0.02),
+              padding: EdgeInsets.only(left: size.width * 0.02, right: size.width * 0.02),
               child: CalculatorCateGory(),
             ),
             Table(

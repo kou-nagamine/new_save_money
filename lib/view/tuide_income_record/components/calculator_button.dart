@@ -34,8 +34,8 @@ class CalculatorButton extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(9, 5, 9, 5),
       child: Container(
-        height: size.height * 0.1,
-        width: size.height * 0.1, 
+        height: 65,
+        width: 65, 
         child: ElevatedButton(
           onPressed: isEnabled ? () {
             final chargeNotifier = ref.read(chargeRiverpodNotifierProvider.notifier);
@@ -116,8 +116,8 @@ class BigCalculatorButton extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(9, 5, 9, 5),
       child: Container(
-        height: size.height * 0.1, 
-        width: size.height * 0.23, 
+        height: 65, 
+        width: 148, 
         child: ElevatedButton(
           onPressed: isEnabled ? () {
             final chargeNotifier = ref.read(chargeRiverpodNotifierProvider.notifier); 
