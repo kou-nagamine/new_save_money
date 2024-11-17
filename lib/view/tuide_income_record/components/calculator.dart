@@ -21,7 +21,7 @@ class _CalculatorState extends ConsumerState<Calculator> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    final double calculatorHeight = size.height < 700 ? 390 : 410;
+    final double calculatorHeight = size.height < 700 ? 385 : 400;
 
     // 変更された状態を取得
     final chageState = ref.watch(chargeRiverpodNotifierProvider);
@@ -59,8 +59,8 @@ class _CalculatorState extends ConsumerState<Calculator> {
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(bottom: size.height * 0.02),
-              padding: EdgeInsets.only(left: size.width * 0.02, right: size.width * 0.02),
+              margin: EdgeInsets.only(bottom: size.height * 0.01),
+              padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
               child: CalculatorCateGory(),
             ),
             Table(

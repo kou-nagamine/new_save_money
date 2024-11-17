@@ -140,193 +140,195 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,  
-        children: [
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.only(left: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  displayDateRange,   // 表示する日付の範囲
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
+      body: SingleChildScrollView( 
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,  
+          children: [
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    displayDateRange,   // 表示する日付の範囲
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  selectedOption == '全体' 
-                    ? '¥ ${NumberFormat("#,###").format(allPrice[1])}'
-                    : '¥ ${NumberFormat("#,###").format(allPrice[0])}',
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 3),
+                  Text(
+                    selectedOption == '全体' 
+                      ? '¥ ${NumberFormat("#,###").format(allPrice[1])}'
+                      : '¥ ${NumberFormat("#,###").format(allPrice[0])}',
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                // RichText(
-                //   text: TextSpan(
-                //     children: [
-                //       TextSpan(
-                //         text: '先週比：',
-                //         style: TextStyle(
-                //           fontSize: 16,
-                //           fontWeight: FontWeight.bold,
-                //           color: Colors.black,
-                //         ),
-                //       ),
-                //       TextSpan(
-                //         text: '￥521(9.4%)',
-                //         style: TextStyle(
-                //           fontSize: 16,
-                //           fontWeight: FontWeight.bold,
-                //           color: Color(0xFF00BB16),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-              ]
-            ),
-          ),
-          SizedBox(height: 10),
-          Stack(
-            children: [
-              AspectRatio(
-                aspectRatio: 1.5,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 0,
-                    left: 10,
-                    top: 15,
-                    bottom: 12,
-                  ),
-                  child:LineChart(
-                    //animatedChart(allChartData, _chartanimation.value),
-                    selectedOption == '全体'
-                    ? animatedChart(allChartData, _chartanimation.value)
-                    : animatedChart(inComeDates, _chartanimation.value)
-                  )
-                ),
+                  // RichText(
+                  //   text: TextSpan(
+                  //     children: [
+                  //       TextSpan(
+                  //         text: '先週比：',
+                  //         style: TextStyle(
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.bold,
+                  //           color: Colors.black,
+                  //         ),
+                  //       ),
+                  //       TextSpan(
+                  //         text: '￥521(9.4%)',
+                  //         style: TextStyle(
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.bold,
+                  //           color: Color(0xFF00BB16),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                ]
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children:[
-               ChoiceChip(
-                label: Text('ついで収入'), 
-                selected: selectedOption == 'ついで収入',
-                onSelected: (bool selected) {
-                  setState(() {
-                    selectedOption = 'ついで収入';
-                  });
-                },
-                selectedColor: Colors.black,
-                labelStyle: TextStyle(
-                  color: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
-                ),
-                checkmarkColor: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
-                chipAnimationStyle: ChipAnimationStyle(
-                  avatarDrawerAnimation: AnimationStyle(
-                    duration: Duration(milliseconds: 500),
-                    reverseDuration: Duration(milliseconds: 500),
-                    curve: Curves.easeInOut,
-                  ),
-                ),
-                shape: SmoothRectangleBorder(
-                  borderRadius: SmoothBorderRadius(
-                    cornerRadius: 15,
-                    cornerSmoothing: 0.5,)
-                ),
-               ),
-              const SizedBox(width: 40),
-              ChoiceChip(
-                label: Text('全体'), 
-                selected: selectedOption == '全体',
-                onSelected: (bool selected) {
-                  setState(() {
-                    selectedOption = '全体';
-                  });
-                },
-                selectedColor: Colors.black,
-                labelStyle: TextStyle(
-                  color: selectedOption == '全体' ? Colors.white : Colors.black,
-                ),
-                checkmarkColor: selectedOption == '全体' ? Colors.white : Colors.black,
-                chipAnimationStyle: ChipAnimationStyle(
-                  avatarDrawerAnimation: AnimationStyle(
-                    duration: Duration(milliseconds: 500),
-                    reverseDuration: Duration(milliseconds: 500),
-                    curve: Curves.easeInOut,
-                  ),
-                ),
-                shape: SmoothRectangleBorder(
-                  borderRadius: SmoothBorderRadius(
-                    cornerRadius: 15,
-                    cornerSmoothing: 0.5,)
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child:Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'カテゴリー別のついで記録',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 15),
-                GridView.count(
-                  shrinkWrap: true,  
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  childAspectRatio: 2.0, 
-                  children: [
-                    // 飲み物のデータを表示
-                    _buildGridItem(
-                      Icons.local_drink, 
-                      Color(0xff007AFF),
-                      '${categoryData['飲み物']?['count'] ?? 0}回', 
-                      '¥${NumberFormat("#,###").format(categoryData['飲み物']?['totalPrice'] ?? 0)}'
-                    ),
-                    // 食事のデータを表示
-                    _buildGridItem(
-                      Icons.fastfood, 
-                      Color(0xffFF9500), 
-                      '${categoryData['食事']?['count'] ?? 0}回', 
-                      '¥${NumberFormat("#,###").format(categoryData['食事']?['totalPrice'] ?? 0)}'
-                    ),
-                    // 菓子類のデータを表示
-                    _buildGridItem(
-                      Icons.icecream, 
-                      Color(0xff34C759),
-                      '${categoryData['菓子類']?['count'] ?? 0}回', 
-                      '¥${NumberFormat("#,###").format(categoryData['菓子類']?['totalPrice'] ?? 0)}'
-                    ),
-                    // その他のデータを表示
-                    _buildGridItem(
-                      Icons.star, 
-                      Color(0xffFF2D55), 
-                      '${categoryData['その他']?['count'] ?? 0}回', 
-                      '¥${NumberFormat("#,###").format(categoryData['その他']?['totalPrice'] ?? 0)}'
-                    ),
-                  ],
-                ),
-              ]
             ),
-          ),
-        ]
-      )
+            SizedBox(height: 10),
+            Stack(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1.5,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      right: 0,
+                      left: 10,
+                      top: 15,
+                      bottom: 12,
+                    ),
+                    child:LineChart(
+                      //animatedChart(allChartData, _chartanimation.value),
+                      selectedOption == '全体'
+                      ? animatedChart(allChartData, _chartanimation.value)
+                      : animatedChart(inComeDates, _chartanimation.value)
+                    )
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:[
+                ChoiceChip(
+                  label: Text('ついで収入'), 
+                  selected: selectedOption == 'ついで収入',
+                  onSelected: (bool selected) {
+                    setState(() {
+                      selectedOption = 'ついで収入';
+                    });
+                  },
+                  selectedColor: Colors.black,
+                  labelStyle: TextStyle(
+                    color: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
+                  ),
+                  checkmarkColor: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
+                  chipAnimationStyle: ChipAnimationStyle(
+                    avatarDrawerAnimation: AnimationStyle(
+                      duration: Duration(milliseconds: 500),
+                      reverseDuration: Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    ),
+                  ),
+                  shape: SmoothRectangleBorder(
+                    borderRadius: SmoothBorderRadius(
+                      cornerRadius: 15,
+                      cornerSmoothing: 0.5,)
+                  ),
+                ),
+                const SizedBox(width: 40),
+                ChoiceChip(
+                  label: Text('全体'), 
+                  selected: selectedOption == '全体',
+                  onSelected: (bool selected) {
+                    setState(() {
+                      selectedOption = '全体';
+                    });
+                  },
+                  selectedColor: Colors.black,
+                  labelStyle: TextStyle(
+                    color: selectedOption == '全体' ? Colors.white : Colors.black,
+                  ),
+                  checkmarkColor: selectedOption == '全体' ? Colors.white : Colors.black,
+                  chipAnimationStyle: ChipAnimationStyle(
+                    avatarDrawerAnimation: AnimationStyle(
+                      duration: Duration(milliseconds: 500),
+                      reverseDuration: Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    ),
+                  ),
+                  shape: SmoothRectangleBorder(
+                    borderRadius: SmoothBorderRadius(
+                      cornerRadius: 15,
+                      cornerSmoothing: 0.5,)
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+              child:Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'カテゴリー別のついで記録',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  GridView.count(
+                    shrinkWrap: true,  
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                    childAspectRatio: 2.0, 
+                    children: [
+                      // 飲み物のデータを表示
+                      _buildGridItem(
+                        Icons.local_drink, 
+                        Color(0xff007AFF),
+                        '${categoryData['飲み物']?['count'] ?? 0}回', 
+                        '¥${NumberFormat("#,###").format(categoryData['飲み物']?['totalPrice'] ?? 0)}'
+                      ),
+                      // 食事のデータを表示
+                      _buildGridItem(
+                        Icons.fastfood, 
+                        Color(0xffFF9500), 
+                        '${categoryData['食事']?['count'] ?? 0}回', 
+                        '¥${NumberFormat("#,###").format(categoryData['食事']?['totalPrice'] ?? 0)}'
+                      ),
+                      // 菓子類のデータを表示
+                      _buildGridItem(
+                        Icons.icecream, 
+                        Color(0xff34C759),
+                        '${categoryData['菓子類']?['count'] ?? 0}回', 
+                        '¥${NumberFormat("#,###").format(categoryData['菓子類']?['totalPrice'] ?? 0)}'
+                      ),
+                      // その他のデータを表示
+                      _buildGridItem(
+                        Icons.star, 
+                        Color(0xffFF2D55), 
+                        '${categoryData['その他']?['count'] ?? 0}回', 
+                        '¥${NumberFormat("#,###").format(categoryData['その他']?['totalPrice'] ?? 0)}'
+                      ),
+                    ],
+                  ),
+                ]
+              ),
+            ),
+          ]
+        )
+      ),
     );
   }
 
