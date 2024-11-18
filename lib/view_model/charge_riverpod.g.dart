@@ -7,7 +7,7 @@ part of 'charge_riverpod.dart';
 // **************************************************************************
 
 String _$chargeRiverpodNotifierHash() =>
-    r'40f00eeca3492a04b588ddf08b36a50cb7539b64';
+    r'd7c67f29f05340b2175b7f0cbb2f1cfd4d07f9a6';
 
 /// See also [ChargeRiverpodNotifier].
 @ProviderFor(ChargeRiverpodNotifier)

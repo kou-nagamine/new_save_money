@@ -33,7 +33,7 @@ class CalculatorPage extends ConsumerWidget {
           Padding(
             padding: EdgeInsets.only(right: size.width * 0.01, left: size.width * 0.01),
             child: const Align(
-              alignment: Alignment(0, -0.7), // 中心から少し下に配置
+              alignment: Alignment(0, -0.8), // 中心から少し下に配置
               child: ChargeCard(),
             ),
           ),
