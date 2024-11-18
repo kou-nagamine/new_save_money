@@ -33,9 +33,9 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
     return PopScope(
       canPop: false,
       child:AlertDialog(
-        contentPadding: const EdgeInsets.all(10),
+        contentPadding: const EdgeInsets.all(15),
         content:  SizedBox(
-          height: MediaQuery.of(context).size.height * 0.22,
+          height: MediaQuery.of(context).size.height * 0.2,
           width: 300,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

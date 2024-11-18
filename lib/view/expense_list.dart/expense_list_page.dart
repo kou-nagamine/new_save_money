@@ -2,19 +2,20 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'components/card_view.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:async';
 
-Future<List<String>> fetchImageUrls() async {
+Future<List<String>> fetchImageUrls(BuildContext context) async {
   final ListResult result = await FirebaseStorage.instance.ref('slideshow').listAll();
   final List<String> urls = await Future.wait(result.items.map((item) => item.getDownloadURL()).toList());
+
+  // プリキャッシュを実行
+  for (final url in urls) {
+    precacheImage(NetworkImage(url), context);
+  }
+
   return urls;
 }
-// //スライドショーの画像
-// final images = [
-//       "assets/images/lounas.png",
-//       "assets/images/zenn.png",
-//       "assets/images/tuide-tester-poster.png",
-//       ];
 
 final labels = [
   "学習",
@@ -36,7 +37,7 @@ class TopicPage extends StatelessWidget {
             headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return [
                 FutureBuilder<List<String>>(
-                  future: fetchImageUrls(),
+                  future: fetchImageUrls(context),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const SliverToBoxAdapter(
@@ -75,7 +76,7 @@ class TopicPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          "おかねを使う", // タイトルを追加
+                          "おかねを使う",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w900,
@@ -84,7 +85,7 @@ class TopicPage extends StatelessWidget {
                         ),
                         SizedBox(height: 2),
                         Text(
-                          "好きなことや必要なことに今までのついで収入を\n使って記録しよう！", // サブタイトル
+                          "好きなことや必要なことに今までのついで収入を\n使って記録しよう！",
                           style: TextStyle(
                             fontSize: 11,
                             color: Colors.black54,
@@ -111,109 +112,116 @@ class TopicPage extends StatelessWidget {
     );
   }
 }
+
 //TopicPageのスライドショー
 class HeaderWidget extends StatefulWidget {
   final List<String> images;
-  final double height = 200;
+  final double height;
 
-  HeaderWidget({required this.images});
+  const HeaderWidget({required this.images, this.height = 200, super.key});
 
   @override
   _HeaderWidgetState createState() => _HeaderWidgetState();
+}
+
+class _HeaderWidgetState extends State<HeaderWidget> {
+  late PageController _controller;
+  Timer? _timer;
+  int _currentPage = 0;
+  static const int _initialPage = 1000; // 初期ページを非常に大きな数に設定
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(
+      viewportFraction: 1.0,
+      keepPage: true,
+      initialPage: _initialPage,
+    );
+    _currentPage = _initialPage;
+
+    if (widget.images.length > 1) {
+      _startAutoSlideTimer();
+    }
   }
 
-  class _HeaderWidgetState extends State<HeaderWidget> {
-    late PageController _controller;
-    Timer? _timer;
-    int _currentPage = 0;
-    static const int _initialPage = 1000; // 初期ページを非常に大きな数に設定
-
-    @override
-    void initState() {
-      super.initState();
-      _controller = PageController(
-        viewportFraction: 1.0,
-        keepPage: true,
-        initialPage: _initialPage, // 初期ページを指定
+  void _startAutoSlideTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+      _currentPage++;
+      _controller.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
       );
-      _currentPage = _initialPage;
-      // 自動スライドのタイマーを開始
-      if (widget.images.length > 1) {
-        _startAutoSlideTimer();
-      }
-    }
+    });
+  }
 
-    // 自動スライドを開始するタイマーを設定
-    void _startAutoSlideTimer() {
-      _timer?.cancel(); // 既存のタイマーをキャンセル
-      _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
-        _currentPage++;
-        _controller.animateToPage(
-          _currentPage,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      });
-    }
-    void _resetAutoSlideTimer() {
-      _timer?.cancel(); // 既存のタイマーをキャンセル
-      _timer = Timer(Duration(seconds: 2), () {
-        _startAutoSlideTimer(); // 3秒後に自動スライドを再開
-      });
-    }
-
-    @override
-    void dispose() {
-      _controller.dispose();
+  void _resetAutoSlideTimer() {
+    if (widget.images.length > 1) {
       _timer?.cancel();
-      super.dispose();
+      _timer = Timer(const Duration(seconds: 2), () {
+        _startAutoSlideTimer();
+      });
     }
+  }
 
-    @override
-    Widget build(BuildContext context) {
-      // 画像が1枚の場合の処理
-      if (widget.images.length == 1) {
-        return SliverToBoxAdapter(
-          child: Container(
-            height: MediaQuery.of(context).size.width * 9 / 16, // 16:9のアスペクト比に基づいて高さを指定
-            child: Image.network(
-              widget.images[0],
-              fit: BoxFit.cover,
-              width: double.infinity,
-            ),
-          ),
-        );
-      }
+  @override
+  void dispose() {
+    _controller.dispose();
+    _timer?.cancel();
+    super.dispose();
+  }
 
-      // 画像が複数の場合の処理
+  @override
+  Widget build(BuildContext context) {
+    if (widget.images.length == 1) {
       return SliverToBoxAdapter(
         child: Container(
-          height: MediaQuery.of(context).size.width * 9 / 16, // 16:9のアスペクト比に基づいて高さを指定
-          child: GestureDetector(
-            onPanDown: (_) {
-              _resetAutoSlideTimer(); // 3秒後に自動スライドを再開するためにタイマーをリセット
-            },
-            child: PageView.builder(
-              controller: _controller,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentPage = index;
-                });
-              },
-              itemCount: widget.images.length, // 画像の数を指定
-              itemBuilder: (_, index) {
-                return Image.network(
-                  widget.images[index], // 画像のインデックスをそのまま使用
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                );
-              },
-            ),
+          height: MediaQuery.of(context).size.width * 9 / 16,
+          child: CachedNetworkImage(
+            imageUrl: widget.images[0],
+            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            fit: BoxFit.cover,
+            width: double.infinity,
           ),
         ),
       );
     }
+
+    return SliverToBoxAdapter(
+      child: Container(
+        height: MediaQuery.of(context).size.width * 9 / 16,
+        child: GestureDetector(
+          onPanDown: (_) {
+            if (widget.images.length > 1) {
+              _resetAutoSlideTimer();
+            }
+          },
+          child: PageView.builder(
+            controller: _controller,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPage = index;
+              });
+            },
+            itemCount: widget.images.length,
+            itemBuilder: (_, index) {
+              return CachedNetworkImage(
+                imageUrl: widget.images[index],
+                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                fit: BoxFit.cover,
+                width: double.infinity,
+              );
+            },
+          ),
+        ),
+      ),
+    );
   }
+}
 
 class _TabBar extends StatelessWidget {
   const _TabBar();
