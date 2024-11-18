@@ -33,9 +33,9 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
     return PopScope(
       canPop: false,
       child:AlertDialog(
-        contentPadding: const EdgeInsets.all(15),
+        contentPadding: const EdgeInsets.all(10),
         content:  SizedBox(
-          height: MediaQuery.of(context).size.height * 0.2,
+          height: MediaQuery.of(context).size.height * 0.22,
           width: 300,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -52,16 +52,13 @@ class _DangerDialogState extends ConsumerState<DangerDialog> with SingleTickerPr
                 width: 100,
                 height: 100,
                 fit: BoxFit.contain,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Center(
-                  child:  Text('この操作は２度と元にもどせません。',
-                    style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold
-                    ),
-                    textAlign: TextAlign.center,
+              ), 
+              Center(
+                child:  Text('この操作は２度と元にもどせません。',
+                  style: const TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],

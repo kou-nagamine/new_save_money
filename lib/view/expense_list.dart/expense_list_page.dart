@@ -1,14 +1,20 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'components/card_view.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:async';
 
-//スライドショーの画像
-final images = [
-      "assets/images/lounas.png",
-      "assets/images/zenn.png",
-      "assets/images/tuide-tester-poster.png",
-      ];
+Future<List<String>> fetchImageUrls() async {
+  final ListResult result = await FirebaseStorage.instance.ref('slideshow').listAll();
+  final List<String> urls = await Future.wait(result.items.map((item) => item.getDownloadURL()).toList());
+  return urls;
+}
+// //スライドショーの画像
+// final images = [
+//       "assets/images/lounas.png",
+//       "assets/images/zenn.png",
+//       "assets/images/tuide-tester-poster.png",
+//       ];
 
 final labels = [
   "学習",
@@ -21,50 +27,74 @@ class TopicPage extends StatelessWidget {
   const TopicPage({super.key});
 
   @override
-  Widget build(BuildContext context) {   
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: DefaultTabController(
           length: labels.length,
           child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return [
-                HeaderWidget(images: images),
-                  SliverToBoxAdapter(
-                    child: Divider(
-                      height: 5,
-                      thickness: 5,
-                      color: Colors.black12,
+                FutureBuilder<List<String>>(
+                  future: fetchImageUrls(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 200,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      );
+                    }
+                    if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 200,
+                          child: Center(
+                            child: Text('スライドショーの画像を取得できませんでした。'),
+                          ),
+                        ),
+                      );
+                    }
+                    return HeaderWidget(images: snapshot.data!);
+                  },
+                ),
+                SliverToBoxAdapter(
+                  child: Divider(
+                    height: 5,
+                    thickness: 5,
+                    color: Colors.black12,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 80, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "おかねを使う", // タイトルを追加
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          "好きなことや必要なことに今までのついで収入を\n使って記録しよう！", // サブタイトル
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 20, 80, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "おかねを使う",  // タイトルを追加
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(height: 2),  
-                          Text(
-                            "好きなことや必要なことに今までのついで収入を\n使って記録しよう！",  // サブタイトル
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                ),
                 const _TabBar(),
               ];
             },
@@ -77,7 +107,7 @@ class TopicPage extends StatelessWidget {
             ),
           ),
         ),
-      )
+      ),
     );
   }
 }
@@ -108,7 +138,9 @@ class HeaderWidget extends StatefulWidget {
       );
       _currentPage = _initialPage;
       // 自動スライドのタイマーを開始
-      _startAutoSlideTimer();
+      if (widget.images.length > 1) {
+        _startAutoSlideTimer();
+      }
     }
 
     // 自動スライドを開始するタイマーを設定
@@ -139,6 +171,21 @@ class HeaderWidget extends StatefulWidget {
 
     @override
     Widget build(BuildContext context) {
+      // 画像が1枚の場合の処理
+      if (widget.images.length == 1) {
+        return SliverToBoxAdapter(
+          child: Container(
+            height: MediaQuery.of(context).size.width * 9 / 16, // 16:9のアスペクト比に基づいて高さを指定
+            child: Image.network(
+              widget.images[0],
+              fit: BoxFit.cover,
+              width: double.infinity,
+            ),
+          ),
+        );
+      }
+
+      // 画像が複数の場合の処理
       return SliverToBoxAdapter(
         child: Container(
           height: MediaQuery.of(context).size.width * 9 / 16, // 16:9のアスペクト比に基づいて高さを指定
@@ -153,11 +200,10 @@ class HeaderWidget extends StatefulWidget {
                   _currentPage = index;
                 });
               },
+              itemCount: widget.images.length, // 画像の数を指定
               itemBuilder: (_, index) {
-                // インデックスをwidget.imagesの範囲に収めるための処理
-                final imageIndex = index % widget.images.length;
-                return Image.asset(
-                  widget.images[imageIndex],
+                return Image.network(
+                  widget.images[index], // 画像のインデックスをそのまま使用
                   fit: BoxFit.cover,
                   width: double.infinity,
                 );
