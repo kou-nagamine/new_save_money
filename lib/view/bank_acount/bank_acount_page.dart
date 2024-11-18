@@ -175,7 +175,7 @@ class HomePage extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 20),
+                        SizedBox(width: 10),
                         PaymentMenu(),
                       ],
                     ),
