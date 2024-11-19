@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:new_save_money/view_model/banner_provider.dart';
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final labels = [
   "学習",
@@ -230,14 +231,20 @@ class _HeaderWidgetState extends State<HeaderWidget> {
       ),
     );
   }
-  void _openLink(String? url) {
+  void _openLink(String? url) async {
     if (url == null || url.isEmpty) {
       return;
+    }
+
+    final Uri parsedUrl = Uri.parse(url);
+    if (!parsedUrl.isAbsolute) {
+      return;
+    }
+
+    if (await canLaunchUrl(parsedUrl)) {
+      await launchUrl(parsedUrl, mode: LaunchMode.externalApplication);
     } else {
-      final Uri parsedUrl = Uri.parse(url);
-      if (!parsedUrl.isAbsolute) {
-        return;
-      }
+      throw 'Could not launch $url';
     }
   }
 }
