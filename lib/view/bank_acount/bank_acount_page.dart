@@ -93,14 +93,14 @@ class HomePage extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                                  allPrice[1] > 999999999 // ここで桁数をチェック
-                                      ? '¥ 9,999,999+'
-                                      : '¥ ${NumberFormat("#,###").format(allPrice[1])}', 
-                                  style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
+                              allPrice[1] > 999999999 // ここで桁数をチェック
+                                  ? '¥ 9,999,999+'
+                                  : '¥ ${NumberFormat("#,###").format(allPrice[1])}', 
+                              style: TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
                             ),
                             Container(
                               padding: EdgeInsets.only(right: deviceWidth * 0.07),
