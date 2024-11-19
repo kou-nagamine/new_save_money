@@ -52,6 +52,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   final TextEditingController _priceController = TextEditingController(); 
   final TextEditingController _memoController = TextEditingController(); 
   final TextEditingController _titleController = TextEditingController(); 
+  
 
 
 
@@ -166,6 +167,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   Duration duration = const Duration(seconds: 3),
 }) {
   final overlay = Overlay.of(context);
+  
 
   late OverlayEntry overlayEntry;
   overlayEntry = OverlayEntry(
@@ -244,6 +246,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
   Widget build(BuildContext context) {
     final temporaryTopicList = ref.read(temporaryTopicListNotifierProvider.notifier);
     final allPrice = ref.watch(allPriceNotifierProvider);
+    final Size size = MediaQuery.of(context).size;
 
     return GestureDetector(
       onTap: () {
@@ -276,6 +279,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                     ),
                     Expanded(
                       child: TextField(
+                        cursorColor: Colors.black,
                         controller: _titleController,
                         focusNode: _focusNode1, // フォーカスノードを設定
                         textAlign: TextAlign.end, // テキストを右揃えにする
@@ -351,6 +355,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                     ),
                     Expanded(
                       child: TextField(
+                        cursorColor: Colors.black,
                         controller: _priceController,
                         keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
                         inputFormatters: [
@@ -524,14 +529,13 @@ class _CustomFormState extends ConsumerState<CustomForm> {
               SizedBox(height: 10),
               // メモ入力フィールド
               Container(
-                height: 110,
+                height: size.height * 0.1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 5),
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0), // ボックスの内側にパディングを追加
+                        padding: EdgeInsets.all(5), // ボックスの内側にパディングを追加
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0), // 角を丸くする
                           border: Border.all(
@@ -542,11 +546,14 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                           ),
                         ),
                         child: TextField(
+                          cursorColor: Colors.black,
                           controller: _memoController,
                           focusNode: _focusNode3, // フォーカスノードを設定
                           maxLines: null, // 行数を制限しない
                           textAlignVertical: TextAlignVertical.top, // テキストをボックス内の上部に揃える
                           decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
                             hintStyle: TextStyle(
                               color: Theme.of(context).brightness == Brightness.dark
                                   ? Colors.white.withOpacity(0.3)
@@ -580,7 +587,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                 ),
               ),
               Container(
-                height: 300,
+                height: size.height * 0.4,
                 alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -604,8 +611,8 @@ class _CustomFormState extends ConsumerState<CustomForm> {
                       ),
                     ),
                     Lottie.asset('assets/animations/arrow.json',
-                      width: 80,
-                      height: 60,
+                      width: size.height * 0.1,
+                      height: size.height * 0.1,
                       fit: BoxFit.cover,
                     ),
                     Text('¥${NumberFormat("#,###").format(calculatedPrice)}',
