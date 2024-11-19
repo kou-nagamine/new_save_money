@@ -12,7 +12,6 @@ import '../../view_model/all_price.dart';
 //freezed
 import '../../model/save.dart';
 
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cached_network_image/cached_network_image.dart';
 
 
@@ -22,12 +21,14 @@ class TopicContent extends ConsumerStatefulWidget{
     required this.imageUrl,
     required this.title,
     required this.description,
+    required this.heroTag,
     super.key
     });
   final int index;  // インデックスを受け取る
   final String imageUrl;
   final String title;
   final String description;
+  final String heroTag; 
 
   @override
   _TopicContentState createState() => _TopicContentState();
@@ -50,8 +51,8 @@ class _TopicContentState extends ConsumerState<TopicContent> {
 
     return Scaffold(
       body: DraggableHome(
-        leading: IconButton(  // 戻るボタン ここでカスタム出来ます。
-          icon: Icon(Icons.arrow_back),
+        leading: IconButton(  
+          icon: const Icon(Icons.arrow_back),
           onPressed: () async {
             Navigator.of(context).pop();
             temporaryTopicListNotifier.resetState();
@@ -59,7 +60,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
         ),
         curvedBodyRadius: 0,
         title: Text("支出の記録", style: TextStyle(fontWeight: FontWeight.bold)),
-        headerWidget: headerWidget(context,widget.imageUrl,widget.title,widget.description ), // Custom header
+        headerWidget: _buildHeaderWidget(context),
         headerExpandedHeight: 0.5,
         body: [
           CustomForm(
@@ -77,9 +78,6 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               ),
               // buttonを押した時の処理
               onPressed: isButtonEnabled ? () async {
-                //イメージのパスを取得
-                print(widget.imageUrl);
-                
                 final currentDateTime = temporaryTopicList[2] ?? DateTime.now();
                 int price = temporaryTopicList[1] ?? 1500;
                 String memo = temporaryTopicList[3] ?? "メモがありません";
@@ -93,10 +91,10 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 }
                 // Saveクラスのインスタンスを作成
                 final save = Save(
-                  name: temporaryTopicList[0] ?? widget.title, // カテゴリ名
-                  price: price, // 価格
-                  icon: Icons.local_activity, // カテゴリアイコン
-                  color: Color(0xffE82929), // カテゴリカラー
+                  name: temporaryTopicList[0] ?? widget.title, 
+                  price: price, 
+                  icon: Icons.local_activity, 
+                  color: const Color(0xffE82929), 
                   deposit: false, 
                   dataTime: currentDateTime,// 必要に応じて true または false に設定
                   memo: memo,
@@ -112,14 +110,14 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                   context: context,
                   barrierDismissible: false,
                   builder: (BuildContext context) {
-                    return PayDialog(
+                    return const PayDialog(
                     );
                   },
                 );
               } : null,
-              child: Text('記録する', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
-              backgroundColor: isButtonEnabled ? Color(0xff005BEA) : Colors.grey,
+              backgroundColor: isButtonEnabled ? const Color(0xff005BEA) : Colors.grey,
               elevation: 10,
+              child: const Text('記録する', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
             ),
           ),
         ),
@@ -134,10 +132,10 @@ class _TopicContentState extends ConsumerState<TopicContent> {
   }
 
   // 上記の画像スライドショー
-  Widget headerWidget(BuildContext context,  String imageUrl, String title, String description) {
+  Widget _buildHeaderWidget(BuildContext context) {
     final temporaryTopicListNotifier = ref.read(temporaryTopicListNotifierProvider.notifier);
     return Hero(
-      tag: 'card-hero-${widget.index}',
+      tag: widget.heroTag,
       child: Stack(
         children: [
           Container(
@@ -145,7 +143,9 @@ class _TopicContentState extends ConsumerState<TopicContent> {
             height: MediaQuery.of(context).size.height * 0.6,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: CachedNetworkImageProvider(imageUrl),
+                image: CachedNetworkImageProvider(
+                  widget.imageUrl,
+                ),
                 fit: BoxFit.cover, // 画像を全体にカバー
               ),
             ),
@@ -158,10 +158,10 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  Colors.black.withOpacity(0.9), // 90%の不透明度の黒
-                  Colors.white.withOpacity(0), // 白
+                  Colors.black.withOpacity(0.9), 
+                  Colors.white.withOpacity(0),
                 ],
-                stops: [0.1, 1], // 黒が85%の位置で終了し、残りは白
+                stops: [0.1, 1], 
               ),
             ),
             child: Column(
@@ -174,7 +174,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                       children: [
                         SizedBox(width: 10),
                         Text(
-                          title,
+                          widget.title,
                           style: TextStyle(
                             fontSize: 35,
                             color: Colors.white,
@@ -196,8 +196,8 @@ class _TopicContentState extends ConsumerState<TopicContent> {
               alignment: Alignment.center,
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: 20,
+                  height: 20,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
@@ -214,6 +214,7 @@ class _TopicContentState extends ConsumerState<TopicContent> {
                     weight: 700,
                     size: 50,
                   ),
+                  padding: EdgeInsets.zero,
                 ),
               ],
             )

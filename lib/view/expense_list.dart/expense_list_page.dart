@@ -1,14 +1,11 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'components/card_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:new_save_money/view_model/banner_provider.dart';
 import 'dart:async';
-
-//スライドショーの画像
-final images = [
-      "assets/images/lounas.png",
-      "assets/images/zenn.png",
-      "assets/images/tuide-tester-poster.png",
-      ];
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final labels = [
   "学習",
@@ -17,54 +14,93 @@ final labels = [
 ];    
 
 //TopicPageの全体
-class TopicPage extends StatelessWidget {
-  const TopicPage({super.key});
+class TopicPage extends ConsumerStatefulWidget {
+  const TopicPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {   
+  _TopicPageState createState() => _TopicPageState();
+}
+
+class _TopicPageState extends ConsumerState<TopicPage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true; 
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    final bannerAsyncValue = ref.watch(bannerProvider);
     return SafeArea(
       child: Scaffold(
         body: DefaultTabController(
           length: labels.length,
           child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return [
-                HeaderWidget(images: images),
-                  SliverToBoxAdapter(
-                    child: Divider(
-                      height: 5,
-                      thickness: 5,
-                      color: Colors.black12,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 20, 80, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "おかねを使う",  // タイトルを追加
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.black,
-                            ),
+                bannerAsyncValue.when(
+                  data: (banners) {
+                    if (banners.isEmpty) {
+                      return const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 200,
+                          child: Center(
+                            child: Text('スライドショーの画像がありません'),
                           ),
-                          SizedBox(height: 2),  
-                          Text(
-                            "好きなことや必要なことに今までのついで収入を\n使って記録しよう！",  // サブタイトル
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                        ),
+                      );
+                    }
+                    return HeaderWidget(banners: banners);
+                  },
+                  loading: () => const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: CircularProgressIndicator(),
                       ),
                     ),
                   ),
+                  error: (error, stack) => const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: Text('データの取得に失敗しました'),
+                      ),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Divider(
+                    height: 5,
+                    thickness: 5,
+                    color: Colors.black12,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 80, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "おかねを使う",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          "好きなことや必要なことに今までのついで収入を\n使って記録しよう！",
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 const _TabBar(),
               ];
             },
@@ -77,97 +113,141 @@ class TopicPage extends StatelessWidget {
             ),
           ),
         ),
-      )
+      ),
     );
   }
 }
+
 //TopicPageのスライドショー
 class HeaderWidget extends StatefulWidget {
-  final List<String> images;
-  final double height = 200;
+  final List<Map<String, String>> banners;
+  final double height;
 
-  HeaderWidget({required this.images});
+  const HeaderWidget({required this.banners, this.height = 200, super.key});
 
   @override
   _HeaderWidgetState createState() => _HeaderWidgetState();
-  }
+}
 
-  class _HeaderWidgetState extends State<HeaderWidget> {
-    late PageController _controller;
-    Timer? _timer;
-    int _currentPage = 0;
-    static const int _initialPage = 1000; // 初期ページを非常に大きな数に設定
+class _HeaderWidgetState extends State<HeaderWidget> {
+  late PageController _controller;
+  Timer? _timer;
+  int _currentPage = 0;
+  static const int _initialPage = 1000; // 初期ページを非常に大きな数に設定
 
-    @override
-    void initState() {
-      super.initState();
-      _controller = PageController(
-        viewportFraction: 1.0,
-        keepPage: true,
-        initialPage: _initialPage, // 初期ページを指定
-      );
-      _currentPage = _initialPage;
-      // 自動スライドのタイマーを開始
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(
+      viewportFraction: 1.0,
+      keepPage: true,
+      initialPage: _initialPage,
+    );
+    _currentPage = _initialPage;
+
+    if (widget.banners.length> 1) {
       _startAutoSlideTimer();
     }
+  }
 
-    // 自動スライドを開始するタイマーを設定
-    void _startAutoSlideTimer() {
-      _timer?.cancel(); // 既存のタイマーをキャンセル
-      _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
-        _currentPage++;
-        _controller.animateToPage(
-          _currentPage,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      });
-    }
-    void _resetAutoSlideTimer() {
-      _timer?.cancel(); // 既存のタイマーをキャンセル
-      _timer = Timer(Duration(seconds: 2), () {
-        _startAutoSlideTimer(); // 3秒後に自動スライドを再開
-      });
-    }
+  void _startAutoSlideTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+      _currentPage++;
+      _controller.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
 
-    @override
-    void dispose() {
-      _controller.dispose();
+  void _resetAutoSlideTimer() {
+    if (widget.banners.length> 1) {
       _timer?.cancel();
-      super.dispose();
+      _timer = Timer(const Duration(seconds: 2), () {
+        _startAutoSlideTimer();
+      });
     }
+  }
 
-    @override
-    Widget build(BuildContext context) {
+  @override
+  void dispose() {
+    _controller.dispose();
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+ Widget build(BuildContext context) {
+    if (widget.banners.length == 1) {
+      final banner = widget.banners[0];
       return SliverToBoxAdapter(
-        child: Container(
-          height: MediaQuery.of(context).size.width * 9 / 16, // 16:9のアスペクト比に基づいて高さを指定
-          child: GestureDetector(
-            onPanDown: (_) {
-              _resetAutoSlideTimer(); // 3秒後に自動スライドを再開するためにタイマーをリセット
-            },
-            child: PageView.builder(
-              controller: _controller,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentPage = index;
-                });
-              },
-              itemBuilder: (_, index) {
-                // インデックスをwidget.imagesの範囲に収めるための処理
-                final imageIndex = index % widget.images.length;
-                return Image.asset(
-                  widget.images[imageIndex],
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                );
-              },
+        child: GestureDetector(
+          onTap: () => _openLink(banner['content_url']!),
+          child: Container(
+            height: MediaQuery.of(context).size.width * 9 / 16,
+            child: CachedNetworkImage(
+              imageUrl: banner['img_url']!,
+              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              fit: BoxFit.cover,
+              width: double.infinity,
             ),
           ),
         ),
       );
     }
+
+    return SliverToBoxAdapter(
+      child: Container(
+        height: MediaQuery.of(context).size.width * 9 / 16,
+        child: GestureDetector(
+          onPanDown: (_) {
+            if (widget.banners.length > 1) {
+              _resetAutoSlideTimer();
+            }
+          },
+          child: PageView.builder(
+            controller: _controller,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPage = index;
+              });
+            },
+            itemCount: widget.banners.length,
+            itemBuilder: (_, index) {
+              final banner = widget.banners[index];
+              return CachedNetworkImage(
+                imageUrl: banner['img_url']!,
+                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                fit: BoxFit.cover,
+                width: double.infinity,
+              );
+            },
+          ),
+        ),
+      ),
+    );
   }
+  void _openLink(String? url) async {
+    if (url == null || url.isEmpty) {
+      return;
+    }
+
+    final Uri parsedUrl = Uri.parse(url);
+    if (!parsedUrl.isAbsolute) {
+      return;
+    }
+
+    if (await canLaunchUrl(parsedUrl)) {
+      await launchUrl(parsedUrl, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+}
 
 class _TabBar extends StatelessWidget {
   const _TabBar();

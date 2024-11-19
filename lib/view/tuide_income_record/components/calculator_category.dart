@@ -37,48 +37,18 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Flexible(
       child: SizedBox(
-        height: size.height * 0.07,
+        height: 60,
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: choicesLists.asMap().entries.map((entry) {
             int index = entry.key;
             Map<String, dynamic> choice = entry.value;
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-              child: ChoiceChip(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                label: Transform.translate(
-                  offset: const Offset(0, -1), // 文字の位置を少し上に調整
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        choice['icon'],
-                        color: selectedIndex == index ? Colors.white : choice['color'],
-                      ),
-                      const SizedBox(width: 4.0),
-                      Text(
-                        choice['label'],
-                        style: TextStyle(
-                          color: selectedIndex == index ? Colors.white : Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                selected: selectedIndex == index,
-                selectedColor: choice['color'],
-                backgroundColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50.0),
-                  side: BorderSide(color: choice['color']),
-                ),
-                showCheckmark: false, 
-                onSelected: (bool selected) {
+              padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+              child: GestureDetector(
+                onTap: () {
                   setState(() {
                     selectedIndex = index;
                     final temporaryList = ref.read(temporaryListNotifierProvider.notifier);
@@ -89,6 +59,36 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
                     ]);
                   });
                 },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: selectedIndex == index
+                        ? Color(0xffffffff)
+                        : choice['color'].withOpacity(0.1),
+                    border: selectedIndex == index
+                        ? null 
+                        : Border.all(color: Colors.white, width: 2),
+                    borderRadius: BorderRadius.circular(50.0),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        choice['icon'],
+                        color: selectedIndex == index ? choice['color'] : Colors.white,
+                      ),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        choice['label'],
+                        style: TextStyle(
+                          color: selectedIndex == index ? Colors.black : Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             );
           }).toList(),

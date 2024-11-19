@@ -8,9 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-//databaseに追加
-import 'firebase_insert.dart';
-
 import 'view/expense_record/expencse_record_page.dart';
 
 //pages
@@ -28,6 +25,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // ステータスバーを透明に設定
+      statusBarIconBrightness: Brightness.dark, // アイコンを黒に設定
+      statusBarBrightness: Brightness.light, // iOS用
+    ),
+  );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -39,8 +43,6 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final bool finTutorial = prefs.getBool('tutorial') ?? false;
 
-  // データ挿入処理
-  //await DataInsert().insertData();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     ProviderScope(
@@ -60,25 +62,18 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         brightness: Brightness.light,
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.grey, // メインカラーをグレーに設定
-          backgroundColor: Colors.transparent, // 背景色を透明に設定
+          primarySwatch: Colors.grey, 
+          backgroundColor: Colors.white,
         ).copyWith(
-          primary: Colors.white, // プライマリカラーを薄いグレーに設定
-          secondary: Colors.white // セカンダリカラーも薄いグレーに設定
+          primary: Colors.white, 
+          secondary: Colors.white 
         ),
-        useMaterial3: true,
+        scaffoldBackgroundColor: Colors.white,
+        useMaterial3: false,
         textTheme: GoogleFonts.notoSansJpTextTheme(
           Theme.of(context).textTheme,
         ),
       ),
-      // darkTheme: ThemeData(
-      //   brightness: Brightness.dark,
-      //   colorScheme: ColorScheme.dark(),
-      //   useMaterial3: true
-      // ),
-      // home: finTutorial
-      //   ? CommonNavigationBar(initialIndex: 0)
-      //   : PageViewWidget(),
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/':

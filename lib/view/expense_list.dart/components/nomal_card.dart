@@ -29,12 +29,16 @@ class NomalCard extends StatefulWidget {
   final String title;
   final String description;
   final String imageUrl;
+  final String category;
+  
+
 
   const NomalCard({
     required this.index,
     required this.title,
     required this.description,
     required this.imageUrl,
+    required this.category,
     super.key,
   });
 
@@ -69,7 +73,6 @@ class NomalCard extends StatefulWidget {
         });
       } catch (e) {
         // エラーハンドリング
-        print('Error fetching image URL: $e');
          setState(() {
           _isFetching = false;
         });
@@ -78,6 +81,7 @@ class NomalCard extends StatefulWidget {
 
   @override
   Widget build(BuildContext context) {
+    final heroTag = '${widget.category}-${widget.index}';
     return ClipRRect(
       borderRadius: BorderRadius.zero,
       child: Material(
@@ -86,18 +90,16 @@ class NomalCard extends StatefulWidget {
           onTap: () {
             // fetchedImageUrlがnullの場合にデフォルト値を設定
             final imageToUse = fetchedImageUrl ?? '';
-            navigateWithCustomTransition(context, imageToUse);
-            print(widget.index);
-            print(widget.imageUrl);
+            navigateWithCustomTransition(context, heroTag, imageToUse);
           },
           child: Hero(
-            tag: 'card-hero-${widget.index}',
+            tag: heroTag,
             flightShuttleBuilder: (flightContext, animation, direction, fromContext, toContext) {
               return Material(
-                color: Colors.transparent,
                 child: Stack(
                   children: [
-                    toContext.widget, // アニメーション中は、移動先のウィジェットをそのまま表示
+                    fromContext.widget, // 遷移元のウィジェット
+                    toContext.widget,   // 遷移先のウィジェット
                   ],
                 ),
               );
@@ -112,20 +114,19 @@ class NomalCard extends StatefulWidget {
                    fetchedImageUrl == null
                       ? Center(child: CircularProgressIndicator()) // 画像取得中のプレースホルダー
                       : CachedNetworkImage(
-                          imageUrl: fetchedImageUrl!, // 取得したURLを使用
-                          placeholder: (context, url) => Center(child: CircularProgressIndicator()), // ローディング中のプレースホルダー
+                          imageUrl: fetchedImageUrl!,          
                           errorWidget: (context, url, error) => Icon(Icons.error), // エラー時のアイコン
-                          fit: BoxFit.cover, // 画像のフィット方法
+                          fit: BoxFit.cover, 
                           width: double.infinity,
                           height: double.infinity,
                         ),
                   Container(
-                    width: double.infinity, // 横幅を親に合わせる
-                    height: double.infinity, // 高さを親に合わせる
+                    width: double.infinity, 
+                    height: double.infinity, 
                     child: fetchedImageUrl != null // すでに取得済みのURLがあるかどうかを確認
                     ? CachedNetworkImage(
                       imageUrl: fetchedImageUrl!,
-                      fadeInDuration: Duration.zero, // アニメーションを無効化
+                      fadeInDuration: Duration.zero, 
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
                         color: Colors.white,
@@ -145,38 +146,6 @@ class NomalCard extends StatefulWidget {
                       ),
                     ),
                   ),
-                  // FutureBuilder<String>(
-                  //   future: firebase_storage.FirebaseStorage.instance.ref(widget.imageUrl).getDownloadURL(),
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                  //       return Container(
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.white,
-                  //         ),
-                  //         child: Center(child: CircularProgressIndicator(
-                  //           color: Colors.grey[500],
-                  //         )),
-                  //       );
-                  //     } else if (snapshot.hasError) {
-                  //       return Container(
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.white,
-                  //         ),
-                  //         child: const Center(child: Icon(Icons.error, color: Colors.red)),
-                  //       );
-                  //     } else if (snapshot.hasData) {
-                  //       // 取得したURLをCachedNetworkImageでキャッシュ表示
-                  //       return NetworkImageBuilder(snapshot.data!);
-                  //     } else {
-                  //       return Container(
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.white,
-                  //         ),
-                  //         child: const Center(child: Icon(Icons.error)),
-                  //       );
-                  //     }
-                  //   },
-                  // ),
                   Positioned(
                     bottom: 0,
                     left: 0,
@@ -235,11 +204,13 @@ class NomalCard extends StatefulWidget {
       ),
     );
   }
+
   // カスタムページ遷移アニメーション
-  void navigateWithCustomTransition(BuildContext context, String fetchedImageUrl) {
+  void navigateWithCustomTransition(BuildContext context, String heroTag, String imageUrl) {
+    precacheImage(CachedNetworkImageProvider(imageUrl), context); 
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => TopicContent(index: widget.index, imageUrl: fetchedImageUrl, description: widget.description, title: widget.title),
+        pageBuilder: (context, animation, secondaryAnimation) => TopicContent(index: widget.index, imageUrl: imageUrl, description: widget.description, title: widget.title, heroTag: heroTag,),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);  // 下から上にスライド
           const end = Offset.zero;

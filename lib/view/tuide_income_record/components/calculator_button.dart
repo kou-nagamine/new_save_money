@@ -32,14 +32,13 @@ class CalculatorButton extends ConsumerWidget {
     final temporaryList = ref.watch(temporaryListNotifierProvider);
 
     return Padding(
-      padding: const EdgeInsets.all(6.5),
+      padding: const EdgeInsets.fromLTRB(9, 5, 9, 5),
       child: Container(
-        height: size.height * 0.095,
-        width: size.height * 0.095, 
+        height: 65,
+        width: 65, 
         child: ElevatedButton(
           onPressed: isEnabled ? () {
             final chargeNotifier = ref.read(chargeRiverpodNotifierProvider.notifier);
-
             if (RegExp(r'^\d$').hasMatch(buttonText)) {
               chargeNotifier.addNumber(buttonText);
             } else if (buttonText == 'del') {
@@ -80,12 +79,8 @@ class CalculatorButton extends ConsumerWidget {
           style: ElevatedButton.styleFrom(
             elevation: 0,
             padding: EdgeInsets.zero, // ボタンの内側の余白をなしに設定
-            backgroundColor: Colors.white, // isEnabledに基づいて背景色を変更
-            shape: SmoothRectangleBorder(
-              borderRadius: SmoothBorderRadius(
-              cornerRadius: 20,
-              cornerSmoothing: 0.6)
-            ),
+            backgroundColor: Color(0xff008816), // isEnabledに基づいて背景色を変更
+            shape: const CircleBorder(), 
             alignment: Alignment.center, 
           ),
           child: Text(
@@ -94,7 +89,7 @@ class CalculatorButton extends ConsumerWidget {
             style: TextStyle(
               fontSize: size.width * 0.07,
               fontWeight: FontWeight.bold, 
-              color: isEnabled ? Colors.black : Colors.grey, // isEnabledに基づいてテキストの色を変更
+              color: isEnabled ? Colors.white : Colors.grey, // isEnabledに基づいてテキストの色を変更
             ),
           ),
         ),
@@ -119,10 +114,10 @@ class BigCalculatorButton extends ConsumerWidget {
     final Size size = MediaQuery.of(context).size;
 
     return Padding(
-      padding: const EdgeInsets.all(6.5),
+      padding: const EdgeInsets.fromLTRB(9, 5, 9, 5),
       child: Container(
-        height: size.height * 0.095, 
-        width: size.height * 0.21, 
+        height: 65, 
+        width: 148, 
         child: ElevatedButton(
           onPressed: isEnabled ? () {
             final chargeNotifier = ref.read(chargeRiverpodNotifierProvider.notifier); 
@@ -131,11 +126,9 @@ class BigCalculatorButton extends ConsumerWidget {
           style: ElevatedButton.styleFrom(
             elevation: 0, 
             alignment: Alignment.center,
-            backgroundColor:Colors.white, // isEnabledに基づいて背景色を変更
-            shape: SmoothRectangleBorder(
-              borderRadius: SmoothBorderRadius(
-              cornerRadius: 20,
-              cornerSmoothing: 0.6)
+            backgroundColor:Color(0xff008816), // isEnabledに基づいて背景色を変更
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100), // 高さの半分で最大角丸
             ),
           ),
           child: Text(
@@ -143,7 +136,7 @@ class BigCalculatorButton extends ConsumerWidget {
             style: TextStyle(
               fontSize: size.width * 0.07, 
               fontWeight: FontWeight.bold, 
-              color: isEnabled ? Colors.black : Colors.grey, // isEnabledに基づいてテキストの色を変更
+              color: isEnabled ? Colors.white : Colors.grey, // isEnabledに基づいてテキストの色を変更
             ),
           ),
         ),

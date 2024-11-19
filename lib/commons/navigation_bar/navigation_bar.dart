@@ -1,7 +1,7 @@
 //packages
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:iconoir_flutter/iconoir_flutter.dart';
+import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 //dart
@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CommonNavigationBar extends StatelessWidget {
   final int initialIndex;
-  const CommonNavigationBar({super.key, this.initialIndex = 0});//初期値を設定  0:home 1:calculator 2:setting　0以外を設定する場合は、各自で設定してください　by H 
+ const CommonNavigationBar({Key? key, this.initialIndex = 0}) : super(key: key);//初期値を設定  0:home 1:calculator 2:setting　0以外を設定する場合は、各自で設定してください　by H 
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final _screens = [
     HomePage(),
     null, // CalculatorPage はモーダルで表示されるのでnull
-    TopicPage(),
+    const TopicPage(),
   ];
 
   // BottomNavigationBar cululatorのタップ時の処理
@@ -130,20 +130,20 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     onTap: _onItemTapped,
                     items: const <BottomNavigationBarItem>[
                       BottomNavigationBarItem(
-                        icon: Wallet(width: 30),
-                        activeIcon: Wallet(width: 30, color: Colors.blue),
+                        icon: iconoir.Wallet(width: 30),
+                        activeIcon: iconoir.Wallet(width: 30, color: Colors.blue),
                         label: 'こうざ',
                         tooltip: "This is a Home Page",
                       ),
                       BottomNavigationBarItem(
-                        icon: PlusCircle(width: 30),
-                        activeIcon: PlusCircle(width: 30, color: Colors.blue),
+                        icon: iconoir.PlusCircle(width: 30),
+                        activeIcon: iconoir.PlusCircle(width: 30, color: Colors.blue),
                         label: 'ついで',
                         tooltip: "This is a History Page",
                       ),
                       BottomNavigationBarItem(
-                        icon: FavouriteBook(width: 30),
-                        activeIcon: FavouriteBook(width: 30, color: Colors.blue),
+                        icon: iconoir.FavouriteBook(width: 30),
+                        activeIcon: iconoir.FavouriteBook(width: 30, color: Colors.blue),
                         label: 'つかう',
                         tooltip: "This is a Catalog Page",
                       ),

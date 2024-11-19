@@ -21,6 +21,8 @@ class _CalculatorState extends ConsumerState<Calculator> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
+    final double calculatorHeight = size.height < 700 ? 385 : 400;
+
     // 変更された状態を取得
     final chageState = ref.watch(chargeRiverpodNotifierProvider);
     final int parsedChageState = int.parse(chageState);
@@ -49,21 +51,18 @@ class _CalculatorState extends ConsumerState<Calculator> {
     ];
 
     return Container(
-      decoration: const BoxDecoration(
-        // borderRadius: BorderRadius.only(
-        //   topLeft: Radius.circular(40.0),
-        //   topRight: Radius.circular(40.0),
-        // ),
-        color: Color(0xffF1F1F1),
-      ),
       width: size.width,
-      height: size.height * 0.55,
+      height: calculatorHeight,
       child: Padding(
         padding: EdgeInsets.only(
-          bottom: size.height * 0.02, left: size.width * 0, right: size.width * 0, top: size.height * 0.01),
+          bottom: size.height * 0.02, left: size.width * 0, right: size.width * 0, top: size.height * 0),
         child: Column(
           children: <Widget>[
-            CalculatorCateGory(), // category
+            Container(
+              margin: EdgeInsets.only(bottom: size.height * 0.01),
+              padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
+              child: CalculatorCateGory(),
+            ),
             Table(
               columnWidths: const <int, TableColumnWidth>{
                 0: IntrinsicColumnWidth(),
