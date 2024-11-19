@@ -53,41 +53,31 @@ class _SettingPageState extends ConsumerState<SettingPage> {
 
   // URLを開く関数
   void _launchURL(String url) async {
-    try {
-      final Uri uri = Uri.parse(url);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } 
-    } catch (e) {
-      // エラーログを表示（開発用）もしくはCrashlyticsなどで送信
-      print('Error launching URL: $e');
-    }
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } 
   }
 
    // FirestoreからOSに基づいたURLを取得する関数
   Future<void> _getURL() async {
-    try {
-       // 現在のプラットフォームに基づいてOSを判定
-      String os = '';
-      if (Platform.isAndroid) {
-        os = 'Android';
-      } else if (Platform.isIOS) {
-        os = 'iOS';
-      }
+    // 現在のプラットフォームに基づいてOSを判定
+    String os = '';
+    if (Platform.isAndroid) {
+      os = 'Android';
+    } else if (Platform.isIOS) {
+      os = 'iOS';
+    }
 
-      final snapshot = await FirebaseFirestore.instance
-      .collection('setting_url')
-      .where('os', isEqualTo: os)
-      .get();
+    final snapshot = await FirebaseFirestore.instance
+    .collection('setting_url')
+    .where('os', isEqualTo: os)
+    .get();
 
-      if (snapshot.docs.isNotEmpty) {
-          setState(() {
-            feedbackurl = snapshot.docs.first.get('url'); // URLを取得
-          });
-        }
-      } catch (e) {
-        print('Error fetching URL: $e');
-        // エラーハンドリング
+    if (snapshot.docs.isNotEmpty) {
+        setState(() {
+          feedbackurl = snapshot.docs.first.get('url'); // URLを取得
+        });
       }
     }
 
@@ -127,6 +117,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
           statusBarBrightness: isLight ? Brightness.light : Brightness.dark,
           statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
         ),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -271,9 +262,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                   child: InkWell( 
                     onTap: feedbackurl.isNotEmpty
                           ? () => _launchURL(feedbackurl)
-                          :  () {
-                              print('URL is empty or not fetched yet'); // デバッグメッセージ
-                            }, // URLがまだ取得されていない場合は無効化
+                          :  () {}, 
                     child:  Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

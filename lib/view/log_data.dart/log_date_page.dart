@@ -78,7 +78,7 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
         parsedDate = userData[i].dataTime;
         alldates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
       } catch (e) {
-        alldates.add('Invalid date'); // エラーハンドリング
+        alldates.add('Invalid date'); 
       }
     }
     int incomeIndex = 1; // 収入データ専用のインデックスを作成 0の場合はエラーが発生するため1からスタート
@@ -96,7 +96,7 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
           DateTime parsedDate = userData[i].dataTime;
           incomedates.add(DateFormat('MM/dd').format(parsedDate)); // 表示用にフォーマット
         } catch (e) {
-          incomedates.add('Invalid date'); // エラーハンドリング
+          incomedates.add('Invalid date'); 
         }
 
         incomeIndex++; // 収入があるたびにインデックスを進める
@@ -127,18 +127,19 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
     if (userData.isNotEmpty) {
       displayDateRange = '${DateFormat('yyyy/MM/dd').format(userData[userData.length - 1].dataTime)} ~ $currentDate';
     } else {
-      displayDateRange = 'データがありません'; // データがない場合
+      displayDateRange = 'データがありません'; 
     }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '',
+          'グラフ',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
+        elevation: 0,
       ),
       body: SingleChildScrollView( 
         child: Column(
@@ -218,57 +219,77 @@ class _GraphPageState extends ConsumerState<GraphPage> with SingleTickerProvider
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children:[
-                ChoiceChip(
-                  label: Text('ついで収入'), 
-                  selected: selectedOption == 'ついで収入',
-                  onSelected: (bool selected) {
-                    setState(() {
-                      selectedOption = 'ついで収入';
-                    });
-                  },
-                  selectedColor: Colors.black,
-                  labelStyle: TextStyle(
-                    color: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
+                Theme(
+                  data: ThemeData(
+                    useMaterial3: true, 
+                    colorScheme: ColorScheme.fromSwatch(
+                      primarySwatch: Colors.grey, 
+                      backgroundColor: Colors.white,
+                    ) 
                   ),
-                  checkmarkColor: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
-                  chipAnimationStyle: ChipAnimationStyle(
-                    avatarDrawerAnimation: AnimationStyle(
-                      duration: Duration(milliseconds: 500),
-                      reverseDuration: Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
+                  child: ChoiceChip(
+                    label: const Text('ついで収入', style: TextStyle(fontWeight: FontWeight.bold )),
+                    selected: selectedOption == 'ついで収入',
+                    onSelected: (bool selected) {
+                      setState(() {
+                        selectedOption = 'ついで収入';
+                      });
+                    },
+                    selectedColor: Colors.black,
+                    labelStyle: TextStyle(
+                      color: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
                     ),
-                  ),
-                  shape: SmoothRectangleBorder(
-                    borderRadius: SmoothBorderRadius(
-                      cornerRadius: 15,
-                      cornerSmoothing: 0.5,)
+                    checkmarkColor: selectedOption == 'ついで収入' ? Colors.white : Colors.black,
+                    chipAnimationStyle: ChipAnimationStyle(
+                      avatarDrawerAnimation: AnimationStyle(
+                        duration: Duration(milliseconds: 500),
+                        reverseDuration: Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                      ),
+                    ),
+                    shape: SmoothRectangleBorder(
+                      borderRadius: SmoothBorderRadius(
+                        cornerRadius: 15,
+                        cornerSmoothing: 0.5,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 40),
-                ChoiceChip(
-                  label: Text('全体'), 
-                  selected: selectedOption == '全体',
-                  onSelected: (bool selected) {
-                    setState(() {
-                      selectedOption = '全体';
-                    });
-                  },
-                  selectedColor: Colors.black,
-                  labelStyle: TextStyle(
-                    color: selectedOption == '全体' ? Colors.white : Colors.black,
+                Theme(
+                  data: ThemeData(
+                    useMaterial3: true,
+                    colorScheme: ColorScheme.fromSwatch(
+                      primarySwatch: Colors.grey, 
+                      backgroundColor: Colors.white,
+                    ) 
                   ),
-                  checkmarkColor: selectedOption == '全体' ? Colors.white : Colors.black,
-                  chipAnimationStyle: ChipAnimationStyle(
-                    avatarDrawerAnimation: AnimationStyle(
-                      duration: Duration(milliseconds: 500),
-                      reverseDuration: Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
+                  child: ChoiceChip(
+                    label: const Text('全体', style: TextStyle(fontWeight: FontWeight.bold )),
+                    selected: selectedOption == '全体',
+                    onSelected: (bool selected) {
+                      setState(() {
+                        selectedOption = '全体';
+                      });
+                    },
+                    selectedColor: Colors.black,
+                    labelStyle: TextStyle(
+                      color: selectedOption == '全体' ? Colors.white : Colors.black,
                     ),
-                  ),
-                  shape: SmoothRectangleBorder(
-                    borderRadius: SmoothBorderRadius(
-                      cornerRadius: 15,
-                      cornerSmoothing: 0.5,)
+                    checkmarkColor: selectedOption == '全体' ? Colors.white : Colors.black,
+                    chipAnimationStyle: ChipAnimationStyle(
+                      avatarDrawerAnimation: AnimationStyle(
+                        duration: Duration(milliseconds: 500),
+                        reverseDuration: Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                      ),
+                    ),
+                    shape: SmoothRectangleBorder(
+                      borderRadius: SmoothBorderRadius(
+                        cornerRadius: 15,
+                        cornerSmoothing: 0.5,
+                      ),
+                    ),
                   ),
                 ),
               ],

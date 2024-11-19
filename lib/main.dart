@@ -60,25 +60,18 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         brightness: Brightness.light,
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.grey, // メインカラーをグレーに設定
-          backgroundColor: Colors.transparent, // 背景色を透明に設定
+          primarySwatch: Colors.grey, 
+          backgroundColor: Colors.white,
         ).copyWith(
           primary: Colors.white, 
           secondary: Colors.white 
         ),
-        useMaterial3: true,
+        scaffoldBackgroundColor: Colors.white,
+        useMaterial3: false,
         textTheme: GoogleFonts.notoSansJpTextTheme(
           Theme.of(context).textTheme,
         ),
       ),
-      // darkTheme: ThemeData(
-      //   brightness: Brightness.dark,
-      //   colorScheme: ColorScheme.dark(),
-      //   useMaterial3: true
-      // ),
-      // home: finTutorial
-      //   ? CommonNavigationBar(initialIndex: 0)
-      //   : PageViewWidget(),
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/':
