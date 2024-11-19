@@ -1,21 +1,10 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'components/card_view.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:new_save_money/view_model/banner_provider.dart';
 import 'dart:async';
-
-Future<List<String>> fetchImageUrls(BuildContext context) async {
-  final ListResult result = await FirebaseStorage.instance.ref('slideshow').listAll();
-  final List<String> urls = await Future.wait(result.items.map((item) => item.getDownloadURL()).toList());
-
-  // プリキャッシュを実行
-  for (final url in urls) {
-    precacheImage(NetworkImage(url), context);
-  }
-
-  return urls;
-}
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final labels = [
   "学習",
@@ -24,11 +13,21 @@ final labels = [
 ];    
 
 //TopicPageの全体
-class TopicPage extends StatelessWidget {
-  const TopicPage({super.key});
+class TopicPage extends ConsumerStatefulWidget {
+  const TopicPage({Key? key}) : super(key: key);
+
+  @override
+  _TopicPageState createState() => _TopicPageState();
+}
+
+class _TopicPageState extends ConsumerState<TopicPage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true; 
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+    final bannerAsyncValue = ref.watch(bannerProvider);
     return SafeArea(
       child: Scaffold(
         body: DefaultTabController(
@@ -36,31 +35,36 @@ class TopicPage extends StatelessWidget {
           child: NestedScrollView(
             headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return [
-                FutureBuilder<List<String>>(
-                  future: fetchImageUrls(context),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                bannerAsyncValue.when(
+                  data: (banners) {
+                    if (banners.isEmpty) {
                       return const SliverToBoxAdapter(
                         child: SizedBox(
                           height: 200,
                           child: Center(
-                            child: CircularProgressIndicator(),
+                            child: Text('スライドショーの画像がありません'),
                           ),
                         ),
                       );
                     }
-                    if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 200,
-                          child: Center(
-                            child: Text('スライドショーの画像を取得できませんでした。'),
-                          ),
-                        ),
-                      );
-                    }
-                    return HeaderWidget(images: snapshot.data!);
+                    return HeaderWidget(banners: banners);
                   },
+                  loading: () => const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                  error: (error, stack) => const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: Text('データの取得に失敗しました'),
+                      ),
+                    ),
+                  ),
                 ),
                 SliverToBoxAdapter(
                   child: Divider(
@@ -115,10 +119,10 @@ class TopicPage extends StatelessWidget {
 
 //TopicPageのスライドショー
 class HeaderWidget extends StatefulWidget {
-  final List<String> images;
+  final List<Map<String, String>> banners;
   final double height;
 
-  const HeaderWidget({required this.images, this.height = 200, super.key});
+  const HeaderWidget({required this.banners, this.height = 200, super.key});
 
   @override
   _HeaderWidgetState createState() => _HeaderWidgetState();
@@ -140,7 +144,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     );
     _currentPage = _initialPage;
 
-    if (widget.images.length > 1) {
+    if (widget.banners.length> 1) {
       _startAutoSlideTimer();
     }
   }
@@ -158,7 +162,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
   }
 
   void _resetAutoSlideTimer() {
-    if (widget.images.length > 1) {
+    if (widget.banners.length> 1) {
       _timer?.cancel();
       _timer = Timer(const Duration(seconds: 2), () {
         _startAutoSlideTimer();
@@ -174,17 +178,21 @@ class _HeaderWidgetState extends State<HeaderWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (widget.images.length == 1) {
+ Widget build(BuildContext context) {
+    if (widget.banners.length == 1) {
+      final banner = widget.banners[0];
       return SliverToBoxAdapter(
-        child: Container(
-          height: MediaQuery.of(context).size.width * 9 / 16,
-          child: CachedNetworkImage(
-            imageUrl: widget.images[0],
-            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-            fit: BoxFit.cover,
-            width: double.infinity,
+        child: GestureDetector(
+          onTap: () => _openLink(banner['content_url']!),
+          child: Container(
+            height: MediaQuery.of(context).size.width * 9 / 16,
+            child: CachedNetworkImage(
+              imageUrl: banner['img_url']!,
+              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              fit: BoxFit.cover,
+              width: double.infinity,
+            ),
           ),
         ),
       );
@@ -195,7 +203,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
         height: MediaQuery.of(context).size.width * 9 / 16,
         child: GestureDetector(
           onPanDown: (_) {
-            if (widget.images.length > 1) {
+            if (widget.banners.length > 1) {
               _resetAutoSlideTimer();
             }
           },
@@ -206,10 +214,11 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 _currentPage = index;
               });
             },
-            itemCount: widget.images.length,
+            itemCount: widget.banners.length,
             itemBuilder: (_, index) {
+              final banner = widget.banners[index];
               return CachedNetworkImage(
-                imageUrl: widget.images[index],
+                imageUrl: banner['img_url']!,
                 placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
                 fit: BoxFit.cover,
@@ -220,6 +229,16 @@ class _HeaderWidgetState extends State<HeaderWidget> {
         ),
       ),
     );
+  }
+  void _openLink(String? url) {
+    if (url == null || url.isEmpty) {
+      return;
+    } else {
+      final Uri parsedUrl = Uri.parse(url);
+      if (!parsedUrl.isAbsolute) {
+        return;
+      }
+    }
   }
 }
 

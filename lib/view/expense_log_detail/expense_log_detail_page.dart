@@ -4,7 +4,6 @@ import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:new_save_money/view_model/user_log.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 // import 'dart:developer';

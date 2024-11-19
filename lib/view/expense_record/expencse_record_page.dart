@@ -12,7 +12,6 @@ import '../../view_model/all_price.dart';
 //freezed
 import '../../model/save.dart';
 
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cached_network_image/cached_network_image.dart';
 
 
