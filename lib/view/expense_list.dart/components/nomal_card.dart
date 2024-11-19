@@ -96,10 +96,10 @@ class NomalCard extends StatefulWidget {
             tag: heroTag,
             flightShuttleBuilder: (flightContext, animation, direction, fromContext, toContext) {
               return Material(
-                color: Colors.transparent,
                 child: Stack(
                   children: [
-                    toContext.widget, // アニメーション中は、移動先のウィジェットをそのまま表示
+                    fromContext.widget, // 遷移元のウィジェット
+                    toContext.widget,   // 遷移先のウィジェット
                   ],
                 ),
               );
@@ -114,16 +114,15 @@ class NomalCard extends StatefulWidget {
                    fetchedImageUrl == null
                       ? Center(child: CircularProgressIndicator()) // 画像取得中のプレースホルダー
                       : CachedNetworkImage(
-                          imageUrl: fetchedImageUrl!, // 取得したURLを使用
-                          placeholder: (context, url) => Center(child: CircularProgressIndicator()), // ローディング中のプレースホルダー
+                          imageUrl: fetchedImageUrl!,          
                           errorWidget: (context, url, error) => Icon(Icons.error), // エラー時のアイコン
-                          fit: BoxFit.cover, // 画像のフィット方法
+                          fit: BoxFit.cover, 
                           width: double.infinity,
                           height: double.infinity,
                         ),
                   Container(
-                    width: double.infinity, // 横幅を親に合わせる
-                    height: double.infinity, // 高さを親に合わせる
+                    width: double.infinity, 
+                    height: double.infinity, 
                     child: fetchedImageUrl != null // すでに取得済みのURLがあるかどうかを確認
                     ? CachedNetworkImage(
                       imageUrl: fetchedImageUrl!,
@@ -205,8 +204,10 @@ class NomalCard extends StatefulWidget {
       ),
     );
   }
+
   // カスタムページ遷移アニメーション
   void navigateWithCustomTransition(BuildContext context, String heroTag, String imageUrl) {
+    precacheImage(CachedNetworkImageProvider(imageUrl), context); 
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => TopicContent(index: widget.index, imageUrl: imageUrl, description: widget.description, title: widget.title, heroTag: heroTag,),

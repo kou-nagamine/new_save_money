@@ -143,7 +143,9 @@ class _TopicContentState extends ConsumerState<TopicContent> {
             height: MediaQuery.of(context).size.height * 0.6,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: CachedNetworkImageProvider(widget.imageUrl),
+                image: CachedNetworkImageProvider(
+                  widget.imageUrl,
+                ),
                 fit: BoxFit.cover, // 画像を全体にカバー
               ),
             ),
