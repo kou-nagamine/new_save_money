@@ -160,6 +160,7 @@ class ReferencePage extends ConsumerWidget {
                   weight: 700,
                   size: 50,
                 ),
+                padding: EdgeInsets.zero,
               ),
             ],
           )
