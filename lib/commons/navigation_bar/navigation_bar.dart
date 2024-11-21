@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconoir_flutter/iconoir_flutter.dart' as iconoir;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 //dart
 import 'dart:ui' as ui;
@@ -37,6 +38,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   late int selectedIndex;
   bool isBottomNavVisible = true; // BottomNavigationBar の表示状態を管理
   static bool _isFirstLaunch = true;
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
@@ -69,6 +71,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     null, // CalculatorPage はモーダルで表示されるのでnull
     const TopicPage(),
   ];
+
+    final _buttonNames = ['こうざ', 'ついで', 'つかう'];
 
   // BottomNavigationBar cululatorのタップ時の処理
   void _onItemTapped(int index) {
@@ -107,6 +111,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 }
+// Analytics用のイベントを記録
+ Future<void> _logButtonTapEvent(int index) async {
+    final buttonName = _buttonNames[index]; // ボタンの名前を取得
+    await _analytics.logEvent(
+      name: 'navigation_button_tap',
+      parameters: {
+        'button_name': buttonName,
+        'button_index': index,
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
