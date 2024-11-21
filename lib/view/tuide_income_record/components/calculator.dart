@@ -20,7 +20,6 @@ class _CalculatorState extends ConsumerState<Calculator> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
     final double calculatorHeight = size.height < 700 ? 385 : 400;
 
     // 変更された状態を取得
@@ -50,44 +49,36 @@ class _CalculatorState extends ConsumerState<Calculator> {
       ),
     ];
 
-    return Container(
+    return SizedBox(
       width: size.width,
       height: calculatorHeight,
-      child: Padding(
-        padding: EdgeInsets.only(
-          bottom: size.height * 0.02, left: size.width * 0, right: size.width * 0, top: size.height * 0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(bottom: size.height * 0.01),
-              padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
-              child: CalculatorCateGory(),
-            ),
-            Table(
-              columnWidths: const <int, TableColumnWidth>{
-                0: IntrinsicColumnWidth(),
-                1: IntrinsicColumnWidth(),
-                2: IntrinsicColumnWidth(),
-                3: IntrinsicColumnWidth(),
-              },
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: <TableRow>[
-                ...normalLines.map((row) => TableRow(children: row)),
-              ],
-            ),
-            Table(
-              columnWidths: const <int, TableColumnWidth>{
-                0: IntrinsicColumnWidth(),
-                1: IntrinsicColumnWidth(),
-                2: IntrinsicColumnWidth(),
-              },
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: <TableRow>[
-                TableRow(children: specialLines.map((button) => button).toList()),
-              ],
-            ),
-          ],
-        ),
+      child: Column(
+        children: <Widget>[
+          CalculatorCateGory(), // category
+          Table(
+            columnWidths: const <int, TableColumnWidth>{
+              0: IntrinsicColumnWidth(),
+              1: IntrinsicColumnWidth(),
+              2: IntrinsicColumnWidth(),
+              3: IntrinsicColumnWidth(),
+            },
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            children: <TableRow>[
+              ...normalLines.map((row) => TableRow(children: row)),
+            ],
+          ),
+          Table(
+            columnWidths: const <int, TableColumnWidth>{
+              0: IntrinsicColumnWidth(),
+              1: IntrinsicColumnWidth(),
+              2: IntrinsicColumnWidth(),
+            },
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            children: <TableRow>[
+              TableRow(children: specialLines.map((button) => button).toList()),
+            ],
+          ),
+        ],
       ),
     );
   }

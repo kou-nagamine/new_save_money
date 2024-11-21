@@ -37,7 +37,8 @@ class _CalculatorCateGoryState extends ConsumerState<CalculatorCateGory> {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 10), // 下にマージンを追加
       child: SizedBox(
         height: 60,
         child: ListView(

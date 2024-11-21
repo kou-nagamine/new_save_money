@@ -8,8 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-import 'view/expense_record/expencse_record_page.dart';
-
 //pages
 import 'view/walkthrough/pageview.dart';
 import 'view/setting/setting_page.dart';
@@ -36,6 +34,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
