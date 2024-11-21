@@ -130,7 +130,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
       if(value.length == 0 || value.isEmpty) {
         temporaryTopicList.updateTitleValidate(false);
       }
-      else if (value.length == 7) {
+      else if (value.length >= 11) {
         temporaryTopicList.updateTitleValidate(false);
         showSnackBar(
           context: context,
@@ -149,7 +149,7 @@ class _CustomFormState extends ConsumerState<CustomForm> {
     setState(() {
       if (value.length == 0 || value.isEmpty || int.parse(value) == 0) {
         temporaryTopicList.updatePriceValidate(false);
-      } else if (value.length == 7){
+      } else if (value.length >= 7){
         temporaryTopicList.updatePriceValidate(false);
         showSnackBar(
           context: context,

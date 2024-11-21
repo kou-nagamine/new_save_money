@@ -143,8 +143,8 @@ class ReferencePage extends ConsumerWidget {
             alignment: Alignment.center,
             children: [
               Container(
-                width: 40,
-                height: 40,
+                width: 20,
+                height: 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,
