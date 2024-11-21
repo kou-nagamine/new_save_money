@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB3mNvz11_8G4WlFpWza1vyVjobAnMvJsI',
-    appId: '1:688402751846:android:c8d86eae9361b468df28a7',
+    appId: '1:688402751846:android:b4df4869c4af4251df28a7',
     messagingSenderId: '688402751846',
     projectId: 'save-money-61226',
     storageBucket: 'save-money-61226.appspot.com',
@@ -59,10 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDQQjqXMEcZBdwp_Up84bzPoj_aXGPNHX0',
-    appId: '1:688402751846:ios:cd4ce74d7c8df92ddf28a7',
+    appId: '1:688402751846:ios:7430606a98af600edf28a7',
     messagingSenderId: '688402751846',
     projectId: 'save-money-61226',
     storageBucket: 'save-money-61226.appspot.com',
     iosBundleId: 'com.Yarukibutton.SaveMoney',
   );
+
 }

@@ -66,6 +66,9 @@ dependencies:
   uuid:
   flutter_launcher_icons: ^0.14.1
   package_info_plus: ^8.0.2
+  firebase_crashlytics: ^4.1.5
+  firebase_analytics: ^11.3.5
+  firebase_performance: ^0.10.0+10
 
 dev_dependencies:
   flutter_test:

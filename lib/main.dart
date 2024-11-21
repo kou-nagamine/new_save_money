@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 //firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 //pages
 import 'view/walkthrough/pageview.dart';
@@ -38,6 +39,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   final prefs = await SharedPreferences.getInstance();
   final bool finTutorial = prefs.getBool('tutorial') ?? false;
